@@ -1,0 +1,250 @@
+@import 'variables';
+@import 'hamburger';
+
+body {
+    font-family: $base-font-fam;
+    background-color: $bg-page;
+    color: $text-page;
+    overflow-x: hidden;
+}
+
+img, iframe {
+    border: none;
+    max-width: 100%;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.flex-container--rows {
+    flex-flow: row wrap;
+    min-height: calc(100vh - #{2 * $nav-height});
+}
+
+.flex-container--fullpage {
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: $max-page-width;
+    margin: auto;
+}
+
+.top-nav, .site-footer, .splash {
+    width: calc(100% - #{$gutter * 2});
+    max-width: #{$max-page-width - $gutter * 2};
+    margin: 0 -50vw;
+    padding: 0 calc(50vw + #{$gutter});
+}
+
+.top-nav {
+    background-color: $falcon-red;
+    color: $text-page;
+    height: $nav-height;
+    line-height: $nav-height;
+    font-size: 1.2em;
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+    max-height: $nav-height;
+    transition: max-height $anim-delay;
+    overflow: hidden;
+}
+
+.top-nav__link {
+    color: $text-nav;
+    display: inline-block;
+    padding: 0 $gutter / 2;
+    text-decoration: none;
+    white-space: nowrap;
+    vertical-align: top;
+    transition: color $anim-delay;
+    transition: background-color $anim-delay;
+
+    &:hover {
+        background-color: darken($falcon-red, 20%);
+        color: $text-nav-active;
+    }
+}
+
+.top-nav__link--active {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: $text-nav-active;
+}
+
+.top-nav__menu {
+    display: none;
+    vertical-align: top;
+}
+
+.page-interior {
+    flex: 1;
+    margin-top: $nav-height;
+}
+
+.splash {
+    position: relative;
+    background-color: $falcon-purple;
+    color: $text-page;
+    height: calc(100vh - #{$nav-height});
+    flex: 1 100%;
+}
+
+.splash__title {
+    font-family: "Press Start 2P", Arial, 'sans-serif';
+    font-style: italic;
+    color: $text-page;
+    position: absolute;
+    top: 10vh;
+    width: 50vw;
+    max-width: $max-page-width / 2;
+    z-index: 20;
+    text-shadow: 0px 5px 5px #000
+}
+
+.splash__bg-img {
+    transform: scaleX(-1);
+    position: absolute;
+    right: calc(50vw + #{$gutter});
+    top: 2%;
+    height: 95%;
+    width: auto;
+    max-width: 90vw;
+    z-index: 10;
+    opacity: 0.5;
+}
+
+.splash__down {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    color: $text-page;
+    font-size: 48px;
+    width: 42px;
+    margin-left: -21px;
+    z-index: 20;
+}
+
+.sidebar {
+    order: 1;
+    padding: $gutter;
+    flex: 1;
+    max-width: 350px;
+    min-height: 500px;
+}
+
+.sidebar__embed {
+    height: 100%;
+}
+
+.content {
+    background-color: $bg-content-primary;
+    border-radius: 5px;
+    padding: $gutter;
+    margin: $gutter;
+    flex: 3;
+    order: 2;
+
+    &, :link, :visited {
+        color: $text-content-primary;
+    }
+}
+
+.content__logo {
+    height: 1em;
+    width: auto;
+}
+
+.video-container {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+}
+
+.video-container__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.video-container--sd {
+    padding-bottom: calc(100% * 3/4);
+}
+
+.video-container--hd {
+    padding-bottom: calc(100% * 9/16);
+}
+
+.site-footer {
+    background-color: $falcon-gold;
+    min-height: $nav-height;
+    font-size: 1rem;
+    vertical-align: middle;
+
+    &, :link, :visited {
+        color: $text-content-primary;
+    }
+}
+
+.site-footer__text {
+    margin: #{$gutter / 2} 0;
+}
+
+.full-embed {
+    width: 100%;
+    height: calc(100vh - #{$nav-height * 2});
+}
+
+.page-interior--stretch {
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+}
+
+@media all and (max-width: 800px) {
+    .flex-container--rows {
+        flex-flow: column nowrap;
+    }
+
+    .content {
+        order: 1;
+    }
+
+    .sidebar {
+        order: 2;
+        max-width: none;
+    }
+
+    .sidebar__embed {
+        width: 100%;
+    }
+
+    .top-nav__link {
+        margin: 0 -20px;
+        padding: 0 20px;
+    }
+
+    .top-nav__link--sub {
+        display: block;
+    }
+
+    .top-nav {
+        height: auto;
+    }
+
+    .top-nav--expanded {
+        max-height: 100vh;
+        overflow-y: auto;
+    }
+
+    .top-nav__menu {
+        float: right;
+        background-color: $falcon-red;
+        color: $text-content-primary;
+    }
+
+    .top-nav__menu {
+        display: inline-block;
+    }
+}

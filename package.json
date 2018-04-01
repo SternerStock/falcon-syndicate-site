@@ -1,0 +1,32 @@
+{
+  "name": "falcon-syndicate-site",
+  "description": "Falcon Syndicate Site",
+  "version": "1.0.0",
+  "author": "Corey Laird <lairdcc@gmail.com>",
+  "dependencies": {
+    "npm": "^5.8.0",
+    "gatsby": "^1.9.241",
+    "react-helmet": "^5.2.0",
+    "gatsby-link": "^1.6.39",
+    "gatsby-plugin-react-helmet": "^2.0.8",
+    "gatsby-plugin-sass": "^1.0.24",
+    "gatsby-plugin-svgr": "^1.0.0",
+    "gatsby-plugin-google-fonts": "0.0.4",
+    "react-scrollable-anchor": "^0.6.1",
+    "normalize.css": "^8.0.0",
+    "iframe-resizer": "^3.6.0"
+  },
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write 'src/**/*.js'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "prettier": "^1.11.1"
+  }
+}
