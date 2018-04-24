@@ -1,0 +1,171 @@
+@import 'variables';
+
+.ska-game {
+    height: 100%;
+    padding: $gutter;
+}
+
+.ska-game__score {
+    background-color: $bg-content-secondary;
+    color: $text-content-secondary;
+    border: $text-content-secondary 2px solid;
+    border-radius: 5px;
+    margin: $gutter 0;
+    padding: $gutter;
+    min-width: 100px;
+    white-space: nowrap;
+    float: right;
+    font-family: "Press Start 2P", Arial, 'sans-serif';
+}
+
+.ska-game__interface {
+    clear: both;
+    text-align: center;
+}
+
+.ska-game__name {
+    background-color: $bg-content-secondary;
+    color: $text-content-secondary;
+    border: $text-content-secondary 2px solid;
+    border-radius: 1em;
+    display: inline-block;
+    margin: 1em auto;
+    padding: $gutter;
+    width: 50vw;
+    font-family: "Press Start 2P", Arial, 'sans-serif';
+}
+
+.ska-game__text {
+    font-size: 2em;
+    text-shadow:
+    -1px -1px 0 #000,  
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.ska-game__btn-row {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.ska-game__btn {
+    border: solid 2px $dark-gray;
+    min-width: 300px;
+    border-radius: 10px;
+    font-size: 3em;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color $anim-delay,
+                color $anim-delay,
+                border-color $anim-delay;
+}
+
+.ska-game__btn-container {
+    flex: 4;
+}
+
+.ska-game__btn--ska {
+    font-family: 'Courier', sans-serif;
+    background-color: #fff;
+    color: #000;
+    border-color: #000;
+
+    &:hover {
+        background-color: #000;
+        color: #fff;
+        border-color: #fff;
+    }
+}
+
+.ska-game__btn--kid {
+    font-family: 'Butterfly Kids', 'Comic Sans', cursive, sans-serif;
+    background: linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet);
+    color: #fff;
+    text-shadow:
+    -1px -1px 0 #000,  
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+    position: relative;
+    z-index: 10;
+
+    &::before {
+        border-radius: inherit;
+        background: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        content: ' ';
+        opacity: 0;
+        z-index: -10;
+        display: block;
+        transition: opacity $anim-delay;
+    }
+
+    &:hover {
+        &::before {
+            opacity: 1;
+        }
+    }
+}
+
+.half-bg-container {
+    position: absolute;
+    display: flex;
+    flex-flow: row nowrap;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+}
+
+.half-bg-container__half {
+    transition: flex 500ms;
+    flex: 0;
+}
+
+.half-bg-container__half--ska {
+    background-image: url('../img/CheckerTile.png');
+    background-position: 100% 0;
+}
+
+.half-bg-container__half--kid {
+    background-image: url('../img/PrimaryCheckTile.png');
+}
+
+.half-bg-container__half--active {
+    flex: 1;
+}
+
+@media all and (max-width: 800px) {
+    .ska-game__btn-row {
+        flex-flow: column nowrap;
+    }
+
+    .ska-game__score {
+        float: none;
+        margin: 0;
+        text-align: center;
+    }
+
+    .ska-game__name {
+        width: auto;
+        margin: 10px 0;
+    }
+
+    .ska-game__btn-container {
+        width: 100%;
+    }
+
+    .ska-game__btn {
+        min-width: 0;
+        width: 100%;
+        margin: 10px 0;
+    }
+}

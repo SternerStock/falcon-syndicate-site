@@ -1,8 +1,11 @@
 import React from 'react'
+import SkaGame from '../components/SkaGame'
+
+import '../sass/ska.scss';
 
 const Ska = () => (
   <div className="page-interior">
-    <p>UNDER CONSTRUCTION?</p>
+    <SkaGame />
   </div>
 )
 
