@@ -29,7 +29,8 @@ class TwitchHost extends Component {
       headers: {
         'Client-ID': clientid
       }
-    }).then(response => response.json().then(streams => {
+    }).then(response => response.json())
+    .then(streams => {
       let query = 'users?';
 
       console.log(streams.data);
@@ -46,14 +47,15 @@ class TwitchHost extends Component {
         headers: {
           'Client-ID': clientid
         }
-      }).then(response => response.json().then(users => {
+      }).then(response => response.json())
+      .then(users => {
         if (users.data.length) {
           this.setState({
             currentChannels: [users.data[0]]
           });
         }
-      }));
-    }));
+      });
+    });
   }
 
   render() {

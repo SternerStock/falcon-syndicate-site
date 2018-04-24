@@ -16,6 +16,7 @@ module.exports = {
       resolve: 'gatsby-plugin-google-fonts',
       options: {
         fonts: [
+          'Butterfly Kids',
           'Press Start 2P'
         ]
       }

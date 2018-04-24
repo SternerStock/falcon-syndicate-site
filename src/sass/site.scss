@@ -29,6 +29,14 @@ img, iframe {
     margin: auto;
 }
 
+.flex-container--single-row {
+    flex-flow: row nowrap;
+}
+
+.flex-container__block {
+    flex: 1;
+}
+
 .top-nav, .site-footer, .splash {
     width: calc(100% - #{$gutter * 2});
     max-width: #{$max-page-width - $gutter * 2};
@@ -184,7 +192,7 @@ img, iframe {
     vertical-align: middle;
 
     &, :link, :visited {
-        color: $text-content-primary;
+        color: $text-content-primary-header;
     }
 }
 
@@ -203,7 +211,8 @@ img, iframe {
 }
 
 @media all and (max-width: 800px) {
-    .flex-container--rows {
+    .flex-container--rows,
+    .flex-container--single-row {
         flex-flow: column nowrap;
     }
 

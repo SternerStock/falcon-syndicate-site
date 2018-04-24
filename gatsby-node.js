@@ -1,7 +1,8 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/node-apis/
- */
+exports.modifyWebpackConfig = ({config, stage}) => {
+    config.loader('svg', {
+       test: /\.(svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+       loader: 'file-loader',
+    });
 
- // You can delete this file if you're not using it
+    return config
+};

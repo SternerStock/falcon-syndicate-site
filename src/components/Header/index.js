@@ -26,7 +26,7 @@ class Header extends Component {
               <span>toggle menu</span>
             </button>
           </span>
-          {/* <Link to="/ska/" exact={true} className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>Ska Band or Kids' Show?</Link> */}
+          <Link to="/ska/" exact={true} className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>Ska Band or Kids' Show?</Link>
           <Link to="/minecraft/" exact={true} className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>Minecraft Map</Link>
           <Link to="/edh/" exact={true} className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>EDH Bravery</Link>
           {/* <Link to="/about/" exact={true} className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>About</Link> */}
