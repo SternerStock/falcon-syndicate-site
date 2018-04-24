@@ -20,3 +20,7 @@ Then you can run it with:
 ```sh
 gatsby develop
 ```
+
+## Dependencies
+
+Web services run off of [falcon-backend](https://github.com/SternerStock/falcon-backend).
