@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import fetch from 'isomorphic-fetch'
+import CmdrSelect from '../CmdrSelect'
 
 import 'keyrune';
 import 'mana-font';
@@ -15,7 +16,7 @@ class EDHBravery extends Component {
   render() {
     return (
       <div>
-        <i className="ss ss-mor"></i>
+        <CmdrSelect />
       </div>
     )
   }

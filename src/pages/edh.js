@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import EDHBravery from '../Components/EDHBravery';
+import EDHBravery from '../Components/MtG/EDHBravery';
 
 import '../sass/edh.scss';
 
