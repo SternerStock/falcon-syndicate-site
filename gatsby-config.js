@@ -13,11 +13,13 @@ module.exports = {
       }
     },
     {
-      resolve: 'gatsby-plugin-google-fonts',
+      resolve: 'gatsby-plugin-web-font-loader',
       options: {
-        fonts: [
-          'Press Start 2P'
-        ]
+        google: {
+            families: [
+              'Press Start 2P'
+            ]
+        }
       }
     }
   ],

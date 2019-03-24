@@ -1,9 +1,12 @@
 import React from 'react'
+import Layout from "../components/layout"
 
 const Ska = () => (
-  <div className="page-interior">
-    <p>UNDER CONSTRUCTION?</p>
-  </div>
+  <Layout>
+    <div className="page-interior">
+      <p>UNDER CONSTRUCTION?</p>
+    </div>
+  </Layout>
 )
 
 export default Ska

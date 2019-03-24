@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from './Header';
+import Footer from './Footer';
 import 'normalize.css';
 import '../sass/site.scss';
 
@@ -44,7 +44,7 @@ const TemplateWrapper = ({ children }) => (
       ]}
     />
     <Header />
-    {children()}
+    {children}
     <Footer />
   </div>
 )
