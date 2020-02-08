@@ -30,7 +30,7 @@ const IndexPage = () => (
             <h2 className="content__header">
               <TwitchLogo className="content__logo" />
             </h2>
-            <TwitchHost channels={['SternerStock', 'Pantzmcgee', 'Raph_Tx', 'Grue_Bu', 'Grystor', 'The_Jar', 'Legitamte']} />
+            <TwitchHost channels={['SternerStock', 'Raph_Tx', 'Pantzmcgee', 'The_Jar', 'Grue_Bu', 'Grystor', 'Legitamte']} />
             <h2 className="content__header">
               <Link to="/minecraft/"><img className="content__logo" src={minecraftLogoUrl} />
               Minecraft Server Maps
@@ -38,7 +38,7 @@ const IndexPage = () => (
             </h2>
           </section>
           <aside className="sidebar">
-            <iframe className="sidebar__embed" src="https://discordapp.com/widget?id=296424304948805632&theme=dark" height="500" allowTransparency="true" frameBorder="0"></iframe>
+            <iframe className="sidebar__embed" src="https://discordapp.com/widget?id=296424304948805632&theme=dark" height="500" allowtransparency="true" frameBorder="0"></iframe>
           </aside>
         </main>
       </ScrollableAnchor>

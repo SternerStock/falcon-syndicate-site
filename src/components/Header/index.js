@@ -20,16 +20,16 @@ class Header extends Component {
   render() {
     return (
         <nav className={"top-nav" + (this.state.expanded ? " top-nav--expanded" : "")}>
-          <Link to="/" exact={true} className="top-nav__link top-nav__link--home" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>Falcon Syndicate</Link>
+          <Link to="/" exact="true" className="top-nav__link top-nav__link--home" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>Falcon Syndicate</Link>
           <span className="top-nav__menu">
             <button className={"top_nav__menu c-hamburger c-hamburger--htx" + (this.state.expanded ? " is-active" : "")} onClick={() => this.onMenuClick()}>
               <span>toggle menu</span>
             </button>
           </span>
-          {/* <Link to="/ska/" exact={true} className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>Ska Band or Kids' Show?</Link> */}
-          <Link to="/minecraft/" exact={true} className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>Minecraft Map</Link>
-          <Link to="/edh/" exact={true} className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>EDH Bravery</Link>
-          {/* <Link to="/about/" exact={true} className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>About</Link> */}
+          {/* <Link to="/ska/" exact="true" className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>Ska Band or Kids' Show?</Link> */}
+          <Link to="/minecraft/" exact="true" className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>Minecraft Map</Link>
+          <Link to="/edh-rando/" exact="true" className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>EDH Bravery</Link>
+          {/* <Link to="/about/" exact="true" className="top-nav__link top-nav__link--sub" activeClassName="top-nav__link--active" onClick={() => this.closeMenu()}>About</Link> */}
         </nav>
     );
   }

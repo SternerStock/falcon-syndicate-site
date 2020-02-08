@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 import Header from './Header';
 import Footer from './Footer';
 import 'normalize.css';
-import '../sass/site.scss';
+import '../styles-global/site.scss';
 
 require('../otherjs/fontawesome-all');
 
@@ -50,7 +50,7 @@ const TemplateWrapper = ({ children }) => (
 )
 
 TemplateWrapper.propTypes = {
-  children: PropTypes.func,
+  children: PropTypes.element,
 }
 
 export default TemplateWrapper

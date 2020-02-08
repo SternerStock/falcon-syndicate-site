@@ -47,7 +47,7 @@ class TwitchHost extends Component {
           'Client-ID': clientid
         }
       }).then(response => response.json().then(users => {
-        if (users.data.length) {
+        if (users && users.data && users.data.length) {
           this.setState({
             currentChannels: [users.data[0]]
           });
@@ -63,7 +63,7 @@ class TwitchHost extends Component {
       <div>
         {this.state.currentChannels.map(channel => 
           <div key={channel.id} className="video-container video-container--hd">
-            <iframe className="video-container__video" src={"https://player.twitch.tv/?channel=" + channel.login} frameBorder="0" allowFullScreen="true" scrolling="no" height="378"></iframe>
+            <iframe className="video-container__video" src={"https://player.twitch.tv/?channel=" + channel.login} frameBorder="0" allowFullScreen={true} scrolling="no" height="378"></iframe>
           </div>
         )}
       </div>
