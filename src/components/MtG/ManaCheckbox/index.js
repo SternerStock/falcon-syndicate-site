@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import styles from './styles.module.scss'
-import 'mana-font';
+import 'mana-font'
 
 class ManaCheckbox extends Component {
   constructor(props) {

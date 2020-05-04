@@ -203,6 +203,11 @@ img, iframe {
     margin-right: calc(-50vw + 50%);
 }
 
+.gutter {
+    padding-left: $gutter;
+    padding-right: $gutter;
+}
+
 @media all and (max-width: 800px) {
     .flex-container--rows {
         flex-flow: column nowrap;
