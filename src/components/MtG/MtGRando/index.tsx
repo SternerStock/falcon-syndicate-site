@@ -1,14 +1,51 @@
 import React, { Component } from 'react'
 import ManaCheckbox from '../ManaCheckbox'
 import CardPreview from '../CardPreview'
-import Slider, { Range } from 'rc-slider'
 
 import styles from './styles.module.scss'
 import 'mana-font'
 import 'keyrune'
 
-class MtGRando extends Component {
-  constructor(props) {
+interface MtGRandoState {
+  selectedDeckType: string
+  formats: string[]
+  selectedFormat: string
+  commanders: Card[]
+  partners: Card[]
+  selectedCommander?: Card
+  selectedPartner?: Card
+  signatureSpells: Card[]
+  selectedSpell?: Card
+  randomIdentity: boolean
+  selectedColors: string[]
+  silverBorder: boolean
+  maxCards: number
+  basicLands: number
+  nonbasicLands: number
+  creatures: number
+  artifacts: number
+  enchantments: number
+  planeswalkers: number
+  spells: number
+  mana: number
+  cmc: CmcRange
+  selectedRarities: string[]
+  sets: string[]
+  selectedSets: string[]
+  watermarks: string[]
+  selectedWatermarks: string[]
+  artists: string[]
+  selectedArtists: string[]
+}
+
+class MtGRando extends React.Component<{}, MtGRandoState> {
+  deckTypes: string[]
+  cmdrFormats: string[]
+  normalFormats: string[]
+  rarities: string[]
+  colors: string[]
+
+  constructor(props: {}) {
     super(props)
     this.toggleColor = this.toggleColor.bind(this)
     this.selectDeckType = this.selectDeckType.bind(this)
@@ -31,9 +68,11 @@ class MtGRando extends Component {
       formats: [],
       selectedFormat: '',
       commanders: [],
-      selectedCommander: {},
+      //selectedCommander: {} as Card,
+      partners: [],
+      //selectedPartner: {} as Card,
       signatureSpells: [],
-      selectedSpell: {},
+      //selectedSpell: {} as Card,
       randomIdentity: true,
       selectedColors: ['W', 'U', 'B', 'R', 'G'],
       silverBorder: false,
@@ -60,7 +99,7 @@ class MtGRando extends Component {
     }
   }
 
-  toggleColor(color, checked) {
+  toggleColor(color: string, checked: boolean) {
     let selectedColors
 
     if (this.state.randomIdentity) {
@@ -83,8 +122,8 @@ class MtGRando extends Component {
     })
   }
 
-  selectDeckType(e) {
-    let formatsArray
+  selectDeckType(e: React.ChangeEvent<HTMLSelectElement>) {
+    let formatsArray: string[]
 
     switch (e.target.value) {
       case 'Commander':
@@ -104,18 +143,18 @@ class MtGRando extends Component {
     })
   }
 
-  selectCommander(e) {
+  selectCommander(e: React.ChangeEvent<HTMLSelectElement>) {
     this.setState({
       selectedCommander: this.state.commanders.find(
-        cmdr => cmdr.id === e.target.value
+        (cmdr) => cmdr.id.toString() === e.target.value
       ),
     })
   }
 
-  selectSignatureSpell(e) {
+  selectSignatureSpell(e: React.ChangeEvent<HTMLSelectElement>) {
     this.setState({
-      selectedSpell: this.state.spells.find(
-        spell => spell.id === e.target.value
+      selectedSpell: this.state.signatureSpells.find(
+        (spell) => spell.id.toString() === e.target.value
       ),
     })
   }
@@ -127,7 +166,7 @@ class MtGRando extends Component {
   render() {
     return (
       <div className={styles.mtgContainerOuter}>
-        <div className={styles.leftCol}>
+        <div className={`${styles.leftCol} gutter`}>
           <div>
             <label htmlFor="deck-type">Type of Deck</label>
             <select
@@ -135,7 +174,7 @@ class MtGRando extends Component {
               value={this.state.selectedDeckType}
               onChange={this.selectDeckType}
             >
-              {this.deckTypes.map(deckType => {
+              {this.deckTypes.map((deckType) => {
                 return <option key={deckType}>{deckType}</option>
               })}
             </select>
@@ -146,13 +185,13 @@ class MtGRando extends Component {
               <select
                 id="format"
                 value={this.state.selectedFormat}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     selectedFormat: e.target.value,
                   })
                 }
               >
-                {this.state.formats.map(format => {
+                {this.state.formats.map((format) => {
                   return <option key={format}>{format}</option>
                 })}
               </select>
@@ -171,7 +210,7 @@ class MtGRando extends Component {
                 onChange={this.selectCommander}
               >
                 {this.state.commanders.length > 0 &&
-                  this.state.commanders.map(cmdr => {
+                  this.state.commanders.map((cmdr) => {
                     return (
                       <option key={cmdr.id} value={cmdr.id}>
                         {cmdr.name}
@@ -186,14 +225,11 @@ class MtGRando extends Component {
               <label htmlFor="signature-spell">Signature Spell</label>
               <select
                 id="signature-spell"
-                value={
-                  this.state.selectedSignatureSpell &&
-                  this.state.selectedSignatureSpell.id
-                }
+                value={this.state.selectedSpell && this.state.selectedSpell.id}
                 onSelect={this.selectSignatureSpell}
               >
                 {this.state.signatureSpells.length > 0 &&
-                  this.state.signatureSpells.map(spell => {
+                  this.state.signatureSpells.map((spell) => {
                     return (
                       <option key={spell.id} value={spell.id}>
                         {spell.name}
@@ -208,7 +244,7 @@ class MtGRando extends Component {
               <input
                 type="checkbox"
                 defaultChecked={this.state.randomIdentity}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     randomIdentity: e.target.checked,
                     selectedColors: e.target.checked
@@ -219,7 +255,7 @@ class MtGRando extends Component {
               />
               Random Color(s)
             </label>
-            {this.colors.map(color => {
+            {this.colors.map((color) => {
               return (
                 <ManaCheckbox
                   key={color}
@@ -231,16 +267,18 @@ class MtGRando extends Component {
             })}
           </div>
           <div>
-            {`Cards: ${this.state.basicLands +
+            {`Cards: ${
+              this.state.basicLands +
               this.state.nonbasicLands +
               this.state.creatures +
               this.state.artifacts +
               this.state.enchantments +
               this.state.planeswalkers +
-              this.state.spells} / ${this.state.maxCards}`}
+              this.state.spells
+            } / ${this.state.maxCards}`}
           </div>
         </div>
-        <div className={styles.rightCol}>
+        <div className={`${styles.rightCol} gutter`}>
           {this.state.selectedDeckType === 'Commander' ? (
             <div className="gutter">
               <h3>Commander</h3>

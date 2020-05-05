@@ -4,26 +4,25 @@
   "version": "1.0.0",
   "author": "Corey Laird <lairdcc@gmail.com>",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "@saeris/typeface-beleren-bold": "^1.0.1",
     "@svgr/webpack": "^5.4.0",
-    "acorn": "^7.1.1",
+    "acorn": "^6.4.1",
     "gatsby": "^2.21.9",
     "gatsby-plugin-react-helmet": "^3.3.0",
-    "gatsby-plugin-sass": "^2.3.0",
     "gatsby-plugin-svgr": "^2.0.2",
-    "gatsby-plugin-typescript": "^2.4.0",
     "gatsby-plugin-web-font-loader": "^1.0.4",
     "iframe-resizer": "^4.2.10",
     "keyrune": "^3.6.5",
     "mana-font": "^1.6.0",
     "node-sass": "^4.14.0",
     "normalize.css": "^8.0.1",
+    "npm-check-updates": "^4.1.2",
     "rc-slider": "^9.2.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-helmet": "^5.2.1",
-    "react-scrollable-anchor": "^0.6.1",
-    "typescript": "^3.8.3"
+    "react-helmet": "^6.0.0",
+    "react-scrollable-anchor": "^0.6.1"
   },
   "keywords": [
     "gatsby",
@@ -35,12 +34,21 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write 'src/**/*.js'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "type-check": "tsc --noEmit"
   },
   "devDependencies": {
-    "babel-preset-gatsby": "^0.2.36",
+    "@types/react-helmet": "^5.0.15",
+    "@types/react-scrollable-anchor": "^0.6.0",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
+    "babel-preset-gatsby": "^0.4.0",
     "eslint": "^6.8.0",
-    "eslint-plugin-flowtype": "^3.13.0",
-    "prettier": "^1.19.1"
+    "eslint-plugin-flowtype": "^4.7.0",
+    "gatsby-cli": "^2.12.7",
+    "gatsby-plugin-scss-typescript": "^4.0.10",
+    "gatsby-plugin-typescript": "^2.4.0",
+    "prettier": "^2.0.5",
+    "typescript": "^3.8.3"
   }
 }
