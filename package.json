@@ -38,6 +38,7 @@
     "type-check": "tsc --noEmit"
   },
   "devDependencies": {
+    "@types/rc-slider": "^8.6.5",
     "@types/react-helmet": "^5.0.15",
     "@types/react-scrollable-anchor": "^0.6.0",
     "@typescript-eslint/eslint-plugin": "^2.30.0",

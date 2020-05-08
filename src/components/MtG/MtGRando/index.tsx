@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ManaCheckbox from '../ManaCheckbox'
 import CardPreview from '../CardPreview'
+import MtGSlider from '../MtGSlider'
 
 import styles from './styles.module.scss'
 import 'mana-font'
@@ -20,14 +21,8 @@ interface MtGRandoState {
   selectedColors: string[]
   silverBorder: boolean
   maxCards: number
-  basicLands: number
-  nonbasicLands: number
-  creatures: number
-  artifacts: number
-  enchantments: number
-  planeswalkers: number
-  spells: number
-  mana: number
+  countParams: CountParam[]
+  miscParams: CountParam[]
   cmc: CmcRange
   selectedRarities: string[]
   sets: string[]
@@ -77,14 +72,131 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       selectedColors: ['W', 'U', 'B', 'R', 'G'],
       silverBorder: false,
       maxCards: 99,
-      basicLands: 24,
-      nonbasicLands: 15,
-      creatures: 20,
-      artifacts: 0,
-      enchantments: 0,
-      planeswalkers: 0,
-      spells: 0,
-      mana: 0,
+      countParams: [
+        {
+          name: 'basicLands',
+          iconClass: 'ms ms-land ms-2x',
+          label: 'Basic Lands',
+          help:
+            'The EXACT number of basic lands to include in the generated deck.',
+          enabled: true,
+          count: 24,
+        },
+        {
+          name: 'nonbasicLands',
+          iconClass: 'ms ms-land ms-2x',
+          label: 'Nonbasic Lands',
+          help:
+            'The EXACT number of nonbasic lands to include in the generated deck.',
+          enabled: true,
+          count: 15,
+        },
+        {
+          name: 'creatures',
+          iconClass: 'ms ms-creature ms-2x',
+          label: 'Creatures',
+          help:
+            'The MINIMUM number of creatures to include in the generated deck.',
+          enabled: true,
+          count: 20,
+        },
+        {
+          name: 'artifacts',
+          iconClass: 'ms ms-artifact ms-2x',
+          label: 'Artifacts',
+          help:
+            'The MINIMUM number of artifacts to include in the generated deck.',
+          enabled: true,
+          count: 5,
+          children: [
+            {
+              name: 'equipment',
+              iconClass: 'ms ms-artifact ms-2x',
+              label: 'Equipment',
+              help:
+                'The MINIMUM number of artifacts that will be equipment. If this bar is maxed, all artifacts will be equipment.',
+              enabled: true,
+              count: 0,
+            },
+            {
+              name: 'vehicles',
+              iconClass: 'ms ms-artifact ms-2x',
+              label: 'Vehicles',
+              help:
+                'The MINIMUM number of artifacts that will be vehicles. If this bar is maxed, all artifacts will be vehicles, or at least as many as possible.',
+              enabled: true,
+              count: 0,
+            },
+          ],
+        },
+        {
+          name: 'enchantments',
+          iconClass: 'ms ms-enchantment ms-2x',
+          label: 'Enchantments',
+          help:
+            'The MINIMUM number of enchantments to include in the generated deck.',
+          enabled: true,
+          count: 5,
+          children: [
+            {
+              name: 'auras',
+              iconClass: 'ms ms-enchantment ms-2x',
+              label: 'Auras',
+              help:
+                'The MINIMUM number of enchantments that will be auras (or creatures with bestow). If this bar is maxed, all enchantments will be auras.',
+              enabled: true,
+              count: 0,
+            },
+          ],
+        },
+        {
+          name: 'planeswalkers',
+          iconClass: 'ms ms-planeswalker ms-2x',
+          label: 'Planeswalkers',
+          help:
+            'The MINIMUM number of planeswalkers to include in the generated deck.',
+          enabled: true,
+          count: 1,
+        },
+        {
+          name: 'spells',
+          iconClass: 'ms ms-instant ms-2x',
+          label: 'Instants and Sorceries',
+          help:
+            'The MINIMUM number of non-permanent cards to include in the generated deck.',
+          enabled: true,
+          count: 10,
+        },
+      ],
+      miscParams: [
+        {
+          name: 'manaProducing',
+          iconClass: 'ms ms-c ms-2x',
+          label: 'Produces Mana',
+          help:
+            'The MINIMUM number of permanents (other than basic lands) to include that have a mana ability. If this bar is maxed, the generator will attempt to make all permanents have mana abilities.',
+          enabled: true,
+          count: 10,
+        },
+        {
+          name: 'sharesTypes',
+          iconClass: 'ms ms-infinity ms-2x',
+          label: 'Shares a Creature Type with Commander',
+          help:
+            'The MINIMUM number of cards to include that share at least one creature type with your commander. If this bar is maxed, the generator will attempt to make all applicable cards share at least one creature type.',
+          enabled: true,
+          count: 0,
+        },
+        {
+          name: 'legendary',
+          iconClass: 'ss ss-cmd ss-2x',
+          label: 'Legendary',
+          help:
+            'The MINIMUM number of permanents (other than basic lands) to include that are legendary. If this bar is maxed, the generator will attempt to make all permanents legendary.',
+          enabled: true,
+          count: 0,
+        },
+      ],
       cmc: {
         min: 0,
         max: 16,
@@ -161,6 +273,14 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
 
   componentDidMount() {
     fetch(process.env.GATSBY_API_URL + '/Card/Commanders')
+  }
+
+  totalCardsMinus(subtract?: number) {
+    const start = subtract || 0
+    return this.state.countParams.reduce(
+      (total, param) => total + param.count,
+      0 - start
+    )
   }
 
   render() {
@@ -267,15 +387,17 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             })}
           </div>
           <div>
-            {`Cards: ${
-              this.state.basicLands +
-              this.state.nonbasicLands +
-              this.state.creatures +
-              this.state.artifacts +
-              this.state.enchantments +
-              this.state.planeswalkers +
-              this.state.spells
-            } / ${this.state.maxCards}`}
+            {`Cards: ${this.totalCardsMinus()} / ${this.state.maxCards}`}
+          </div>
+          <div>
+            {this.state.countParams.map((param) => {
+              return (
+                <MtGSlider
+                  max={this.state.maxCards - this.totalCardsMinus(param.count)}
+                  param={param}
+                ></MtGSlider>
+              )
+            })}
           </div>
         </div>
         <div className={`${styles.rightCol} gutter`}>

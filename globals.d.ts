@@ -20,3 +20,13 @@ interface Card {
     min: number
     max: number
   }
+
+  interface CountParam {
+    name: string
+    iconClass: string
+    label: string
+    help: string
+    enabled: boolean
+    count: number
+    children?: CountParam[]
+  }
