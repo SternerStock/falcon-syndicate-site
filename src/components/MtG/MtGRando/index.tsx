@@ -75,7 +75,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       countParams: [
         {
           name: 'basicLands',
-          iconClass: 'ms ms-land ms-2x',
+          iconClass: 'ms ms-land',
           label: 'Basic Lands',
           help:
             'The EXACT number of basic lands to include in the generated deck.',
@@ -84,7 +84,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'nonbasicLands',
-          iconClass: 'ms ms-land ms-2x',
+          iconClass: 'ms ms-land',
           label: 'Nonbasic Lands',
           help:
             'The EXACT number of nonbasic lands to include in the generated deck.',
@@ -93,7 +93,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'creatures',
-          iconClass: 'ms ms-creature ms-2x',
+          iconClass: 'ms ms-creature',
           label: 'Creatures',
           help:
             'The MINIMUM number of creatures to include in the generated deck.',
@@ -102,7 +102,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'artifacts',
-          iconClass: 'ms ms-artifact ms-2x',
+          iconClass: 'ms ms-artifact',
           label: 'Artifacts',
           help:
             'The MINIMUM number of artifacts to include in the generated deck.',
@@ -111,7 +111,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           children: [
             {
               name: 'equipment',
-              iconClass: 'ms ms-artifact ms-2x',
+              iconClass: 'ms ms-artifact',
               label: 'Equipment',
               help:
                 'The MINIMUM number of artifacts that will be equipment. If this bar is maxed, all artifacts will be equipment.',
@@ -120,7 +120,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             },
             {
               name: 'vehicles',
-              iconClass: 'ms ms-artifact ms-2x',
+              iconClass: 'ms ms-artifact',
               label: 'Vehicles',
               help:
                 'The MINIMUM number of artifacts that will be vehicles. If this bar is maxed, all artifacts will be vehicles, or at least as many as possible.',
@@ -131,7 +131,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'enchantments',
-          iconClass: 'ms ms-enchantment ms-2x',
+          iconClass: 'ms ms-enchantment',
           label: 'Enchantments',
           help:
             'The MINIMUM number of enchantments to include in the generated deck.',
@@ -140,7 +140,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           children: [
             {
               name: 'auras',
-              iconClass: 'ms ms-enchantment ms-2x',
+              iconClass: 'ms ms-enchantment',
               label: 'Auras',
               help:
                 'The MINIMUM number of enchantments that will be auras (or creatures with bestow). If this bar is maxed, all enchantments will be auras.',
@@ -151,7 +151,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'planeswalkers',
-          iconClass: 'ms ms-planeswalker ms-2x',
+          iconClass: 'ms ms-planeswalker',
           label: 'Planeswalkers',
           help:
             'The MINIMUM number of planeswalkers to include in the generated deck.',
@@ -160,7 +160,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'spells',
-          iconClass: 'ms ms-instant ms-2x',
+          iconClass: 'ms ms-instant',
           label: 'Instants and Sorceries',
           help:
             'The MINIMUM number of non-permanent cards to include in the generated deck.',
@@ -171,7 +171,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       miscParams: [
         {
           name: 'manaProducing',
-          iconClass: 'ms ms-c ms-2x',
+          iconClass: 'ms ms-c',
           label: 'Produces Mana',
           help:
             'The MINIMUM number of permanents (other than basic lands) to include that have a mana ability. If this bar is maxed, the generator will attempt to make all permanents have mana abilities.',
@@ -180,7 +180,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'sharesTypes',
-          iconClass: 'ms ms-infinity ms-2x',
+          iconClass: 'ms ms-infinity',
           label: 'Shares a Creature Type with Commander',
           help:
             'The MINIMUM number of cards to include that share at least one creature type with your commander. If this bar is maxed, the generator will attempt to make all applicable cards share at least one creature type.',
@@ -189,7 +189,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'legendary',
-          iconClass: 'ss ss-cmd ss-2x',
+          iconClass: 'ss ss-cmd',
           label: 'Legendary',
           help:
             'The MINIMUM number of permanents (other than basic lands) to include that are legendary. If this bar is maxed, the generator will attempt to make all permanents legendary.',
@@ -394,17 +394,25 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         </div>
         <div className={`${styles.rightCol} gutter`}>
           {this.state.selectedDeckType === 'Commander' ? (
-            <div className="gutter">
-              <h3>Commander</h3>
-              <CardPreview></CardPreview>
+            <div className={styles.cmdrPreview}>
+              <div>
+                <h3>Commander</h3>
+                <CardPreview></CardPreview>
+              </div>
+              {this.state.selectedPartner && (
+              <div>
+                <h3>Partner</h3>
+                <CardPreview></CardPreview>
+              </div>
+              )}
             </div>
           ) : this.state.selectedDeckType === 'Oathbreaker' ? (
-            <div className="flex-container">
-              <div className="gutter">
+            <div className={styles.cmdrPreview}>
+              <div>
                 <h3>Oathbreaker</h3>
                 <CardPreview></CardPreview>
               </div>
-              <div className="gutter">
+              <div>
                 <h3>Signature Spell</h3>
                 <CardPreview></CardPreview>
               </div>

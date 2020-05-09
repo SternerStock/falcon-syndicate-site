@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import update from 'immutability-helper'
-import Slider, { Range } from 'rc-slider'
+import Slider, {createSliderWithTooltip} from 'rc-slider'
 
 import 'rc-slider/assets/index.css'
 import styles from './styles.module.scss'
-
 import 'keyrune'
+
+const SliderWithTooltip = createSliderWithTooltip(Slider)
 
 interface MtGSliderListProps {
   onChange: (value: CountParam[]) => void
@@ -54,21 +55,23 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
         {this.props.params.map((param, index) => {
           return (
             <div className={styles.mtgSlider} key={param.name}>
-              <label>
-                <i className={param.iconClass} />
-                {param.label}:<span>{param.count}</span>
-              </label>
-              <div className="flex-container" title={param.help}>
-                <div className={styles.count}>0</div>
-                <Slider
-                  className={styles.slider}
-                  min={0}
-                  max={this.maxCardsForChildren(param.count)}
-                  defaultValue={param.count}
-                  disabled={!param.enabled}
-                  onChange={this.updateCount(index)}
-                />
-                <div className={styles.count}>{this.maxCardsForChildren(param.count)}</div>
+              <div className={styles.row}>
+                <label className={styles.sliderLabel}>
+                  <i className={styles.icon + " " + param.iconClass} />
+                  <div className={styles.label}>{param.label}</div>
+                </label>
+                <div className={styles.sliderContainer} title={param.help}>
+                  <div className={styles.count}>0</div>
+                  <SliderWithTooltip
+                    className={styles.slider}
+                    min={0}
+                    max={this.maxCardsForChildren(param.count)}
+                    defaultValue={param.count}
+                    disabled={!param.enabled}
+                    onChange={this.updateCount(index)}
+                  />
+                  <div className={styles.count}>{this.maxCardsForChildren(param.count).toString().padStart(2, "0")}</div>
+                </div>
               </div>
               {param.children && (
                 <MtGSliderList

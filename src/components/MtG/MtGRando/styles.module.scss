@@ -1,11 +1,18 @@
 .mtg-container-outer {
     display: flex;
+    flex-wrap: wrap;
 
     .left-col {
-        flex-grow: 3;
+        flex: 3;
     }
 
     .right-col {
-        flex-grow: 1;
+        flex: 1;
     }
+}
+
+.cmdr-preview {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
