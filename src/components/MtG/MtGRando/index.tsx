@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ManaCheckbox from '../ManaCheckbox'
 import CardPreview from '../CardPreview'
-import MtGSlider from '../MtGSlider'
+import MtGSliderList from '../MtGSliderList'
 
 import styles from './styles.module.scss'
 import 'mana-font'
@@ -275,14 +275,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     fetch(process.env.GATSBY_API_URL + '/Card/Commanders')
   }
 
-  totalCardsMinus(subtract?: number) {
-    const start = subtract || 0
-    return this.state.countParams.reduce(
-      (total, param) => total + param.count,
-      0 - start
-    )
-  }
-
   render() {
     return (
       <div className={styles.mtgContainerOuter}>
@@ -387,17 +379,17 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             })}
           </div>
           <div>
-            {`Cards: ${this.totalCardsMinus()} / ${this.state.maxCards}`}
+            {`Cards: ${this.state.countParams.reduce(
+              (total, param) => total + param.count,
+              0
+            )} / ${this.state.maxCards}`}
           </div>
           <div>
-            {this.state.countParams.map((param) => {
-              return (
-                <MtGSlider
-                  max={this.state.maxCards - this.totalCardsMinus(param.count)}
-                  param={param}
-                ></MtGSlider>
-              )
-            })}
+            <MtGSliderList
+              max={this.state.maxCards}
+              params={this.state.countParams}
+              onChange={(params) => this.setState({ countParams: params })}
+            ></MtGSliderList>
           </div>
         </div>
         <div className={`${styles.rightCol} gutter`}>
