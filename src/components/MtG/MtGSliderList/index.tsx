@@ -16,19 +16,20 @@ interface MtGSliderListProps {
 class MtGSliderList extends Component<MtGSliderListProps, {}> {
   constructor(props: MtGSliderListProps) {
     super(props)
-    this.totalCardsMinus = this.totalCardsMinus.bind(this)
+    this.maxCardsForChildren = this.maxCardsForChildren.bind(this)
   }
 
-  totalCardsMinus(subtract?: number) {
+  maxCardsForChildren(subtract?: number) {
     const start = subtract || 0
-    return this.props.params.reduce(
+    return Math.max(0, this.props.max - this.props.params.reduce(
       (total, param) => total + param.count,
       0 - start
-    )
+    ))
   }
 
   updateCount(index: number) {
     return (newValue: number) => {
+      newValue = Math.max(0, newValue)
       this.props.onChange(
         update(this.props.params, {
           [index]: { $merge: { count: newValue } },
@@ -57,17 +58,17 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
                 <i className={param.iconClass} />
                 {param.label}:<span>{param.count}</span>
               </label>
-              <div className="flex-container">
+              <div className="flex-container" title={param.help}>
                 <div className={styles.count}>0</div>
                 <Slider
                   className={styles.slider}
                   min={0}
-                  max={this.props.max - this.totalCardsMinus(param.count)}
+                  max={this.maxCardsForChildren(param.count)}
                   defaultValue={param.count}
                   disabled={!param.enabled}
                   onChange={this.updateCount(index)}
                 />
-                <div className={styles.count}>{this.props.max - this.totalCardsMinus(param.count)}</div>
+                <div className={styles.count}>{this.maxCardsForChildren(param.count)}</div>
               </div>
               {param.children && (
                 <MtGSliderList
