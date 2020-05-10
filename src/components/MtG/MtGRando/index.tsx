@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import ManaCheckbox from '../ManaCheckbox'
 import CardPreview from '../CardPreview'
 import MtGSliderList from '../MtGSliderList'
 
 import styles from './styles.module.scss'
 import 'mana-font'
 import 'keyrune'
+import ColorSelect from '../ColorSelect'
 
 interface MtGRandoState {
   selectedDeckType: string
@@ -38,7 +38,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   cmdrFormats: string[]
   normalFormats: string[]
   rarities: string[]
-  colors: string[]
 
   constructor(props: {}) {
     super(props)
@@ -57,7 +56,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       'Pauper',
     ]
     this.rarities = ['Common', 'Uncommon', 'Rare', 'Mythic Rare']
-    this.colors = ['W', 'U', 'B', 'R', 'G']
     this.state = {
       selectedDeckType: 'Commander',
       formats: [],
@@ -367,16 +365,10 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               />
               Random Color(s)
             </label>
-            {this.colors.map((color) => {
-              return (
-                <ManaCheckbox
-                  key={color}
-                  symbol={color}
-                  toggleColor={this.toggleColor}
-                  selectedColors={this.state.selectedColors}
-                ></ManaCheckbox>
-              )
-            })}
+            <ColorSelect
+              selectedColors={this.state.selectedColors}
+              onChange={(params) => this.setState({ selectedColors: params })}
+              />
           </div>
           <div>
             {`Cards: ${this.state.countParams.reduce(
@@ -389,7 +381,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               max={this.state.maxCards}
               params={this.state.countParams}
               onChange={(params) => this.setState({ countParams: params })}
-            ></MtGSliderList>
+            />
           </div>
         </div>
         <div className={`${styles.rightCol} gutter`}>
