@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CardPreview from '../CardPreview'
 import MtGSliderList from '../MtGSliderList'
+import RandoRow from '../RandoRow'
 
 import styles from './styles.module.scss'
 import 'mana-font'
@@ -23,7 +24,6 @@ interface MtGRandoState {
   maxCards: number
   countParams: CountParam[]
   miscParams: CountParam[]
-  cmc: CmcRange
   selectedRarities: string[]
   sets: string[]
   selectedSets: string[]
@@ -61,11 +61,8 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       formats: [],
       selectedFormat: '',
       commanders: [],
-      //selectedCommander: {} as Card,
       partners: [],
-      //selectedPartner: {} as Card,
       signatureSpells: [],
-      //selectedSpell: {} as Card,
       randomIdentity: true,
       selectedColors: ['W', 'U', 'B', 'R', 'G'],
       silverBorder: false,
@@ -179,7 +176,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         {
           name: 'sharesTypes',
           iconClass: 'ms ms-infinity',
-          label: 'Shares a Creature Type with Commander',
+          label: 'Shares a Creature Type with Commander(s)',
           help:
             'The MINIMUM number of cards to include that share at least one creature type with your commander. If this bar is maxed, the generator will attempt to make all applicable cards share at least one creature type.',
           enabled: true,
@@ -187,18 +184,38 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'legendary',
-          iconClass: 'ss ss-cmd',
+          iconClass: 'ss ss-s99',
           label: 'Legendary',
           help:
             'The MINIMUM number of permanents (other than basic lands) to include that are legendary. If this bar is maxed, the generator will attempt to make all permanents legendary.',
           enabled: true,
           count: 0,
         },
+        {
+          name: 'cmc',
+          iconClass: 'ms ms-x',
+          label: 'Converted Mana Cost Range',
+          help:
+            'The range of values within which all converted mana costs must sit.',
+          enabled: true,
+          isRange: true,
+          range: [0, 16],
+          min: 0,
+          max: 16,
+        },
+        {
+          name: 'edhrecrank',
+          iconClass: 'ss ss-cmd',
+          label: 'EDHREC Rank',
+          help:
+            'The "goodness" range of the cards to pick.',
+          enabled: true,
+          isRange: true,
+          range: [1, 100],
+          min: 1,
+          max: 100,
+        },
       ],
-      cmc: {
-        min: 0,
-        max: 16,
-      },
       selectedRarities: [],
       sets: [],
       selectedSets: [],
@@ -368,21 +385,43 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             <ColorSelect
               selectedColors={this.state.selectedColors}
               onChange={(params) => this.setState({ selectedColors: params })}
-              />
+            />
           </div>
           <div>
             {`Cards: ${this.state.countParams.reduce(
-              (total, param) => total + param.count,
+              (total, param) => total + (param.count || 0),
               0
             )} / ${this.state.maxCards}`}
           </div>
-          <div>
-            <MtGSliderList
-              max={this.state.maxCards}
-              params={this.state.countParams}
-              onChange={(params) => this.setState({ countParams: params })}
-            />
-          </div>
+          <MtGSliderList
+            max={this.state.maxCards}
+            params={this.state.countParams}
+            onChange={(params) => this.setState({ countParams: params })}
+          />
+          <MtGSliderList
+            max={this.state.maxCards}
+            params={this.state.miscParams}
+            nonexclusive={true}
+            onChange={(params) => this.setState({ miscParams: params })}
+          />
+          <RandoRow iconClass="ss ss-pmtg1" help="" label="Sets" >
+              <select></select>
+          </RandoRow>
+          <RandoRow iconClass="ss ss-htr" help="" label="Rarities" >
+              <select></select>
+          </RandoRow>
+          <RandoRow iconClass="ss ss-izzet" help="" label="Watermarks" >
+              <select></select>
+          </RandoRow>
+          <RandoRow iconClass="ss ss-pbook" help="" label="Artists" >
+              <select></select>
+          </RandoRow>
+          <RandoRow iconClass="ss ss-bcore" help="" label="Frames" >
+              <select></select>
+          </RandoRow>
+          <RandoRow iconClass="ss ss-ugl" help="" label="Share Link" >
+              <input type="text" readOnly />
+          </RandoRow>
         </div>
         <div className={`${styles.rightCol} gutter`}>
           {this.state.selectedDeckType === 'Commander' ? (
@@ -392,10 +431,10 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 <CardPreview></CardPreview>
               </div>
               {this.state.selectedPartner && (
-              <div>
-                <h3>Partner</h3>
-                <CardPreview></CardPreview>
-              </div>
+                <div>
+                  <h3>Partner</h3>
+                  <CardPreview></CardPreview>
+                </div>
               )}
             </div>
           ) : this.state.selectedDeckType === 'Oathbreaker' ? (

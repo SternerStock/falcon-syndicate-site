@@ -15,18 +15,17 @@ interface Card {
     watermark: string
     set: string
   }
-  
-  interface CmcRange {
-    min: number
-    max: number
-  }
 
   interface CountParam {
     name: string
     iconClass: string
     label: string
+    count?: number
+    range?: number[]
+    isRange?: boolean
+    min?: number
+    max?: number
     help: string
     enabled: boolean
-    count: number
     children?: CountParam[]
   }
