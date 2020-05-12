@@ -16,7 +16,7 @@ class RandomFlavor extends Component<{}, FlavorTextState> {
 
   async componentDidMount() {
     const response = await fetch(
-      process.env.GATSBY_API_URL + '/Card/RandomFlavor'
+      process.env.GATSBY_API_URL + '/MtG/RandomFlavor'
     )
     if (response.ok) {
       const data = await response.json()

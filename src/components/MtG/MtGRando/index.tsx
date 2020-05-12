@@ -2,42 +2,73 @@ import React, { Component } from 'react'
 import CardPreview from '../CardPreview'
 import MtGSliderList from '../MtGSliderList'
 import RandoRow from '../RandoRow'
+import DropdownList from 'react-widgets/lib/DropdownList'
+import Multiselect from 'react-widgets/lib/Multiselect'
 
+import 'react-widgets/lib/scss/react-widgets.scss'
 import styles from './styles.module.scss'
 import 'mana-font'
 import 'keyrune'
 import ColorSelect from '../ColorSelect'
+
+interface RandoRequest {
+  deckType: string
+  format: string
+  commanderId: number
+  partnerId: number
+  signatureSpellId: number
+  colorIdentity: string[]
+  silverBorder: boolean
+  setIds: number[]
+  rarityIds: number[]
+  watermarkIds: number[]
+  artistIds: number[]
+  edhrecRanks: number[]
+}
 
 interface MtGRandoState {
   selectedDeckType: string
   formats: string[]
   selectedFormat: string
   commanders: Card[]
+  commandersLoading: boolean
   partners: Card[]
+  partnersLoading: boolean
   selectedCommander?: Card
   selectedPartner?: Card
   signatureSpells: Card[]
   selectedSpell?: Card
+  spellsLoading: boolean
   randomIdentity: boolean
   selectedColors: string[]
   silverBorder: boolean
   maxCards: number
   countParams: CountParam[]
   miscParams: CountParam[]
-  selectedRarities: string[]
-  sets: string[]
-  selectedSets: string[]
-  watermarks: string[]
-  selectedWatermarks: string[]
-  artists: string[]
-  selectedArtists: string[]
+  rarities: Lookup[]  
+  selectedRarities: Lookup[]
+  raritiesLoading: boolean
+  sets: MtGSet[]
+  selectedSets: MtGSet[]
+  setsLoading: boolean
+  watermarks: Lookup[]
+  selectedWatermarks: Lookup[]
+  watermarksLoading: boolean
+  artists: Lookup[]
+  selectedArtists: Lookup[]
+  artistsLoading: boolean
+  frames: Lookup[]
+  selectedFrames: Lookup[]
+  framesLoading: boolean
+  layouts: Lookup[]
+  selectedLayouts: Lookup[]
+  layoutsLoading: boolean
 }
 
 class MtGRando extends React.Component<{}, MtGRandoState> {
   deckTypes: string[]
   cmdrFormats: string[]
   normalFormats: string[]
-  rarities: string[]
 
   constructor(props: {}) {
     super(props)
@@ -55,14 +86,16 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       'Vintage',
       'Pauper',
     ]
-    this.rarities = ['Common', 'Uncommon', 'Rare', 'Mythic Rare']
     this.state = {
       selectedDeckType: 'Commander',
       formats: [],
       selectedFormat: '',
       commanders: [],
+      commandersLoading: false,
       partners: [],
+      partnersLoading: false,
       signatureSpells: [],
+      spellsLoading: false,
       randomIdentity: true,
       selectedColors: ['W', 'U', 'B', 'R', 'G'],
       silverBorder: false,
@@ -206,9 +239,9 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         {
           name: 'edhrecrank',
           iconClass: 'ss ss-cmd',
-          label: 'EDHREC Rank',
+          label: 'EDHREC Rank Percentile',
           help:
-            'The "goodness" range of the cards to pick.',
+            'The "goodness" range of the cards to pick. This value is relative to the pool of possible cards.',
           enabled: true,
           isRange: true,
           range: [1, 100],
@@ -216,14 +249,160 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           max: 100,
         },
       ],
+      rarities: [],
       selectedRarities: [],
+      raritiesLoading: false,
       sets: [],
       selectedSets: [],
+      setsLoading: false,
       watermarks: [],
       selectedWatermarks: [],
+      watermarksLoading: false,
       artists: [],
       selectedArtists: [],
+      artistsLoading: false,
+      frames: [],
+      selectedFrames: [],
+      framesLoading: false,
+      layouts: [],
+      selectedLayouts: [],
+      layoutsLoading: false,
     }
+  }
+
+  async getCommanders() {
+    this.setState({
+      commandersLoading: true
+    })
+
+    const response = await fetch(
+      `${process.env.GATSBY_API_URL}/MtG/Commanders?variant=${this.state.selectedDeckType}`
+    )
+
+    if (response.ok) {
+      const data = await response.json()
+      this.setState({
+        commanders: data,
+        commandersLoading: false
+      })
+    }
+  }
+
+  async getPartners() {
+    this.setState({
+      partnersLoading: true
+    })
+
+    const response = await fetch(
+      `${process.env.GATSBY_API_URL}/MtG/Partners?cmdrId=${this.state.selectedCommander?.id}&variant=${this.state.selectedDeckType}`
+    )
+
+    if (response.ok) {
+      const data = await response.json()
+      this.setState({
+        partners: data,
+        partnersLoading: false
+      })
+    }
+  }
+
+  async getSets() {
+    this.setState({
+      setsLoading: true
+    })
+
+    const response = await fetch(
+      `${process.env.GATSBY_API_URL}/MtG/Sets`
+    )
+
+    if (response.ok) {
+      const data = await response.json()
+      this.setState({
+        sets: data,
+        setsLoading: false
+      })
+    }
+  }
+
+  async getWatermarks() {
+    this.setState({
+      watermarksLoading: true
+    })
+
+    const response = await fetch(
+      `${process.env.GATSBY_API_URL}/MtG/Watermarks`
+    )
+
+    if (response.ok) {
+      const data = await response.json()
+      this.setState({
+        watermarks: data,
+        watermarksLoading: false
+      })
+    }
+  }
+
+  async getRarities() {
+    this.setState({
+      raritiesLoading: true
+    })
+
+    const response = await fetch(
+      `${process.env.GATSBY_API_URL}/MtG/Rarities`
+    )
+
+    if (response.ok) {
+      const data = await response.json()
+      this.setState({
+        rarities: data,
+        raritiesLoading: false
+      })
+    }
+  }
+
+  async getFrames() {
+    this.setState({
+      framesLoading: true
+    })
+
+    const response = await fetch(
+      `${process.env.GATSBY_API_URL}/MtG/Frames`
+    )
+
+    if (response.ok) {
+      const data = await response.json()
+      this.setState({
+        frames: data,
+        framesLoading: false
+      })
+    }
+  }
+
+  async getLayouts() {
+    this.setState({
+      layoutsLoading: true
+    })
+
+    const response = await fetch(
+      `${process.env.GATSBY_API_URL}/MtG/Layouts`
+    )
+
+    if (response.ok) {
+      const data = await response.json()
+      this.setState({
+        layouts: data,
+        layoutsLoading: false
+      })
+    }
+  }
+
+  async componentDidMount() {
+    this.getCommanders()
+    this.getSets()
+    this.getWatermarks()
+    this.getRarities()
+    this.getLayouts()
+    this.getFrames()
   }
 
   toggleColor(color: string, checked: boolean) {
@@ -284,10 +463,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         (spell) => spell.id.toString() === e.target.value
       ),
     })
-  }
-
-  componentDidMount() {
-    fetch(process.env.GATSBY_API_URL + '/Card/Commanders')
   }
 
   render() {
@@ -404,11 +579,23 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             nonexclusive={true}
             onChange={(params) => this.setState({ miscParams: params })}
           />
-          <RandoRow iconClass="ss ss-pmtg1" help="" label="Sets" >
-              <select></select>
+          <RandoRow iconClass="ss ss-pmtg1" help="The sets that cards should be drawn from." label="Sets" >
+              <Multiselect
+                placeholder="Any Set"
+                filter="contains"
+                data={this.state.sets}
+                textField={(s) => s.name}
+                busy={this.state.setsLoading}
+                onChange={(newValue: MtGSet[]) => this.setState({selectedSets: newValue})}></Multiselect>
           </RandoRow>
-          <RandoRow iconClass="ss ss-htr" help="" label="Rarities" >
-              <select></select>
+          <RandoRow iconClass="ss ss-htr" help="The rarities of cards to use." label="Rarities" >
+              <Multiselect
+                placeholder="Any Rarity"
+                filter="contains"
+                data={this.state.rarities}
+                textField={(r) => r.name}
+                busy={this.state.raritiesLoading}
+                onChange={(newValue: Lookup[]) => this.setState({selectedRarities: newValue})}></Multiselect>
           </RandoRow>
           <RandoRow iconClass="ss ss-izzet" help="" label="Watermarks" >
               <select></select>

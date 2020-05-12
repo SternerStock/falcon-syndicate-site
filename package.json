@@ -23,7 +23,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.0.0",
-    "react-scrollable-anchor": "^0.6.1"
+    "react-scrollable-anchor": "^0.6.1",
+    "react-widgets": "^4.5.0"
   },
   "keywords": [
     "gatsby",
@@ -42,6 +43,7 @@
     "@types/rc-slider": "^8.6.5",
     "@types/react-helmet": "^5.0.15",
     "@types/react-scrollable-anchor": "^0.6.0",
+    "@types/react-widgets": "^4.4.2",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "babel-preset-gatsby": "^0.4.0",

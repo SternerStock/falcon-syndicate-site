@@ -1,3 +1,15 @@
+interface MtGSet {
+  id: number
+  name: string
+  code: string
+  keyruneCode: string
+}
+
+interface Lookup {
+  id: number
+  name: string
+}
+
 interface Card {
     id: number
     name: string
