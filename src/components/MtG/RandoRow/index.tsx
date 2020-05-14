@@ -6,13 +6,14 @@ interface RandoRowProps {
   label: string
   iconClass: string
   help: string
+  for?: string
 }
 
 class RandoRow extends Component<RandoRowProps, {}> {
   render() {
     return (
       <div className={styles.row}>
-        <label className={styles.controlLabel}>
+        <label className={styles.controlLabel} htmlFor={this.props.for}>
           <i className={styles.icon + ' ' + this.props.iconClass} />
           <div className={styles.label}>{this.props.label}</div>
         </label>

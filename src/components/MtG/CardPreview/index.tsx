@@ -5,30 +5,30 @@ import styles from './styles.module.scss'
 import 'mana-font'
 import '@saeris/typeface-beleren-bold'
 
-interface CardPreviewState {
-  cardToggle: boolean
-  card1: Card
-  card2: Card
+interface CardPreviewProps {
+  selectedCard?: Card
 }
 
-class CardPreview extends Component<{}, CardPreviewState> {
-  constructor(props: {}) {
+interface CardPreviewState {
+  cardToggle: boolean
+  card1?: Card
+  card2?: Card
+}
+
+class CardPreview extends Component<CardPreviewProps, CardPreviewState> {
+  constructor(props: CardPreviewProps) {
     super(props)
     this.state = {
       cardToggle: false,
-      card1: {
-        multiverseId: 31821,
-        name: 'Aboshan, Cephalid Emperor',
-        manaCost: '{4}{U}{U}',
-        oracleText:
-          'Tap an untapped Cephalid you control: Tap target permanent.{U}{U}{U}: Tap all creatures without flying.',
-        power: 3,
-        toughness: 3,
-        typeLine: 'Legendary Creature - Cephalid',
-        flavorText: '"No one can fight the tide forever."',
-      } as Card,
-      card2: {} as Card,
     }
+  }
+
+  componentWillReceiveProps(newProps: CardPreviewProps) {
+    this.setState({
+      cardToggle: !this.state.cardToggle,
+      card1: this.state.cardToggle ? newProps.selectedCard : this.state.card1,
+      card2: this.state.cardToggle ? this.state.card2 : newProps.selectedCard,
+    })
   }
 
   selectCard(card: Card) {
@@ -72,22 +72,26 @@ class CardPreview extends Component<{}, CardPreviewState> {
             title={this.state.card2 ? this.state.card2.name : 'Card Preview'}
           />
         </div>
-        <div className={styles.oracle}>
-          <div className={styles.nameRow}>
-            <div>{this.state.card1.name}</div>
-            <div>{this.state.card1.manaCost}</div>
+        {this.props.selectedCard && (
+          <div className={styles.oracle}>
+            <div className={styles.nameRow}>
+              <div>{this.props.selectedCard.name}</div>
+              <div>{this.props.selectedCard.manaCost}</div>
+            </div>
+            <div className={styles.typeline}>{this.props.selectedCard.typeLine}</div>
+            <div>{this.props.selectedCard.oracleText}</div>
+            <div className={styles.flavorText}>
+              {this.props.selectedCard.flavorText}
+            </div>
+            <div className={styles.power}>
+              {this.props.selectedCard.loyalty
+                ? this.props.selectedCard.loyalty
+                : this.props.selectedCard.power
+                ? `${this.props.selectedCard.power}/${this.props.selectedCard.toughness}`
+                : ''}
+            </div>
           </div>
-          <div className={styles.typeline}>{this.state.card1.typeLine}</div>
-          <div>{this.state.card1.oracleText}</div>
-          <div className={styles.flavorText}>{this.state.card1.flavorText}</div>
-          <div className={styles.power}>
-            {this.state.card1.loyalty
-              ? this.state.card1.loyalty
-              : this.state.card1.power
-              ? `${this.state.card1.power}/${this.state.card1.toughness}`
-              : ''}
-          </div>
-        </div>
+        )}
       </div>
     )
   }

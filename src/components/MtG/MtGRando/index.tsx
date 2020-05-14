@@ -26,10 +26,15 @@ interface RandoRequest {
   edhrecRanks: number[]
 }
 
+interface Format {
+  group: string
+  name: string
+  deckSize: number
+}
+
 interface MtGRandoState {
-  selectedDeckType: string
-  formats: string[]
-  selectedFormat: string
+  formats: Format[]
+  selectedFormat: Format
   commanders: Card[]
   commandersLoading: boolean
   partners: Card[]
@@ -66,30 +71,73 @@ interface MtGRandoState {
 }
 
 class MtGRando extends React.Component<{}, MtGRandoState> {
-  deckTypes: string[]
-  cmdrFormats: string[]
-  normalFormats: string[]
+  formats: Format[]
 
   constructor(props: {}) {
     super(props)
     this.toggleColor = this.toggleColor.bind(this)
-    this.selectDeckType = this.selectDeckType.bind(this)
     this.selectCommander = this.selectCommander.bind(this)
-    this.selectSignatureSpell = this.selectSignatureSpell.bind(this)
-    this.deckTypes = ['Commander', 'Oathbreaker', '60 card']
-    this.cmdrFormats = ['Normal', 'Brawl', 'Pauper', 'Tiny Leaders']
-    this.normalFormats = [
-      'Standard',
-      'Modern',
-      'Pioneer',
-      'Legacy',
-      'Vintage',
-      'Pauper',
+    this.selectFormat = this.selectFormat.bind(this)
+    this.formats = [
+      {
+        group: "Commander",
+        name: "Commander",
+        deckSize: 99,
+      },
+      {
+        group: "Commander",
+        name: "Brawl",
+        deckSize: 59,
+      },
+      {
+        group: "Commander",
+        name: "Pauper",
+        deckSize: 99,
+      },
+      {
+        group: "Commander",
+        name: "Tiny Leaders",
+        deckSize: 49,
+      },
+      {
+        group: "Oathbreaker",
+        name: "Oathbreaker",
+        deckSize: 58,
+      },
+      {
+        group: "Normal MtG",
+        name: "Standard",
+        deckSize: 60,
+      },
+      {
+        group: "Normal MtG",
+        name: "Modern",
+        deckSize: 60,
+      },
+      {
+        group: "Normal MtG",
+        name: "Pioneer",
+        deckSize: 60,
+      },
+      {
+        group: "Normal MtG",
+        name: "Legacy",
+        deckSize: 60,
+      },
+      {
+        group: "Normal MtG",
+        name: "Vintage",
+        deckSize: 60,
+      },
+      {
+        group: "Normal MtG",
+        name: "Pauper",
+        deckSize: 60,
+      },
     ]
     this.state = {
-      selectedDeckType: 'Commander',
       formats: [],
-      selectedFormat: '',
+      selectedFormat: this.formats[0],
       commanders: [],
       commandersLoading: false,
       partners: [],
@@ -270,13 +318,14 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     }
   }
 
-  async getCommanders() {
+  async getCommanders(variant: string) {
     this.setState({
+      commanders: [],
       commandersLoading: true
     })
 
     const response = await fetch(
-      `${process.env.GATSBY_API_URL}/MtG/Commanders?variant=${this.state.selectedDeckType}`
+      `${process.env.GATSBY_API_URL}/MtG/Commanders?variant=${variant}`
     )
 
     if (response.ok) {
@@ -288,13 +337,14 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     }
   }
 
-  async getPartners() {
+  async getPartners(cmdrId: number) {
     this.setState({
+      partners: [],
       partnersLoading: true
     })
 
     const response = await fetch(
-      `${process.env.GATSBY_API_URL}/MtG/Partners?cmdrId=${this.state.selectedCommander?.id}&variant=${this.state.selectedDeckType}`
+      `${process.env.GATSBY_API_URL}/MtG/Partners?cmdrId=${cmdrId}&variant=${this.state.selectedFormat.name}`
     )
 
     if (response.ok) {
@@ -302,6 +352,25 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       this.setState({
         partners: data,
         partnersLoading: false
+      })
+    }
+  }
+
+  async getSignatureSpells(obId: number) {
+    this.setState({
+      signatureSpells: [],
+      spellsLoading: true
+    })
+
+    const response = await fetch(
+      `${process.env.GATSBY_API_URL}/MtG/SignatureSpells?obId=${obId}`
+    )
+
+    if (response.ok) {
+      const data = await response.json()
+      this.setState({
+        signatureSpells: data,
+        spellsLoading: false
       })
     }
   }
@@ -397,12 +466,12 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   }
 
   async componentDidMount() {
-    this.getCommanders()
     this.getSets()
     this.getWatermarks()
     this.getRarities()
     this.getLayouts()
     this.getFrames()
+    this.selectFormat()
   }
 
   toggleColor(color: string, checked: boolean) {
@@ -427,118 +496,90 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       selectedColors: selectedColors,
     })
   }
-
-  selectDeckType(e: React.ChangeEvent<HTMLSelectElement>) {
-    let formatsArray: string[]
-
-    switch (e.target.value) {
-      case 'Commander':
-        formatsArray = this.cmdrFormats
-        break
-      case '60 card':
-        formatsArray = this.normalFormats
-        break
-      default:
-        formatsArray = []
+  
+  selectFormat(newValue?: Format) {
+    const format = newValue || this.formats[0]
+    if (format.group === "Commander" || format.group === "Oathbreaker") {
+      this.getCommanders(format.name)
+    } else {
+      this.setState({
+        commanders: [],
+        partners: [],
+        signatureSpells: []
+      })
     }
-
+    
     this.setState({
-      selectedDeckType: e.target.value,
-      formats: formatsArray,
-      selectedFormat: '',
+      selectedFormat: format,
+      selectedCommander: undefined,
+      selectedPartner: undefined,
+      selectedSpell: undefined,
     })
   }
 
-  selectCommander(e: React.ChangeEvent<HTMLSelectElement>) {
-    this.setState({
-      selectedCommander: this.state.commanders.find(
-        (cmdr) => cmdr.id.toString() === e.target.value
-      ),
-    })
-  }
+  selectCommander(newValue: Card) {
+    this.setState({selectedCommander: newValue})
 
-  selectSignatureSpell(e: React.ChangeEvent<HTMLSelectElement>) {
-    this.setState({
-      selectedSpell: this.state.signatureSpells.find(
-        (spell) => spell.id.toString() === e.target.value
-      ),
-    })
+    if (this.state.selectedFormat.group === "Commander") {
+      this.getPartners(newValue.id)
+    } else if (this.state.selectedFormat.group === "Oathbreaker") {
+      this.getSignatureSpells(newValue.id)
+    }
   }
 
   render() {
     return (
       <div className={styles.mtgContainerOuter}>
         <div className={`${styles.leftCol} gutter`}>
-          <div>
-            <label htmlFor="deck-type">Type of Deck</label>
-            <select
-              id="deck-type"
-              value={this.state.selectedDeckType}
-              onChange={this.selectDeckType}
-            >
-              {this.deckTypes.map((deckType) => {
-                return <option key={deckType}>{deckType}</option>
-              })}
-            </select>
-          </div>
-          {this.state.formats.length > 0 && (
             <div>
-              <label htmlFor="format">Format</label>
-              <select
-                id="format"
+              <label>Format</label>
+              <DropdownList
+                placeholder="Select a Format"
+                filter="contains"
+                data={this.formats}
+                textField="name"
+                groupBy="group"
                 value={this.state.selectedFormat}
-                onChange={(e) =>
-                  this.setState({
-                    selectedFormat: e.target.value,
-                  })
-                }
-              >
-                {this.state.formats.map((format) => {
-                  return <option key={format}>{format}</option>
-                })}
-              </select>
+                onChange={this.selectFormat}></DropdownList>
+            </div>
+          {(this.state.selectedFormat.group === 'Commander' ||
+            this.state.selectedFormat.group === 'Oathbreaker') && (
+            <div>
+              <label>{this.state.selectedFormat.group}</label>
+              <DropdownList
+                placeholder="Surprise Me"
+                filter="contains"
+                data={this.state.commanders}
+                textField="name"
+                value={this.state.selectedCommander}
+                busy={this.state.commandersLoading || this.state.partnersLoading}
+                onChange={this.selectCommander}></DropdownList>
             </div>
           )}
-          {(this.state.selectedDeckType === 'Commander' ||
-            this.state.selectedDeckType === 'Oathbreaker') && (
+          {this.state.partners.length > 0 && (
             <div>
-              <label htmlFor="commander">{this.state.selectedDeckType}</label>
-              <select
-                id="commander"
-                value={
-                  this.state.selectedCommander &&
-                  this.state.selectedCommander.id
-                }
-                onChange={this.selectCommander}
-              >
-                {this.state.commanders.length > 0 &&
-                  this.state.commanders.map((cmdr) => {
-                    return (
-                      <option key={cmdr.id} value={cmdr.id}>
-                        {cmdr.name}
-                      </option>
-                    )
-                  })}
-              </select>
+              <label>Partner</label>
+              <DropdownList
+                placeholder="Surprise Me"
+                filter="contains"
+                data={this.state.partners}
+                textField="name"
+                value={this.state.selectedPartner}
+                busy={this.state.partnersLoading}
+                onChange={(newValue: Card) => this.setState({selectedPartner: newValue})}></DropdownList>
             </div>
           )}
-          {this.state.selectedDeckType === 'Oathbreaker' && (
+          {this.state.selectedFormat.group === 'Oathbreaker' && (
             <div>
-              <label htmlFor="signature-spell">Signature Spell</label>
-              <select
-                id="signature-spell"
-                value={this.state.selectedSpell && this.state.selectedSpell.id}
-                onSelect={this.selectSignatureSpell}
-              >
-                {this.state.signatureSpells.length > 0 &&
-                  this.state.signatureSpells.map((spell) => {
-                    return (
-                      <option key={spell.id} value={spell.id}>
-                        {spell.name}
-                      </option>
-                    )
-                  })}
-              </select>
+              <label>Signature Spell</label>
+              <DropdownList
+                placeholder="Surprise Me"
+                filter="contains"
+                data={this.state.signatureSpells}
+                textField="name"
+                value={this.state.selectedSpell}
+                busy={this.state.spellsLoading}
+                onChange={(newValue: Card) => this.setState({selectedSpell: newValue})}></DropdownList>
             </div>
           )}
           <div>
@@ -585,6 +626,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 filter="contains"
                 data={this.state.sets}
                 textField={(s) => s.name}
+                value={this.state.selectedSets}
                 busy={this.state.setsLoading}
                 onChange={(newValue: MtGSet[]) => this.setState({selectedSets: newValue})}></Multiselect>
           </RandoRow>
@@ -598,41 +640,68 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 onChange={(newValue: Lookup[]) => this.setState({selectedRarities: newValue})}></Multiselect>
           </RandoRow>
           <RandoRow iconClass="ss ss-izzet" help="" label="Watermarks" >
-              <select></select>
+              <Multiselect
+                placeholder="Any/No Watermark"
+                filter="contains"
+                data={this.state.watermarks}
+                textField={(r) => r.name}
+                busy={this.state.watermarksLoading}
+                onChange={(newValue: Lookup[]) => this.setState({selectedWatermarks: newValue})}></Multiselect>
           </RandoRow>
           <RandoRow iconClass="ss ss-pbook" help="" label="Artists" >
-              <select></select>
+              <Multiselect
+                placeholder="Any Artist"
+                filter="contains"
+                data={this.state.artists}
+                textField={(r) => r.name}
+                busy={this.state.artistsLoading}
+                onChange={(newValue: Lookup[]) => this.setState({selectedArtists: newValue})}></Multiselect>
           </RandoRow>
           <RandoRow iconClass="ss ss-bcore" help="" label="Frames" >
-              <select></select>
+              <Multiselect
+                placeholder="Any Frame Style"
+                filter="contains"
+                data={this.state.frames}
+                textField={(r) => r.name}
+                busy={this.state.framesLoading}
+                onChange={(newValue: Lookup[]) => this.setState({selectedFrames: newValue})}></Multiselect>
+          </RandoRow>
+          <RandoRow iconClass="ss ss-bcore" help="" label="Layouts" >
+              <Multiselect
+                placeholder="Any Layout"
+                filter="contains"
+                data={this.state.layouts}
+                textField={(r) => r.name}
+                busy={this.state.layoutsLoading}
+                onChange={(newValue: Lookup[]) => this.setState({selectedLayouts: newValue})}></Multiselect>
           </RandoRow>
           <RandoRow iconClass="ss ss-ugl" help="" label="Share Link" >
               <input type="text" readOnly />
           </RandoRow>
         </div>
         <div className={`${styles.rightCol} gutter`}>
-          {this.state.selectedDeckType === 'Commander' ? (
+          {this.state.selectedFormat.group === 'Commander' ? (
             <div className={styles.cmdrPreview}>
               <div>
                 <h3>Commander</h3>
-                <CardPreview></CardPreview>
+                <CardPreview selectedCard={this.state.selectedCommander}></CardPreview>
               </div>
               {this.state.selectedPartner && (
                 <div>
                   <h3>Partner</h3>
-                  <CardPreview></CardPreview>
+                  <CardPreview selectedCard={this.state.selectedPartner}></CardPreview>
                 </div>
               )}
             </div>
-          ) : this.state.selectedDeckType === 'Oathbreaker' ? (
+          ) : this.state.selectedFormat.group === 'Oathbreaker' ? (
             <div className={styles.cmdrPreview}>
               <div>
                 <h3>Oathbreaker</h3>
-                <CardPreview></CardPreview>
+                <CardPreview selectedCard={this.state.selectedCommander}></CardPreview>
               </div>
               <div>
                 <h3>Signature Spell</h3>
-                <CardPreview></CardPreview>
+                <CardPreview selectedCard={this.state.selectedSpell}></CardPreview>
               </div>
             </div>
           ) : (
