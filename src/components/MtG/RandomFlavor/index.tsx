@@ -29,9 +29,9 @@ class RandomFlavor extends Component<{}, FlavorTextState> {
 
   render() {
     return (
-      <em title={this.state.name} className="gutter">
-        {this.state.text}
-      </em>
+      <div title={this.state.name} className="gutter" style={{margin: "10px 0"}}>
+        <em>{this.state.text}</em>
+      </div>
     )
   }
 }

@@ -1,3 +1,5 @@
+declare module 'react-crossfade-image'
+
 interface MtGSet {
   id: number
   name: string

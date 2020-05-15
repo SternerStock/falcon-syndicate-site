@@ -45,10 +45,11 @@ class TwitchHost extends Component<TwitchHostProps, TwitchHostState> {
       },
     }).then((response) =>
       response.json().then((streams) => {
+        if (!streams || !streams.data) {
+          return
+        }
+
         let query = 'users?'
-
-        console.log(streams.data)
-
         for (let i = 0; i < streams.data.length; i++) {
           if (i > 0) {
             query += '&'

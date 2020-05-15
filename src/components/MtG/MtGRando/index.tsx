@@ -50,7 +50,7 @@ interface MtGRandoState {
   maxCards: number
   countParams: CountParam[]
   miscParams: CountParam[]
-  rarities: Lookup[]  
+  rarities: Lookup[]
   selectedRarities: Lookup[]
   raritiesLoading: boolean
   sets: MtGSet[]
@@ -75,63 +75,62 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
 
   constructor(props: {}) {
     super(props)
-    this.toggleColor = this.toggleColor.bind(this)
     this.selectCommander = this.selectCommander.bind(this)
     this.selectFormat = this.selectFormat.bind(this)
     this.formats = [
       {
-        group: "Commander",
-        name: "Commander",
+        group: 'Commander',
+        name: 'Commander',
         deckSize: 99,
       },
       {
-        group: "Commander",
-        name: "Brawl",
+        group: 'Commander',
+        name: 'Brawl',
         deckSize: 59,
       },
       {
-        group: "Commander",
-        name: "Pauper",
+        group: 'Commander',
+        name: 'Pauper',
         deckSize: 99,
       },
       {
-        group: "Commander",
-        name: "Tiny Leaders",
+        group: 'Commander',
+        name: 'Tiny Leaders',
         deckSize: 49,
       },
       {
-        group: "Oathbreaker",
-        name: "Oathbreaker",
+        group: 'Oathbreaker',
+        name: 'Oathbreaker',
         deckSize: 58,
       },
       {
-        group: "Normal MtG",
-        name: "Standard",
+        group: 'Normal MtG',
+        name: 'Standard',
         deckSize: 60,
       },
       {
-        group: "Normal MtG",
-        name: "Modern",
+        group: 'Normal MtG',
+        name: 'Modern',
         deckSize: 60,
       },
       {
-        group: "Normal MtG",
-        name: "Pioneer",
+        group: 'Normal MtG',
+        name: 'Pioneer',
         deckSize: 60,
       },
       {
-        group: "Normal MtG",
-        name: "Legacy",
+        group: 'Normal MtG',
+        name: 'Legacy',
         deckSize: 60,
       },
       {
-        group: "Normal MtG",
-        name: "Vintage",
+        group: 'Normal MtG',
+        name: 'Vintage',
         deckSize: 60,
       },
       {
-        group: "Normal MtG",
-        name: "Pauper",
+        group: 'Normal MtG',
+        name: 'Pauper',
         deckSize: 60,
       },
     ]
@@ -321,7 +320,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   async getCommanders(variant: string) {
     this.setState({
       commanders: [],
-      commandersLoading: true
+      commandersLoading: true,
     })
 
     const response = await fetch(
@@ -332,7 +331,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       const data = await response.json()
       this.setState({
         commanders: data,
-        commandersLoading: false
+        commandersLoading: false,
       })
     }
   }
@@ -340,7 +339,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   async getPartners(cmdrId: number) {
     this.setState({
       partners: [],
-      partnersLoading: true
+      partnersLoading: true,
     })
 
     const response = await fetch(
@@ -351,7 +350,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       const data = await response.json()
       this.setState({
         partners: data,
-        partnersLoading: false
+        partnersLoading: false,
       })
     }
   }
@@ -359,7 +358,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   async getSignatureSpells(obId: number) {
     this.setState({
       signatureSpells: [],
-      spellsLoading: true
+      spellsLoading: true,
     })
 
     const response = await fetch(
@@ -370,97 +369,87 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       const data = await response.json()
       this.setState({
         signatureSpells: data,
-        spellsLoading: false
+        spellsLoading: false,
       })
     }
   }
 
   async getSets() {
     this.setState({
-      setsLoading: true
+      setsLoading: true,
     })
 
-    const response = await fetch(
-      `${process.env.GATSBY_API_URL}/MtG/Sets`
-    )
+    const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Sets`)
 
     if (response.ok) {
       const data = await response.json()
       this.setState({
         sets: data,
-        setsLoading: false
+        setsLoading: false,
       })
     }
   }
 
   async getWatermarks() {
     this.setState({
-      watermarksLoading: true
+      watermarksLoading: true,
     })
 
-    const response = await fetch(
-      `${process.env.GATSBY_API_URL}/MtG/Watermarks`
-    )
+    const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Watermarks`)
 
     if (response.ok) {
       const data = await response.json()
       this.setState({
         watermarks: data,
-        watermarksLoading: false
+        watermarksLoading: false,
       })
     }
   }
 
   async getRarities() {
     this.setState({
-      raritiesLoading: true
+      raritiesLoading: true,
     })
 
-    const response = await fetch(
-      `${process.env.GATSBY_API_URL}/MtG/Rarities`
-    )
+    const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Rarities`)
 
     if (response.ok) {
       const data = await response.json()
       this.setState({
         rarities: data,
-        raritiesLoading: false
+        raritiesLoading: false,
       })
     }
   }
 
   async getFrames() {
     this.setState({
-      framesLoading: true
+      framesLoading: true,
     })
 
-    const response = await fetch(
-      `${process.env.GATSBY_API_URL}/MtG/Frames`
-    )
+    const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Frames`)
 
     if (response.ok) {
       const data = await response.json()
       this.setState({
         frames: data,
-        framesLoading: false
+        framesLoading: false,
       })
     }
   }
 
   async getLayouts() {
     this.setState({
-      layoutsLoading: true
+      layoutsLoading: true,
     })
 
-    const response = await fetch(
-      `${process.env.GATSBY_API_URL}/MtG/Layouts`
-    )
+    const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Layouts`)
 
     if (response.ok) {
       const data = await response.json()
       this.setState({
         layouts: data,
-        layoutsLoading: false
+        layoutsLoading: false,
       })
     }
   }
@@ -474,41 +463,18 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     this.selectFormat()
   }
 
-  toggleColor(color: string, checked: boolean) {
-    let selectedColors
-
-    if (this.state.randomIdentity) {
-      selectedColors = ['W', 'U', 'B', 'R', 'G']
-    } else {
-      selectedColors = this.state.selectedColors
-      let index = selectedColors.indexOf(color)
-
-      if (checked && index === -1) {
-        selectedColors.push(color)
-      }
-
-      if (!checked && index > -1) {
-        selectedColors.splice(index, 1)
-      }
-    }
-
-    this.setState({
-      selectedColors: selectedColors,
-    })
-  }
-  
   selectFormat(newValue?: Format) {
     const format = newValue || this.formats[0]
-    if (format.group === "Commander" || format.group === "Oathbreaker") {
+    if (format.group === 'Commander' || format.group === 'Oathbreaker') {
       this.getCommanders(format.name)
     } else {
       this.setState({
         commanders: [],
         partners: [],
-        signatureSpells: []
+        signatureSpells: [],
       })
     }
-    
+
     this.setState({
       selectedFormat: format,
       selectedCommander: undefined,
@@ -518,11 +484,15 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   }
 
   selectCommander(newValue: Card) {
-    this.setState({selectedCommander: newValue})
+    this.setState({
+      selectedCommander: newValue,
+      selectedColors: newValue.colorIdentity,
+      randomIdentity: false,
+    })
 
-    if (this.state.selectedFormat.group === "Commander") {
+    if (this.state.selectedFormat.group === 'Commander') {
       this.getPartners(newValue.id)
-    } else if (this.state.selectedFormat.group === "Oathbreaker") {
+    } else if (this.state.selectedFormat.group === 'Oathbreaker') {
       this.getSignatureSpells(newValue.id)
     }
   }
@@ -531,8 +501,8 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     return (
       <div className={styles.mtgContainerOuter}>
         <div className={`${styles.leftCol} gutter`}>
-            <div>
-              <label>Format</label>
+          <RandoRow label="Format" iconClass="" help="">
+            <div className="full-width">
               <DropdownList
                 placeholder="Select a Format"
                 filter="contains"
@@ -540,75 +510,157 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 textField="name"
                 groupBy="group"
                 value={this.state.selectedFormat}
-                onChange={this.selectFormat}></DropdownList>
+                onChange={this.selectFormat}
+              ></DropdownList>
             </div>
+          </RandoRow>
+          <RandoRow label="Color Identity" iconClass="" help="">
+            <div className="full-width">
+              <label>
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.randomIdentity}
+                  onChange={(e) =>
+                    this.setState({
+                      randomIdentity: e.target.checked,
+                      selectedColors: e.target.checked
+                        ? ['W', 'U', 'B', 'R', 'G']
+                        : [],
+                    })
+                  }
+                />
+                Random Color(s)
+              </label>
+              <br />
+              <br />
+              <ColorSelect
+                selectedColors={this.state.selectedColors}
+                onChange={(params) => this.setState({ selectedColors: params })}
+              />
+            </div>
+          </RandoRow>
           {(this.state.selectedFormat.group === 'Commander' ||
             this.state.selectedFormat.group === 'Oathbreaker') && (
-            <div>
-              <label>{this.state.selectedFormat.group}</label>
-              <DropdownList
-                placeholder="Surprise Me"
-                filter="contains"
-                data={this.state.commanders}
-                textField="name"
-                value={this.state.selectedCommander}
-                busy={this.state.commandersLoading || this.state.partnersLoading}
-                onChange={this.selectCommander}></DropdownList>
-            </div>
+            <RandoRow
+              label={this.state.selectedFormat.group}
+              iconClass=""
+              help=""
+            >
+              <div className="full-width">
+                <div className="flex-container">
+                  <button
+                    onClick={() =>
+                      this.selectCommander(
+                        this.state.commanders[
+                          Math.floor(
+                            Math.random() * this.state.commanders.length
+                          )
+                        ]
+                      )
+                    }
+                  >
+                    Random {this.state.selectedFormat.group}
+                  </button>
+                  <button
+                    onClick={() =>
+                      this.setState({
+                        selectedCommander: undefined,
+                      })
+                    }
+                  >
+                    Clear
+                  </button>
+                </div>
+                <DropdownList
+                  placeholder="Surprise Me"
+                  filter="contains"
+                  data={this.state.commanders}
+                  textField="name"
+                  value={this.state.selectedCommander}
+                  busy={
+                    this.state.commandersLoading || this.state.partnersLoading
+                  }
+                  onChange={this.selectCommander}
+                ></DropdownList>
+              </div>
+            </RandoRow>
           )}
           {this.state.partners.length > 0 && (
-            <div>
-              <label>Partner</label>
-              <DropdownList
-                placeholder="Surprise Me"
-                filter="contains"
-                data={this.state.partners}
-                textField="name"
-                value={this.state.selectedPartner}
-                busy={this.state.partnersLoading}
-                onChange={(newValue: Card) => this.setState({selectedPartner: newValue})}></DropdownList>
-            </div>
+            <RandoRow label="Partner" iconClass="" help="">
+              <div className="full-width">
+                <button
+                  onClick={() =>
+                    this.setState({
+                      selectedPartner: this.state.partners[
+                        Math.floor(Math.random() * this.state.partners.length)
+                      ],
+                    })
+                  }
+                >
+                  Random Partner
+                </button>
+                <button
+                  onClick={() =>
+                    this.setState({
+                      selectedPartner: undefined,
+                    })
+                  }
+                >
+                  Clear
+                </button>
+                <DropdownList
+                  placeholder="Surprise Me"
+                  filter="contains"
+                  data={this.state.partners}
+                  textField="name"
+                  value={this.state.selectedPartner}
+                  busy={this.state.partnersLoading}
+                  onChange={(newValue: Card) =>
+                    this.setState({ selectedPartner: newValue })
+                  }
+                ></DropdownList>
+              </div>
+            </RandoRow>
           )}
           {this.state.selectedFormat.group === 'Oathbreaker' && (
-            <div>
-              <label>Signature Spell</label>
-              <DropdownList
-                placeholder="Surprise Me"
-                filter="contains"
-                data={this.state.signatureSpells}
-                textField="name"
-                value={this.state.selectedSpell}
-                busy={this.state.spellsLoading}
-                onChange={(newValue: Card) => this.setState({selectedSpell: newValue})}></DropdownList>
-            </div>
+            <RandoRow label="Signature Spell" iconClass="" help="">
+              <div className="full-width">
+                <button
+                  onClick={() =>
+                    this.setState({
+                      selectedSpell: this.state.signatureSpells[
+                        Math.floor(
+                          Math.random() * this.state.signatureSpells.length
+                        )
+                      ],
+                    })
+                  }
+                >
+                  Random Signature Spell
+                </button>
+                <button
+                  onClick={() =>
+                    this.setState({
+                      selectedSpell: undefined,
+                    })
+                  }
+                >
+                  Clear
+                </button>
+                <DropdownList
+                  placeholder="Surprise Me"
+                  filter="contains"
+                  data={this.state.signatureSpells}
+                  textField="name"
+                  value={this.state.selectedSpell}
+                  busy={this.state.spellsLoading}
+                  onChange={(newValue: Card) =>
+                    this.setState({ selectedSpell: newValue })
+                  }
+                ></DropdownList>
+              </div>
+            </RandoRow>
           )}
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                defaultChecked={this.state.randomIdentity}
-                onChange={(e) =>
-                  this.setState({
-                    randomIdentity: e.target.checked,
-                    selectedColors: e.target.checked
-                      ? ['W', 'U', 'B', 'R', 'G']
-                      : [],
-                  })
-                }
-              />
-              Random Color(s)
-            </label>
-            <ColorSelect
-              selectedColors={this.state.selectedColors}
-              onChange={(params) => this.setState({ selectedColors: params })}
-            />
-          </div>
-          <div>
-            {`Cards: ${this.state.countParams.reduce(
-              (total, param) => total + (param.count || 0),
-              0
-            )} / ${this.state.maxCards}`}
-          </div>
           <MtGSliderList
             max={this.state.maxCards}
             params={this.state.countParams}
@@ -620,7 +672,12 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             nonexclusive={true}
             onChange={(params) => this.setState({ miscParams: params })}
           />
-          <RandoRow iconClass="ss ss-pmtg1" help="The sets that cards should be drawn from." label="Sets" >
+          <RandoRow
+            iconClass="ss ss-pmtg1"
+            help="The sets that cards should be drawn from."
+            label="Sets"
+          >
+            <div className="full-width">
               <Multiselect
                 placeholder="Any Set"
                 filter="contains"
@@ -628,68 +685,111 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 textField={(s) => s.name}
                 value={this.state.selectedSets}
                 busy={this.state.setsLoading}
-                onChange={(newValue: MtGSet[]) => this.setState({selectedSets: newValue})}></Multiselect>
+                onChange={(newValue: MtGSet[]) =>
+                  this.setState({ selectedSets: newValue })
+                }
+              ></Multiselect>
+            </div>
           </RandoRow>
-          <RandoRow iconClass="ss ss-htr" help="The rarities of cards to use." label="Rarities" >
+          <RandoRow
+            iconClass="ss ss-htr"
+            help="The rarities of cards to use."
+            label="Rarities"
+          >
+            <div className="full-width">
               <Multiselect
                 placeholder="Any Rarity"
                 filter="contains"
                 data={this.state.rarities}
                 textField={(r) => r.name}
                 busy={this.state.raritiesLoading}
-                onChange={(newValue: Lookup[]) => this.setState({selectedRarities: newValue})}></Multiselect>
+                onChange={(newValue: Lookup[]) =>
+                  this.setState({ selectedRarities: newValue })
+                }
+              ></Multiselect>
+            </div>
           </RandoRow>
-          <RandoRow iconClass="ss ss-izzet" help="" label="Watermarks" >
+          <RandoRow iconClass="ss ss-izzet" help="" label="Watermarks">
+            <div className="full-width">
               <Multiselect
                 placeholder="Any/No Watermark"
                 filter="contains"
                 data={this.state.watermarks}
                 textField={(r) => r.name}
                 busy={this.state.watermarksLoading}
-                onChange={(newValue: Lookup[]) => this.setState({selectedWatermarks: newValue})}></Multiselect>
+                onChange={(newValue: Lookup[]) =>
+                  this.setState({ selectedWatermarks: newValue })
+                }
+              ></Multiselect>
+            </div>
           </RandoRow>
-          <RandoRow iconClass="ss ss-pbook" help="" label="Artists" >
+          <RandoRow iconClass="ss ss-pbook" help="" label="Artists">
+            <div className="full-width">
               <Multiselect
                 placeholder="Any Artist"
                 filter="contains"
                 data={this.state.artists}
                 textField={(r) => r.name}
                 busy={this.state.artistsLoading}
-                onChange={(newValue: Lookup[]) => this.setState({selectedArtists: newValue})}></Multiselect>
+                onChange={(newValue: Lookup[]) =>
+                  this.setState({ selectedArtists: newValue })
+                }
+              ></Multiselect>
+            </div>
           </RandoRow>
-          <RandoRow iconClass="ss ss-bcore" help="" label="Frames" >
+          <RandoRow iconClass="ss ss-bcore" help="" label="Frames">
+            <div className="full-width">
               <Multiselect
                 placeholder="Any Frame Style"
                 filter="contains"
                 data={this.state.frames}
                 textField={(r) => r.name}
                 busy={this.state.framesLoading}
-                onChange={(newValue: Lookup[]) => this.setState({selectedFrames: newValue})}></Multiselect>
+                onChange={(newValue: Lookup[]) =>
+                  this.setState({ selectedFrames: newValue })
+                }
+              ></Multiselect>
+            </div>
           </RandoRow>
-          <RandoRow iconClass="ss ss-bcore" help="" label="Layouts" >
+          <RandoRow iconClass="ss ss-bcore" help="" label="Layouts">
+            <div className="full-width">
               <Multiselect
                 placeholder="Any Layout"
                 filter="contains"
                 data={this.state.layouts}
                 textField={(r) => r.name}
                 busy={this.state.layoutsLoading}
-                onChange={(newValue: Lookup[]) => this.setState({selectedLayouts: newValue})}></Multiselect>
+                onChange={(newValue: Lookup[]) =>
+                  this.setState({ selectedLayouts: newValue })
+                }
+              ></Multiselect>
+            </div>
           </RandoRow>
-          <RandoRow iconClass="ss ss-ugl" help="" label="Share Link" >
-              <input type="text" readOnly />
+          <RandoRow iconClass="ss ss-ugl" help="" label="Share Link">
+            <input type="text" readOnly />
           </RandoRow>
         </div>
         <div className={`${styles.rightCol} gutter`}>
+          <div>
+            {`Cards: ${this.state.countParams.reduce(
+              (total, param) => total + (param.count || 0),
+              0
+            )} / ${this.state.maxCards}`}
+          </div>
           {this.state.selectedFormat.group === 'Commander' ? (
             <div className={styles.cmdrPreview}>
               <div>
                 <h3>Commander</h3>
-                <CardPreview selectedCard={this.state.selectedCommander}></CardPreview>
+                <CardPreview
+                  selectedCard={this.state.selectedCommander}
+                ></CardPreview>
               </div>
               {this.state.selectedPartner && (
                 <div>
                   <h3>Partner</h3>
-                  <CardPreview selectedCard={this.state.selectedPartner}></CardPreview>
+                  <CardPreview
+                    selectedCard={this.state.selectedPartner}
+                  ></CardPreview>
                 </div>
               )}
             </div>
@@ -697,11 +797,15 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             <div className={styles.cmdrPreview}>
               <div>
                 <h3>Oathbreaker</h3>
-                <CardPreview selectedCard={this.state.selectedCommander}></CardPreview>
+                <CardPreview
+                  selectedCard={this.state.selectedCommander}
+                ></CardPreview>
               </div>
               <div>
                 <h3>Signature Spell</h3>
-                <CardPreview selectedCard={this.state.selectedSpell}></CardPreview>
+                <CardPreview
+                  selectedCard={this.state.selectedSpell}
+                ></CardPreview>
               </div>
             </div>
           ) : (

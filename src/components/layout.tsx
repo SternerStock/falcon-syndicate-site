@@ -1,4 +1,4 @@
-import React, { ReactComponentElement, ReactChildren } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { Helmet } from 'react-helmet'
 
@@ -7,7 +7,7 @@ import Footer from './Footer'
 import 'normalize.css'
 import '../styles-global/site.scss'
 
-const TemplateWrapper = ({ children } : {children: ReactChildren}) => (
+const TemplateWrapper = ({ children } : {children: React.ReactNode}) => (
   <div className="flex-container flex-container--fullpage">
     <Helmet
       title="Falcon Syndicate"

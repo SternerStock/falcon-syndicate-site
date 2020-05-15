@@ -57,7 +57,6 @@ const IndexPage = () => (
               className="sidebar__embed"
               src="https://discordapp.com/widget?id=296424304948805632&theme=dark"
               height="500"
-              allowTransparency={true}
               frameBorder="0"
             ></iframe>
           </aside>
