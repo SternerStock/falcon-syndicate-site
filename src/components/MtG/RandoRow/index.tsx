@@ -13,9 +13,13 @@ class RandoRow extends Component<RandoRowProps, {}> {
   render() {
     return (
       <div className={styles.row}>
+        {this.props.iconClass && (
+          <div className={styles.icon}>
+            <i className={this.props.iconClass} />
+          </div>
+        )}
         <label className={styles.controlLabel} htmlFor={this.props.for}>
-          <i className={styles.icon + ' ' + this.props.iconClass} />
-          <div className={styles.label}>{this.props.label}</div>
+          {this.props.label}
         </label>
         <div className={styles.controlContainer} title={this.props.help}>
           {this.props.children}

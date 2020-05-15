@@ -44,7 +44,6 @@ interface MtGRandoState {
   signatureSpells: Card[]
   selectedSpell?: Card
   spellsLoading: boolean
-  randomIdentity: boolean
   selectedColors: string[]
   silverBorder: boolean
   maxCards: number
@@ -76,6 +75,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   constructor(props: {}) {
     super(props)
     this.selectCommander = this.selectCommander.bind(this)
+    this.selectPartner = this.selectPartner.bind(this)
     this.selectFormat = this.selectFormat.bind(this)
     this.formats = [
       {
@@ -143,7 +143,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       partnersLoading: false,
       signatureSpells: [],
       spellsLoading: false,
-      randomIdentity: true,
       selectedColors: ['W', 'U', 'B', 'R', 'G'],
       silverBorder: false,
       maxCards: 99,
@@ -320,6 +319,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   async getCommanders(variant: string) {
     this.setState({
       commanders: [],
+      selectedCommander: undefined,
       commandersLoading: true,
     })
 
@@ -339,6 +339,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   async getPartners(cmdrId: number) {
     this.setState({
       partners: [],
+      selectedPartner: undefined,
       partnersLoading: true,
     })
 
@@ -358,6 +359,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   async getSignatureSpells(obId: number) {
     this.setState({
       signatureSpells: [],
+      selectedSpell: undefined,
       spellsLoading: true,
     })
 
@@ -487,7 +489,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     this.setState({
       selectedCommander: newValue,
       selectedColors: newValue.colorIdentity,
-      randomIdentity: false,
     })
 
     if (this.state.selectedFormat.group === 'Commander') {
@@ -495,6 +496,20 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     } else if (this.state.selectedFormat.group === 'Oathbreaker') {
       this.getSignatureSpells(newValue.id)
     }
+  }
+
+  selectPartner(newValue: Card) {
+    const set = [
+      ...new Set([
+        ...(this.state.selectedCommander?.colorIdentity || []),
+        ...newValue.colorIdentity,
+      ]),
+    ]
+    
+    this.setState({
+      selectedPartner: newValue,
+      selectedColors: set,
+    })
   }
 
   render() {
@@ -516,23 +531,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           </RandoRow>
           <RandoRow label="Color Identity" iconClass="" help="">
             <div className="full-width">
-              <label>
-                <input
-                  type="checkbox"
-                  defaultChecked={this.state.randomIdentity}
-                  onChange={(e) =>
-                    this.setState({
-                      randomIdentity: e.target.checked,
-                      selectedColors: e.target.checked
-                        ? ['W', 'U', 'B', 'R', 'G']
-                        : [],
-                    })
-                  }
-                />
-                Random Color(s)
-              </label>
-              <br />
-              <br />
               <ColorSelect
                 selectedColors={this.state.selectedColors}
                 onChange={(params) => this.setState({ selectedColors: params })}
@@ -589,13 +587,13 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             <RandoRow label="Partner" iconClass="" help="">
               <div className="full-width">
                 <button
-                  onClick={() =>
-                    this.setState({
-                      selectedPartner: this.state.partners[
+                  onClick={() => {
+                    this.selectPartner(
+                      this.state.partners[
                         Math.floor(Math.random() * this.state.partners.length)
-                      ],
-                    })
-                  }
+                      ]
+                    )
+                  }}
                 >
                   Random Partner
                 </button>
@@ -615,9 +613,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   textField="name"
                   value={this.state.selectedPartner}
                   busy={this.state.partnersLoading}
-                  onChange={(newValue: Card) =>
-                    this.setState({ selectedPartner: newValue })
-                  }
+                  onChange={this.selectPartner}
                 ></DropdownList>
               </div>
             </RandoRow>
