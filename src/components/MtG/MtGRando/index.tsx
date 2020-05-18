@@ -30,6 +30,7 @@ interface Format {
   group: string
   name: string
   deckSize: number
+  allowSilver: boolean
 }
 
 interface MtGRandoState {
@@ -49,24 +50,26 @@ interface MtGRandoState {
   maxCards: number
   countParams: CountParam[]
   miscParams: CountParam[]
+  edhrecParams: CountParam[]
+  edhOnlyParams: CountParam[]
   rarities: Lookup[]
   selectedRarities: Lookup[]
   raritiesLoading: boolean
   sets: MtGSet[]
   selectedSets: MtGSet[]
   setsLoading: boolean
-  watermarks: Lookup[]
-  selectedWatermarks: Lookup[]
-  watermarksLoading: boolean
+  // watermarks: Lookup[]
+  // selectedWatermarks: Lookup[]
+  // watermarksLoading: boolean
   artists: Lookup[]
   selectedArtists: Lookup[]
   artistsLoading: boolean
   frames: Lookup[]
   selectedFrames: Lookup[]
   framesLoading: boolean
-  layouts: Lookup[]
-  selectedLayouts: Lookup[]
-  layoutsLoading: boolean
+  // layouts: Lookup[]
+  // selectedLayouts: Lookup[]
+  // layoutsLoading: boolean
 }
 
 class MtGRando extends React.Component<{}, MtGRandoState> {
@@ -82,56 +85,73 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         group: 'Commander',
         name: 'Commander',
         deckSize: 99,
+        allowSilver: true,
       },
       {
         group: 'Commander',
         name: 'Brawl',
         deckSize: 59,
+        allowSilver: false,
       },
       {
         group: 'Commander',
         name: 'Pauper',
         deckSize: 99,
+        allowSilver: true,
       },
       {
         group: 'Commander',
         name: 'Tiny Leaders',
         deckSize: 49,
+        allowSilver: true,
       },
       {
         group: 'Oathbreaker',
         name: 'Oathbreaker',
         deckSize: 58,
+        allowSilver: true,
       },
       {
         group: 'Normal MtG',
         name: 'Standard',
         deckSize: 60,
+        allowSilver: false,
       },
       {
         group: 'Normal MtG',
         name: 'Modern',
         deckSize: 60,
+        allowSilver: false,
       },
       {
         group: 'Normal MtG',
         name: 'Pioneer',
         deckSize: 60,
+        allowSilver: false,
       },
       {
         group: 'Normal MtG',
         name: 'Legacy',
         deckSize: 60,
+        allowSilver: false,
       },
       {
         group: 'Normal MtG',
         name: 'Vintage',
         deckSize: 60,
+        allowSilver: true,
       },
       {
         group: 'Normal MtG',
         name: 'Pauper',
         deckSize: 60,
+        allowSilver: true,
+      },
+      {
+        group: 'Normal MtG',
+        name: 'Penny Dreadful',
+        deckSize: 60,
+        allowSilver: true,
       },
     ]
     this.state = {
@@ -146,6 +166,20 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       selectedColors: ['W', 'U', 'B', 'R', 'G'],
       silverBorder: false,
       maxCards: 99,
+      edhrecParams: [
+        {
+          name: 'edhrecrank',
+          iconClass: 'ss ss-cmd',
+          label: 'EDHREC Rank Percentile',
+          help:
+            'The "goodness" range of the cards to pick. This value is relative to the pool of possible cards.',
+          enabled: true,
+          isRange: true,
+          range: [1, 100],
+          min: 1,
+          max: 100,
+        },
+      ],
       countParams: [
         {
           name: 'basicLands',
@@ -253,15 +287,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           count: 10,
         },
         {
-          name: 'sharesTypes',
-          iconClass: 'ms ms-infinity',
-          label: 'Shares a Creature Type with Commander(s)',
-          help:
-            'The MINIMUM number of cards to include that share at least one creature type with your commander. If this bar is maxed, the generator will attempt to make all applicable cards share at least one creature type.',
-          enabled: true,
-          count: 0,
-        },
-        {
           name: 'legendary',
           iconClass: 'ss ss-s99',
           label: 'Legendary',
@@ -282,17 +307,16 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           min: 0,
           max: 16,
         },
+      ],
+      edhOnlyParams: [
         {
-          name: 'edhrecrank',
-          iconClass: 'ss ss-cmd',
-          label: 'EDHREC Rank Percentile',
+          name: 'sharesTypes',
+          iconClass: 'ms ms-infinity',
+          label: 'Shares a Creature Type with Commander(s)',
           help:
-            'The "goodness" range of the cards to pick. This value is relative to the pool of possible cards.',
+            'The MINIMUM number of cards to include that share at least one creature type with your commander. If this bar is maxed, the generator will attempt to make all applicable cards share at least one creature type.',
           enabled: true,
-          isRange: true,
-          range: [1, 100],
-          min: 1,
-          max: 100,
+          count: 0,
         },
       ],
       rarities: [],
@@ -301,22 +325,22 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       sets: [],
       selectedSets: [],
       setsLoading: false,
-      watermarks: [],
-      selectedWatermarks: [],
-      watermarksLoading: false,
+      // watermarks: [],
+      // selectedWatermarks: [],
+      // watermarksLoading: false,
       artists: [],
       selectedArtists: [],
       artistsLoading: false,
       frames: [],
       selectedFrames: [],
       framesLoading: false,
-      layouts: [],
-      selectedLayouts: [],
-      layoutsLoading: false,
+      // layouts: [],
+      // selectedLayouts: [],
+      // layoutsLoading: false,
     }
   }
 
-  async getCommanders(variant: string) {
+  async getCommanders(variant: string, silverBorder: boolean) {
     this.setState({
       commanders: [],
       selectedCommander: undefined,
@@ -324,7 +348,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     })
 
     const response = await fetch(
-      `${process.env.GATSBY_API_URL}/MtG/Commanders?variant=${variant}`
+      `${process.env.GATSBY_API_URL}/MtG/Commanders?variant=${variant}&allowSilver=${silverBorder}`
     )
 
     if (response.ok) {
@@ -344,7 +368,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     })
 
     const response = await fetch(
-      `${process.env.GATSBY_API_URL}/MtG/Partners?cmdrId=${cmdrId}&variant=${this.state.selectedFormat.name}`
+      `${process.env.GATSBY_API_URL}/MtG/Partners?cmdrId=${cmdrId}&variant=${this.state.selectedFormat.name}&allowSilver=${this.state.silverBorder}`
     )
 
     if (response.ok) {
@@ -364,7 +388,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     })
 
     const response = await fetch(
-      `${process.env.GATSBY_API_URL}/MtG/SignatureSpells?obId=${obId}`
+      `${process.env.GATSBY_API_URL}/MtG/SignatureSpells?obId=${obId}&allowSilver=${this.state.silverBorder}`
     )
 
     if (response.ok) {
@@ -376,12 +400,14 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     }
   }
 
-  async getSets() {
+  async getSets(variant: string, silverBorder: boolean) {
     this.setState({
       setsLoading: true,
     })
 
-    const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Sets`)
+    const response = await fetch(
+      `${process.env.GATSBY_API_URL}/MtG/Sets?variant=${variant}&allowSilver=${silverBorder}`
+    )
 
     if (response.ok) {
       const data = await response.json()
@@ -392,21 +418,21 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     }
   }
 
-  async getWatermarks() {
-    this.setState({
-      watermarksLoading: true,
-    })
+  // async getWatermarks() {
+  //   this.setState({
+  //     watermarksLoading: true,
+  //   })
 
-    const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Watermarks`)
+  //   const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Watermarks`)
 
-    if (response.ok) {
-      const data = await response.json()
-      this.setState({
-        watermarks: data,
-        watermarksLoading: false,
-      })
-    }
-  }
+  //   if (response.ok) {
+  //     const data = await response.json()
+  //     this.setState({
+  //       watermarks: data,
+  //       watermarksLoading: false,
+  //     })
+  //   }
+  // }
 
   async getRarities() {
     this.setState({
@@ -440,35 +466,60 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     }
   }
 
-  async getLayouts() {
+  async getArtists() {
     this.setState({
-      layoutsLoading: true,
+      artistsLoading: true,
     })
 
-    const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Layouts`)
+    const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Artists`)
 
     if (response.ok) {
       const data = await response.json()
       this.setState({
-        layouts: data,
-        layoutsLoading: false,
+        artists: data,
+        artistsLoading: false,
       })
     }
   }
 
+  // async getLayouts() {
+  //   this.setState({
+  //     layoutsLoading: true,
+  //   })
+
+  //   const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Layouts`)
+
+  //   if (response.ok) {
+  //     const data = await response.json()
+  //     this.setState({
+  //       layouts: data,
+  //       layoutsLoading: false,
+  //     })
+  //   }
+  // }
+
   async componentDidMount() {
-    this.getSets()
-    this.getWatermarks()
+    //this.getWatermarks()
     this.getRarities()
-    this.getLayouts()
+    //this.getLayouts()
     this.getFrames()
     this.selectFormat()
+    this.getArtists()
   }
 
   selectFormat(newValue?: Format) {
     const format = newValue || this.formats[0]
+
+    this.setState({
+      selectedFormat: format,
+      selectedCommander: undefined,
+      selectedPartner: undefined,
+      selectedSpell: undefined,
+      silverBorder: this.state.silverBorder && format.allowSilver,
+    })
+
     if (format.group === 'Commander' || format.group === 'Oathbreaker') {
-      this.getCommanders(format.name)
+      this.getCommanders(format.name, this.state.silverBorder && format.allowSilver)
     } else {
       this.setState({
         commanders: [],
@@ -477,12 +528,21 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       })
     }
 
+    this.getSets(format.name, this.state.silverBorder && format.allowSilver);
+  }
+
+  toggleSilver(newValue: boolean) {
     this.setState({
-      selectedFormat: format,
-      selectedCommander: undefined,
-      selectedPartner: undefined,
-      selectedSpell: undefined,
+      silverBorder: newValue,
     })
+
+    this.getSets(this.state.selectedFormat.name, newValue)
+    if (
+      this.state.selectedFormat.group === 'Commander' ||
+      this.state.selectedFormat.group === 'Oathbreaker'
+    ) {
+      this.getCommanders(this.state.selectedFormat.name, newValue)
+    }
   }
 
   selectCommander(newValue: Card) {
@@ -505,7 +565,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         ...newValue.colorIdentity,
       ]),
     ]
-    
+
     this.setState({
       selectedPartner: newValue,
       selectedColors: set,
@@ -516,7 +576,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     return (
       <div className={styles.mtgContainerOuter}>
         <div className={`${styles.leftCol} gutter`}>
-          <RandoRow label="Format" iconClass="" help="">
+          <RandoRow label="Format" help="The format to generate a deck for.">
             <div className="full-width">
               <DropdownList
                 placeholder="Select a Format"
@@ -527,9 +587,21 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 value={this.state.selectedFormat}
                 onChange={this.selectFormat}
               ></DropdownList>
+              {this.state.selectedFormat.allowSilver && (
+                <label>
+                  <input
+                    type="checkbox"
+                    onChange={(e) => this.toggleSilver(e.target.checked)}
+                  ></input>
+                  Allow silver-bordered cards
+                </label>
+              )}
             </div>
           </RandoRow>
-          <RandoRow label="Color Identity" iconClass="" help="">
+          <RandoRow
+            label="Color Identity"
+            help="The color identity of cards allowed in the deck. Based on your Commander or Oathbreaker in those formats."
+          >
             <div className="full-width">
               <ColorSelect
                 selectedColors={this.state.selectedColors}
@@ -541,8 +613,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             this.state.selectedFormat.group === 'Oathbreaker') && (
             <RandoRow
               label={this.state.selectedFormat.group}
-              iconClass=""
-              help=""
+              help="Your deck's leader. Determines color identity. Leave blank ('Surprise me') to have a card of the selected colors picked for you."
             >
               <div className="full-width">
                 <div className="flex-container">
@@ -584,7 +655,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             </RandoRow>
           )}
           {this.state.partners.length > 0 && (
-            <RandoRow label="Partner" iconClass="" help="">
+            <RandoRow label="Partner" help="Your second commander.">
               <div className="full-width">
                 <button
                   onClick={() => {
@@ -619,7 +690,10 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             </RandoRow>
           )}
           {this.state.selectedFormat.group === 'Oathbreaker' && (
-            <RandoRow label="Signature Spell" iconClass="" help="">
+            <RandoRow
+              label="Signature Spell"
+              help="Your Oathbreaker's signature spell. You can cast the spell as long as your Oathbreaker is on the battlefield."
+            >
               <div className="full-width">
                 <button
                   onClick={() =>
@@ -657,11 +731,28 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               </div>
             </RandoRow>
           )}
+          {(this.state.selectedFormat.group === 'Commander' ||
+            this.state.selectedFormat.group === 'Oathbreaker') && (
+            <MtGSliderList
+              max={this.state.maxCards}
+              params={this.state.edhrecParams}
+              nonexclusive={true}
+              onChange={(params) => this.setState({ countParams: params })}
+            />
+          )}
           <MtGSliderList
             max={this.state.maxCards}
             params={this.state.countParams}
             onChange={(params) => this.setState({ countParams: params })}
           />
+          {this.state.selectedFormat.group === 'Commander' && (
+            <MtGSliderList
+              max={this.state.maxCards}
+              params={this.state.edhOnlyParams}
+              nonexclusive={true}
+              onChange={(params) => this.setState({ countParams: params })}
+            />
+          )}
           <MtGSliderList
             max={this.state.maxCards}
             params={this.state.miscParams}
@@ -705,7 +796,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               ></Multiselect>
             </div>
           </RandoRow>
-          <RandoRow iconClass="ss ss-izzet" help="" label="Watermarks">
+          {/* <RandoRow iconClass="ss ss-izzet" help="" label="Watermarks">
             <div className="full-width">
               <Multiselect
                 placeholder="Any/No Watermark"
@@ -718,7 +809,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 }
               ></Multiselect>
             </div>
-          </RandoRow>
+          </RandoRow> */}
           <RandoRow iconClass="ss ss-pbook" help="" label="Artists">
             <div className="full-width">
               <Multiselect
@@ -747,7 +838,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               ></Multiselect>
             </div>
           </RandoRow>
-          <RandoRow iconClass="ss ss-bcore" help="" label="Layouts">
+          {/* <RandoRow iconClass="ss ss-bcore" help="" label="Layouts">
             <div className="full-width">
               <Multiselect
                 placeholder="Any Layout"
@@ -760,7 +851,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 }
               ></Multiselect>
             </div>
-          </RandoRow>
+          </RandoRow> */}
           <RandoRow iconClass="ss ss-ugl" help="" label="Share Link">
             <input type="text" readOnly />
           </RandoRow>
