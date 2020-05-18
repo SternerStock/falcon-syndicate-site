@@ -11,8 +11,94 @@ interface CardPreviewProps {
 }
 
 class CardPreview extends Component<CardPreviewProps> {
+  symbolRegex: RegExp
+  loyaltyRegex: RegExp
+  reminderRegex: RegExp
+
   constructor(props: CardPreviewProps) {
     super(props)
+    this.symbolRegex = /\{([^}]+)\}/g
+    this.loyaltyRegex = /\[([^\]]+)\]/g
+    this.reminderRegex = /(\([^)]+\))/g
+  }
+
+  replaceManaSymbols(text: string) {
+    const symbolsToReplace = text.split(this.symbolRegex)
+
+    return (
+      <span>
+        {symbolsToReplace?.map((segment: string, index: number) => {
+          let className
+          if (segment === 'T') {
+            className = 'ms-tap'
+          } else if (segment.match(/(^[WUBRGCXYZPSE∞]$)|(^\d+$)/)) {
+            className = 'ms-' + segment.toLowerCase()
+          } else if (segment.match(/(^H[WUBRG]$)/)) {
+            className = 'ms-half ms-' + segment[1].toLowerCase()
+          } else if (segment === '½') {
+            className = 'ms-1-2'
+          } else if (segment.indexOf('/') === 1) {
+            className = 'ms-' + segment.replace('/', '').toLowerCase()
+          }
+
+          if (className) {
+            return (
+              <i
+                key={this.props.selectedCard?.id + '' + index}
+                className={`ms ms-cost ${className}`}
+              ></i>
+            )
+          } else {
+            return segment
+          }
+        })}
+      </span>
+    )
+  }
+
+  replaceReminderText(text: string) {
+    const parens = text.split(this.reminderRegex)
+
+    return (
+      <span>
+        {parens?.map((segment: string, index: number) => {
+          if (segment.startsWith('(') && segment.endsWith(')')) {
+            return <em>{segment}</em>
+          } else {
+            return segment
+          }
+        })}
+      </span>
+    )
+  }
+
+  replaceLoyalty(text: string) {
+    const parens = text.split(this.loyaltyRegex)
+
+    return (
+      <span>
+        {parens?.map((segment: string, index: number) => {
+          console.log(segment)
+          let className
+          if (segment.startsWith('+') || segment === '0') {
+            className = 'ms-loyalty-up'
+          } else if (segment.startsWith('−')) {
+            className = 'ms-loyalty-down'
+          } else {
+            return segment
+          }
+
+          className +=
+            ' ms-loyalty-' + segment.replace(/[+−]/, '').toLowerCase()
+          return (
+            <i
+              key={this.props.selectedCard?.id + '' + index}
+              className={`ms ${className}`}
+            ></i>
+          )
+        })}
+      </span>
+    )
   }
 
   render() {
@@ -31,12 +117,18 @@ class CardPreview extends Component<CardPreviewProps> {
           <div className={styles.oracle}>
             <div className={styles.nameRow}>
               <div>{this.props.selectedCard.name}</div>
-              <div>{this.props.selectedCard.manaCost}</div>
+              <div>
+                {this.replaceManaSymbols(this.props.selectedCard.manaCost)}
+              </div>
             </div>
             <div className={styles.typeline}>
               {this.props.selectedCard.typeLine}
             </div>
-            <div>{this.props.selectedCard.oracleText}</div>
+            <div>
+              {this.props.selectedCard.typeLine.indexOf('Planeswalker') > -1
+                ? this.replaceLoyalty(this.props.selectedCard.oracleText)
+                : this.replaceManaSymbols(this.props.selectedCard.oracleText)}
+            </div>
             <div className={styles.flavorText}>
               {this.props.selectedCard.flavorText}
             </div>
