@@ -2,12 +2,15 @@
   "name": "falcon-syndicate-site",
   "description": "Falcon Syndicate Site",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/SternerStock/falcon-syndicate-site.git"
+  },
   "author": "Corey Laird <lairdcc@gmail.com>",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@saeris/typeface-beleren-bold": "^1.0.1",
     "@svgr/webpack": "^5.4.0",
-    "acorn": "^7.2.0",
     "gatsby": "^2.21.31",
     "gatsby-plugin-react-helmet": "^3.3.1",
     "gatsby-plugin-svgr": "^2.0.2",
@@ -25,12 +28,17 @@
     "react-dom": "^16.13.1",
     "react-helmet": "^6.0.0",
     "react-scrollable-anchor": "^0.6.1",
-    "react-widgets": "^4.5.0"
+    "react-string-replace": "^0.4.4",
+    "react-widgets": "^4.5.0",
+    "react-refresh": "^0.8.2",
+    "acorn": "^6.0.0"
   },
   "keywords": [
     "gatsby",
     "MtG",
-    "Magic"
+    "Magic",
+    "Commander",
+    "EDH"
   ],
   "license": "MIT",
   "scripts": {
@@ -45,15 +53,13 @@
     "@types/react-helmet": "^6.0.0",
     "@types/react-scrollable-anchor": "^0.6.0",
     "@types/react-widgets": "^4.4.2",
-    "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^2.33.0",
     "babel-preset-gatsby": "^0.4.2",
-    "eslint": "^7.0.0",
-    "eslint-plugin-flowtype": "^4.7.0",
     "gatsby-cli": "^2.12.21",
     "gatsby-plugin-scss-typescript": "^4.0.10",
     "gatsby-plugin-typescript": "^2.4.2",
     "prettier": "^2.0.5",
-    "typescript": "^3.9.2"
+    "typescript": "^3.9.2",
+    "eslint": "^6.0.0",
+    "eslint-plugin-flowtype": "^4.0.0"
   }
 }
