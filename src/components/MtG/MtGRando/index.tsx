@@ -9,6 +9,7 @@ import Collapsible from 'react-collapsible'
 
 import '../../../styles-global/react-widgets-theme.scss'
 import styles from './styles.module.scss'
+import 'keyrune'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faPlus,
@@ -773,11 +774,30 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   onChange={(newValue: MtGSet[]) =>
                     this.setState({ selectedSets: newValue })
                   }
+                  itemComponent={({ item }) => (
+                    <div>
+                      <i
+                        className={'ss ss-' + item.keyruneCode.toLowerCase()}
+                      ></i>{' '}
+                      {item.name}
+                    </div>
+                  )}
+                  tagComponent={({ item }) => (
+                    <div>
+                      <i
+                        className={'ss ss-' + item.keyruneCode.toLowerCase()}
+                      ></i>{' '}
+                      {item.code}
+                    </div>
+                  )}
                 ></Multiselect>
               </div>
             </RandoRow>
             <RandoRow
-              iconClass="ss ss-htr"
+              iconClass={
+                'ss ss-' + this.state.sets[0]?.keyruneCode.toLowerCase() ||
+                'htr'
+              }
               help="The rarities of cards to use."
               label="Rarities"
             >
@@ -791,6 +811,31 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   onChange={(newValue: Lookup[]) =>
                     this.setState({ selectedRarities: newValue })
                   }
+                  itemComponent={({ item }) => (
+                    <div>
+                      <i
+                        className={
+                          'ss ss-' +
+                          (this.state.sets[0]?.keyruneCode.toLowerCase() ||
+                            'htr') +
+                          ' ss-grad ss-' +
+                          item.name.toLowerCase()
+                        }
+                      ></i>{' '}
+                      {item.name}
+                    </div>
+                  )}
+                  tagComponent={({ item }) => (
+                    <div>
+                      <i
+                        className={'ss ss-' +
+                        (this.state.sets[0]?.keyruneCode.toLowerCase() ||
+                          'htr') +
+                        ' ss-grad ss-' + item.name.toLowerCase()}
+                      ></i>{' '}
+                      {item.name}
+                    </div>
+                  )}
                 ></Multiselect>
               </div>
             </RandoRow>

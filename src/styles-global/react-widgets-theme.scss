@@ -18,4 +18,7 @@ $input-color-placeholder: $off-white;
 $state-bg-select: $bg-control-primary;
 $state-border-focus: lighten($bg-control-primary, 20%);
 
+$multiselect-tag-bg: $off-white;
+$multiselect-tag-color: $dark-gray;
+
 @import '~react-widgets/lib/scss/react-widgets';
