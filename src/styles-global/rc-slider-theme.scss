@@ -1,0 +1,23 @@
+@import 'variables';
+
+.rc-slider {
+    height: 1.5em;
+    padding: .25em 0;
+    margin-left: 10px;
+}
+
+.rc-slider-rail, .rc-slider-track {
+    height: .5em;
+}
+
+.rc-slider-track {
+    background-color: lighten($bg-control-primary, 20%);
+}
+
+.rc-slider-handle {
+    border-color: lighten($bg-control-primary, 20%);
+    border-width: .5em;
+    width: 1.5em;
+    height: 1.5em;
+    margin-top: -.5em;
+}

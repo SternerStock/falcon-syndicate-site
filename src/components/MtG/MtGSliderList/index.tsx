@@ -5,6 +5,7 @@ import RandoRow from '../RandoRow'
 
 import 'rc-slider/assets/index.css'
 import styles from './styles.module.scss'
+import '../../../styles-global/rc-slider-theme.scss';
 import 'keyrune'
 
 const SliderWithTooltip = createSliderWithTooltip(Slider)

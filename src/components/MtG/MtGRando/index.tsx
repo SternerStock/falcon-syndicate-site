@@ -1,15 +1,21 @@
 import React, { Component } from 'react'
 import CardPreview from '../CardPreview'
 import MtGSliderList from '../MtGSliderList'
+import ColorSelect from '../ColorSelect'
 import RandoRow from '../RandoRow'
 import DropdownList from 'react-widgets/lib/DropdownList'
 import Multiselect from 'react-widgets/lib/Multiselect'
+import Collapsible from 'react-collapsible'
 
-import 'react-widgets/lib/scss/react-widgets.scss'
+import '../../../styles-global/react-widgets-theme.scss'
 import styles from './styles.module.scss'
-import 'mana-font'
-import 'keyrune'
-import ColorSelect from '../ColorSelect'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faPlus,
+  faMinus,
+  faTimes,
+  faRandom,
+} from '@fortawesome/free-solid-svg-icons'
 
 interface RandoRequest {
   deckType: string
@@ -58,18 +64,14 @@ interface MtGRandoState {
   sets: MtGSet[]
   selectedSets: MtGSet[]
   setsLoading: boolean
-  // watermarks: Lookup[]
-  // selectedWatermarks: Lookup[]
-  // watermarksLoading: boolean
   artists: Lookup[]
   selectedArtists: Lookup[]
   artistsLoading: boolean
   frames: Lookup[]
   selectedFrames: Lookup[]
   framesLoading: boolean
-  // layouts: Lookup[]
-  // selectedLayouts: Lookup[]
-  // layoutsLoading: boolean
+  restrictionsOpen: boolean
+  cardTypesOpen: boolean
 }
 
 class MtGRando extends React.Component<{}, MtGRandoState> {
@@ -325,18 +327,14 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       sets: [],
       selectedSets: [],
       setsLoading: false,
-      // watermarks: [],
-      // selectedWatermarks: [],
-      // watermarksLoading: false,
       artists: [],
       selectedArtists: [],
       artistsLoading: false,
       frames: [],
       selectedFrames: [],
       framesLoading: false,
-      // layouts: [],
-      // selectedLayouts: [],
-      // layoutsLoading: false,
+      restrictionsOpen: false,
+      cardTypesOpen: false,
     }
   }
 
@@ -418,22 +416,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     }
   }
 
-  // async getWatermarks() {
-  //   this.setState({
-  //     watermarksLoading: true,
-  //   })
-
-  //   const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Watermarks`)
-
-  //   if (response.ok) {
-  //     const data = await response.json()
-  //     this.setState({
-  //       watermarks: data,
-  //       watermarksLoading: false,
-  //     })
-  //   }
-  // }
-
   async getRarities() {
     this.setState({
       raritiesLoading: true,
@@ -482,26 +464,8 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     }
   }
 
-  // async getLayouts() {
-  //   this.setState({
-  //     layoutsLoading: true,
-  //   })
-
-  //   const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/Layouts`)
-
-  //   if (response.ok) {
-  //     const data = await response.json()
-  //     this.setState({
-  //       layouts: data,
-  //       layoutsLoading: false,
-  //     })
-  //   }
-  // }
-
   async componentDidMount() {
-    //this.getWatermarks()
     this.getRarities()
-    //this.getLayouts()
     this.getFrames()
     this.selectFormat()
     this.getArtists()
@@ -514,21 +478,24 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       selectedFormat: format,
       selectedCommander: undefined,
       selectedPartner: undefined,
+      partners: [],
+      signatureSpells: [],
       selectedSpell: undefined,
       silverBorder: this.state.silverBorder && format.allowSilver,
     })
 
     if (format.group === 'Commander' || format.group === 'Oathbreaker') {
-      this.getCommanders(format.name, this.state.silverBorder && format.allowSilver)
+      this.getCommanders(
+        format.name,
+        this.state.silverBorder && format.allowSilver
+      )
     } else {
       this.setState({
         commanders: [],
-        partners: [],
-        signatureSpells: [],
       })
     }
 
-    this.getSets(format.name, this.state.silverBorder && format.allowSilver);
+    this.getSets(format.name, this.state.silverBorder && format.allowSilver)
   }
 
   toggleSilver(newValue: boolean) {
@@ -545,37 +512,61 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     }
   }
 
-  selectCommander(newValue: Card) {
-    this.setState({
-      selectedCommander: newValue,
-      selectedColors: newValue.colorIdentity,
-    })
+  selectCommander(newValue?: Card) {
+    if (newValue) {
+      this.setState({
+        selectedCommander: newValue,
+        selectedColors: newValue.colorIdentity,
+      })
 
-    if (this.state.selectedFormat.group === 'Commander') {
-      this.getPartners(newValue.id)
-    } else if (this.state.selectedFormat.group === 'Oathbreaker') {
-      this.getSignatureSpells(newValue.id)
+      if (this.state.selectedFormat.group === 'Commander') {
+        this.getPartners(newValue.id)
+      } else if (this.state.selectedFormat.group === 'Oathbreaker') {
+        this.getSignatureSpells(newValue.id)
+      }
+    } else {
+      this.setState({
+        selectedCommander: undefined,
+        selectedPartner: undefined,
+        selectedColors: ['W', 'U', 'B', 'R', 'G'],
+        partners: [],
+        signatureSpells: [],
+      })
     }
   }
 
-  selectPartner(newValue: Card) {
-    const set = [
-      ...new Set([
-        ...(this.state.selectedCommander?.colorIdentity || []),
-        ...newValue.colorIdentity,
-      ]),
-    ]
+  selectPartner(newValue?: Card) {
+    if (newValue) {
+      const colors = [
+        ...new Set([
+          ...(this.state.selectedCommander?.colorIdentity || []),
+          ...newValue.colorIdentity,
+        ]),
+      ]
 
-    this.setState({
-      selectedPartner: newValue,
-      selectedColors: set,
-    })
+      this.setState({
+        selectedPartner: newValue,
+        selectedColors: colors,
+      })
+    } else {
+      this.setState({
+        selectedPartner: undefined,
+        selectedColors: this.state.selectedCommander?.colorIdentity || [
+          'W',
+          'U',
+          'B',
+          'R',
+          'G',
+        ],
+      })
+    }
   }
 
   render() {
     return (
       <div className={styles.mtgContainerOuter}>
         <div className={`${styles.leftCol} gutter`}>
+          <h2 className="beleren">Format</h2>
           <RandoRow label="Format" help="The format to generate a deck for.">
             <div className="full-width">
               <DropdownList
@@ -588,13 +579,15 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 onChange={this.selectFormat}
               ></DropdownList>
               {this.state.selectedFormat.allowSilver && (
-                <label>
-                  <input
-                    type="checkbox"
-                    onChange={(e) => this.toggleSilver(e.target.checked)}
-                  ></input>
-                  Allow silver-bordered cards
-                </label>
+                <div style={{ margin: '5px 0' }}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      onChange={(e) => this.toggleSilver(e.target.checked)}
+                    ></input>{' '}
+                    Allow silver-bordered cards
+                  </label>
+                </div>
               )}
             </div>
           </RandoRow>
@@ -605,7 +598,11 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             <div className="full-width">
               <ColorSelect
                 selectedColors={this.state.selectedColors}
-                onChange={(params) => this.setState({ selectedColors: params })}
+                onChange={(params) => {
+                  if (!this.state.selectedCommander) {
+                    this.setState({ selectedColors: params })
+                  }
+                }}
               />
             </div>
           </RandoRow>
@@ -616,30 +613,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               help="Your deck's leader. Determines color identity. Leave blank ('Surprise me') to have a card of the selected colors picked for you."
             >
               <div className="full-width">
-                <div className="flex-container">
-                  <button
-                    onClick={() =>
-                      this.selectCommander(
-                        this.state.commanders[
-                          Math.floor(
-                            Math.random() * this.state.commanders.length
-                          )
-                        ]
-                      )
-                    }
-                  >
-                    Random {this.state.selectedFormat.group}
-                  </button>
-                  <button
-                    onClick={() =>
-                      this.setState({
-                        selectedCommander: undefined,
-                      })
-                    }
-                  >
-                    Clear
-                  </button>
-                </div>
                 <DropdownList
                   placeholder="Surprise Me"
                   filter="contains"
@@ -651,32 +624,35 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   }
                   onChange={this.selectCommander}
                 ></DropdownList>
+                <button
+                  className={styles.btnClearOverlay}
+                  onClick={() => this.selectCommander()}
+                >
+                  <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
+                </button>
+                <div>
+                  <button
+                    className={styles.btnPrimary}
+                    onClick={() =>
+                      this.selectCommander(
+                        this.state.commanders[
+                          Math.floor(
+                            Math.random() * this.state.commanders.length
+                          )
+                        ]
+                      )
+                    }
+                  >
+                    <FontAwesomeIcon icon={faRandom}></FontAwesomeIcon> Random{' '}
+                    {this.state.selectedFormat.group}
+                  </button>
+                </div>
               </div>
             </RandoRow>
           )}
           {this.state.partners.length > 0 && (
             <RandoRow label="Partner" help="Your second commander.">
               <div className="full-width">
-                <button
-                  onClick={() => {
-                    this.selectPartner(
-                      this.state.partners[
-                        Math.floor(Math.random() * this.state.partners.length)
-                      ]
-                    )
-                  }}
-                >
-                  Random Partner
-                </button>
-                <button
-                  onClick={() =>
-                    this.setState({
-                      selectedPartner: undefined,
-                    })
-                  }
-                >
-                  Clear
-                </button>
                 <DropdownList
                   placeholder="Surprise Me"
                   filter="contains"
@@ -686,6 +662,27 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   busy={this.state.partnersLoading}
                   onChange={this.selectPartner}
                 ></DropdownList>
+                <button
+                  className={styles.btnClearOverlay}
+                  onClick={() => this.selectPartner()}
+                >
+                  <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
+                </button>
+                <div>
+                  <button
+                    className={styles.btnPrimary}
+                    onClick={() => {
+                      this.selectPartner(
+                        this.state.partners[
+                          Math.floor(Math.random() * this.state.partners.length)
+                        ]
+                      )
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faRandom}></FontAwesomeIcon> Random
+                    Partner
+                  </button>
+                </div>
               </div>
             </RandoRow>
           )}
@@ -695,28 +692,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               help="Your Oathbreaker's signature spell. You can cast the spell as long as your Oathbreaker is on the battlefield."
             >
               <div className="full-width">
-                <button
-                  onClick={() =>
-                    this.setState({
-                      selectedSpell: this.state.signatureSpells[
-                        Math.floor(
-                          Math.random() * this.state.signatureSpells.length
-                        )
-                      ],
-                    })
-                  }
-                >
-                  Random Signature Spell
-                </button>
-                <button
-                  onClick={() =>
-                    this.setState({
-                      selectedSpell: undefined,
-                    })
-                  }
-                >
-                  Clear
-                </button>
                 <DropdownList
                   placeholder="Surprise Me"
                   filter="contains"
@@ -728,152 +703,187 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                     this.setState({ selectedSpell: newValue })
                   }
                 ></DropdownList>
+                <button
+                  className={styles.btnClearOverlay}
+                  onClick={() =>
+                    this.setState({
+                      selectedSpell: undefined,
+                    })
+                  }
+                >
+                  <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
+                </button>
+                <div>
+                  <button
+                    className={styles.btnPrimary}
+                    onClick={() =>
+                      this.setState({
+                        selectedSpell: this.state.signatureSpells[
+                          Math.floor(
+                            Math.random() * this.state.signatureSpells.length
+                          )
+                        ],
+                      })
+                    }
+                  >
+                    <FontAwesomeIcon icon={faRandom}></FontAwesomeIcon> Random
+                    Signature Spell
+                  </button>
+                </div>
               </div>
             </RandoRow>
           )}
-          {(this.state.selectedFormat.group === 'Commander' ||
-            this.state.selectedFormat.group === 'Oathbreaker') && (
+          <Collapsible
+            trigger={
+              <div className={styles.collapsibleHeader}>
+                <h2 className="beleren">Restrictions</h2>
+                <FontAwesomeIcon
+                  icon={this.state.restrictionsOpen ? faMinus : faPlus}
+                  size="2x"
+                ></FontAwesomeIcon>
+              </div>
+            }
+            onOpen={() => this.setState({ restrictionsOpen: true })}
+            onClose={() => this.setState({ restrictionsOpen: false })}
+            easing="ease-in-out"
+            overflowWhenOpen="visible"
+          >
+            {(this.state.selectedFormat.group === 'Commander' ||
+              this.state.selectedFormat.group === 'Oathbreaker') && (
+              <MtGSliderList
+                max={this.state.maxCards}
+                params={this.state.edhrecParams}
+                nonexclusive={true}
+                onChange={(params) => this.setState({ countParams: params })}
+              />
+            )}
+            <RandoRow
+              iconClass="ss ss-pmtg1"
+              help="The sets that cards should be drawn from."
+              label="Sets"
+            >
+              <div className="full-width">
+                <Multiselect
+                  placeholder="Any Set"
+                  filter="contains"
+                  data={this.state.sets}
+                  textField={(s) => s.name}
+                  value={this.state.selectedSets}
+                  busy={this.state.setsLoading}
+                  onChange={(newValue: MtGSet[]) =>
+                    this.setState({ selectedSets: newValue })
+                  }
+                ></Multiselect>
+              </div>
+            </RandoRow>
+            <RandoRow
+              iconClass="ss ss-htr"
+              help="The rarities of cards to use."
+              label="Rarities"
+            >
+              <div className="full-width">
+                <Multiselect
+                  placeholder="Any Rarity"
+                  filter="contains"
+                  data={this.state.rarities}
+                  textField={(r) => r.name}
+                  busy={this.state.raritiesLoading}
+                  onChange={(newValue: Lookup[]) =>
+                    this.setState({ selectedRarities: newValue })
+                  }
+                ></Multiselect>
+              </div>
+            </RandoRow>
+            <RandoRow iconClass="ss ss-pbook" help="" label="Artists">
+              <div className="full-width">
+                <Multiselect
+                  placeholder="Any Artist"
+                  filter="contains"
+                  data={this.state.artists}
+                  textField={(r) => r.name}
+                  busy={this.state.artistsLoading}
+                  onChange={(newValue: Lookup[]) =>
+                    this.setState({ selectedArtists: newValue })
+                  }
+                ></Multiselect>
+              </div>
+            </RandoRow>
+            <RandoRow iconClass="ss ss-bcore" help="" label="Frames">
+              <div className="full-width">
+                <Multiselect
+                  placeholder="Any Frame Style"
+                  filter="contains"
+                  data={this.state.frames}
+                  textField={(r) => r.name}
+                  busy={this.state.framesLoading}
+                  onChange={(newValue: Lookup[]) =>
+                    this.setState({ selectedFrames: newValue })
+                  }
+                ></Multiselect>
+              </div>
+            </RandoRow>
+          </Collapsible>
+          <Collapsible
+            trigger={
+              <div className={styles.collapsibleHeader}>
+                <h2 className="beleren">Card Types</h2>
+                <FontAwesomeIcon
+                  icon={this.state.cardTypesOpen ? faMinus : faPlus}
+                  size="2x"
+                ></FontAwesomeIcon>
+              </div>
+            }
+            onOpen={() => this.setState({ cardTypesOpen: true })}
+            onClose={() => this.setState({ cardTypesOpen: false })}
+            easing="ease-in-out"
+            overflowWhenOpen="visible"
+          >
+            <div>
+              {`Cards: ${this.state.countParams.reduce(
+                (total, param) => total + (param.count || 0),
+                0
+              )} / ${this.state.maxCards}`}
+            </div>
             <MtGSliderList
               max={this.state.maxCards}
-              params={this.state.edhrecParams}
-              nonexclusive={true}
+              params={this.state.countParams}
               onChange={(params) => this.setState({ countParams: params })}
             />
-          )}
-          <MtGSliderList
-            max={this.state.maxCards}
-            params={this.state.countParams}
-            onChange={(params) => this.setState({ countParams: params })}
-          />
-          {this.state.selectedFormat.group === 'Commander' && (
+            {this.state.selectedFormat.group === 'Commander' && (
+              <MtGSliderList
+                max={this.state.maxCards}
+                params={this.state.edhOnlyParams}
+                nonexclusive={true}
+                onChange={(params) => this.setState({ countParams: params })}
+              />
+            )}
             <MtGSliderList
-              max={this.state.maxCards}
-              params={this.state.edhOnlyParams}
+              max={
+                this.state.maxCards -
+                (this.state.countParams.find((p) => p.name === 'basicLands')
+                  ?.count || 0)
+              }
+              params={this.state.miscParams}
               nonexclusive={true}
-              onChange={(params) => this.setState({ countParams: params })}
+              onChange={(params) => this.setState({ miscParams: params })}
             />
-          )}
-          <MtGSliderList
-            max={this.state.maxCards}
-            params={this.state.miscParams}
-            nonexclusive={true}
-            onChange={(params) => this.setState({ miscParams: params })}
-          />
-          <RandoRow
-            iconClass="ss ss-pmtg1"
-            help="The sets that cards should be drawn from."
-            label="Sets"
-          >
-            <div className="full-width">
-              <Multiselect
-                placeholder="Any Set"
-                filter="contains"
-                data={this.state.sets}
-                textField={(s) => s.name}
-                value={this.state.selectedSets}
-                busy={this.state.setsLoading}
-                onChange={(newValue: MtGSet[]) =>
-                  this.setState({ selectedSets: newValue })
-                }
-              ></Multiselect>
-            </div>
-          </RandoRow>
-          <RandoRow
-            iconClass="ss ss-htr"
-            help="The rarities of cards to use."
-            label="Rarities"
-          >
-            <div className="full-width">
-              <Multiselect
-                placeholder="Any Rarity"
-                filter="contains"
-                data={this.state.rarities}
-                textField={(r) => r.name}
-                busy={this.state.raritiesLoading}
-                onChange={(newValue: Lookup[]) =>
-                  this.setState({ selectedRarities: newValue })
-                }
-              ></Multiselect>
-            </div>
-          </RandoRow>
-          {/* <RandoRow iconClass="ss ss-izzet" help="" label="Watermarks">
-            <div className="full-width">
-              <Multiselect
-                placeholder="Any/No Watermark"
-                filter="contains"
-                data={this.state.watermarks}
-                textField={(r) => r.name}
-                busy={this.state.watermarksLoading}
-                onChange={(newValue: Lookup[]) =>
-                  this.setState({ selectedWatermarks: newValue })
-                }
-              ></Multiselect>
-            </div>
-          </RandoRow> */}
-          <RandoRow iconClass="ss ss-pbook" help="" label="Artists">
-            <div className="full-width">
-              <Multiselect
-                placeholder="Any Artist"
-                filter="contains"
-                data={this.state.artists}
-                textField={(r) => r.name}
-                busy={this.state.artistsLoading}
-                onChange={(newValue: Lookup[]) =>
-                  this.setState({ selectedArtists: newValue })
-                }
-              ></Multiselect>
-            </div>
-          </RandoRow>
-          <RandoRow iconClass="ss ss-bcore" help="" label="Frames">
-            <div className="full-width">
-              <Multiselect
-                placeholder="Any Frame Style"
-                filter="contains"
-                data={this.state.frames}
-                textField={(r) => r.name}
-                busy={this.state.framesLoading}
-                onChange={(newValue: Lookup[]) =>
-                  this.setState({ selectedFrames: newValue })
-                }
-              ></Multiselect>
-            </div>
-          </RandoRow>
-          {/* <RandoRow iconClass="ss ss-bcore" help="" label="Layouts">
-            <div className="full-width">
-              <Multiselect
-                placeholder="Any Layout"
-                filter="contains"
-                data={this.state.layouts}
-                textField={(r) => r.name}
-                busy={this.state.layoutsLoading}
-                onChange={(newValue: Lookup[]) =>
-                  this.setState({ selectedLayouts: newValue })
-                }
-              ></Multiselect>
-            </div>
-          </RandoRow> */}
-          <RandoRow iconClass="ss ss-ugl" help="" label="Share Link">
+          </Collapsible>
+          <RandoRow iconClass="ss ss-ugl" help="" label="Share Settings Link">
             <input type="text" readOnly />
           </RandoRow>
         </div>
         <div className={`${styles.rightCol} gutter`}>
-          <div>
-            {`Cards: ${this.state.countParams.reduce(
-              (total, param) => total + (param.count || 0),
-              0
-            )} / ${this.state.maxCards}`}
-          </div>
           {this.state.selectedFormat.group === 'Commander' ? (
             <div className={styles.cmdrPreview}>
               <div>
-                <h3>Commander</h3>
+                <h3 className="beleren">Commander</h3>
                 <CardPreview
                   selectedCard={this.state.selectedCommander}
                 ></CardPreview>
               </div>
               {this.state.selectedPartner && (
                 <div>
-                  <h3>Partner</h3>
+                  <h3 className="beleren">Partner</h3>
                   <CardPreview
                     selectedCard={this.state.selectedPartner}
                   ></CardPreview>
@@ -883,13 +893,13 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           ) : this.state.selectedFormat.group === 'Oathbreaker' ? (
             <div className={styles.cmdrPreview}>
               <div>
-                <h3>Oathbreaker</h3>
+                <h3 className="beleren">Oathbreaker</h3>
                 <CardPreview
                   selectedCard={this.state.selectedCommander}
                 ></CardPreview>
               </div>
               <div>
-                <h3>Signature Spell</h3>
+                <h3 className="beleren">Signature Spell</h3>
                 <CardPreview
                   selectedCard={this.state.selectedSpell}
                 ></CardPreview>

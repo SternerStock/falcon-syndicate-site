@@ -4,6 +4,11 @@ import { Link } from 'gatsby'
 import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor'
 import TwitchHost from '../components/TwitchHost'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faChevronDown,
+} from '@fortawesome/free-solid-svg-icons'
+
 import { ReactComponent as SplashImg } from '../img/knee.svg'
 import { ReactComponent as TwitchLogo } from '../img/twitchLogo.svg'
 import minecraftLogoUrl from '../img/minecraftIcon.png'
@@ -17,7 +22,7 @@ const IndexPage = () => (
         <h1 className="splash__title">You better be playing Falcon!</h1>
         <SplashImg className="splash__bg-img" />
         <a href="#body" className="splash__down">
-          <i className="fas fa-chevron-down" />
+          <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
         </a>
       </div>
       <ScrollableAnchor id="body">

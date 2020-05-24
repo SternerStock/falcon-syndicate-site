@@ -1,5 +1,9 @@
+@import '../../../styles-global/variables';
+
 .manaCheckbox {
     margin-right: 5px;
+    cursor: pointer;
+    transition: filter $action-anim-delay ease-in-out;
 
     input[type="checkbox"]{
         display: none;
@@ -7,10 +11,14 @@
 
     i {
         opacity: 0.5;
-        transition: opacity 200ms;
+        transition: opacity $action-anim-delay ease-in-out;
 
         &.selected {
             opacity: 1;
         }
+    }
+
+    &:hover {
+        filter: brightness(130%);
     }
 }

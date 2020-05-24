@@ -9,6 +9,10 @@ $bg-page: $dark-gray;
 $bg-content-primary: $off-white;
 $bg-content-secondary: $falcon-purple;
 
+$bg-control-primary: rgb(40, 65, 91);
+$text-control-primary: #fff;
+$border-control-primary: darken($bg-control-primary, 10%);
+
 $text-page: #fff;
 $text-content-primary: $dark-gray;
 $text-content-primary-header: #000;
@@ -27,6 +31,7 @@ $nav-height: 48px;
 $gutter: 20px;
 
 $anim-delay: 500ms;
+$action-anim-delay: 200ms;
 
 $button-color: $falcon-red;
 $button-width: $nav-height;

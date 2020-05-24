@@ -217,30 +217,16 @@ iframe {
 
 .full-width {
     width: 100%;
+    position: relative;
 }
 
-// .flex-row {
-//   margin: 10px 0;
-//   display: flex;
-//   justify-content: space-between;
+.beleren {
+  font-family: 'Beleren Bold', Arial, sans-serif;
+}
 
-//   & > * {
-//     flex: 1;
-//   }
-
-//   .form-group {
-//     &.form-group-sm {
-//       max-width: 300px;
-//     }
-
-//     label {
-//       display: block;
-//       font-weight: bold;
-//       margin-top: 5px;
-//       margin-bottom: 2px;
-//     }
-//   }
-// }
+.mPlantin {
+  font-family: MPlantin, 'Times New Roman', serif;
+}
 
 @media all and (max-width: 800px) {
   .flex-container--rows {

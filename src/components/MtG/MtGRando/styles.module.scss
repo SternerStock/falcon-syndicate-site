@@ -1,8 +1,11 @@
 @import '../../../styles-global/variables';
+@import '../../../styles-global/mixins';
+
 
 .mtg-container-outer {
   display: flex;
   flex-wrap: wrap;
+  padding-bottom: $gutter;
 
   .left-col {
     flex: 3;
@@ -17,4 +20,40 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+}
+
+.collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @include control-primary;
+  border: none;
+  padding: 0 $gutter;
+  margin-left: -$gutter;
+  margin-right: -$gutter;
+  margin-top: $gutter;
+}
+
+.btn-primary {
+  @include control-primary;
+  margin: 5px 0;
+  padding: 5px 10px;
+}
+
+.btn-clear-overlay {
+  position: absolute;
+  top: 0.71em;
+  right: 2em;
+  background: transparent;
+  border: none;
+  color: $off-white;
+  width: 1em;
+  height: 1em;
+  padding: 0;
+  cursor: pointer;
+  transition: color $action-anim-delay ease-in-out;
+
+  &:hover {
+    color: lighten($off-white, 10%);
+  }
 }
