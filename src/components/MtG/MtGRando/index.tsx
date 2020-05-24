@@ -56,9 +56,9 @@ interface MtGRandoState {
   silverBorder: boolean
   maxCards: number
   countParams: CountParam[]
-  miscParams: CountParam[]
-  edhrecParams: CountParam[]
-  edhOnlyParams: CountParam[]
+  nonbasicParams: CountParam[]
+  restrictionParams: CountParam[]
+  creatureTypeParams: CountParam[]
   rarities: Lookup[]
   selectedRarities: Lookup[]
   raritiesLoading: boolean
@@ -169,24 +169,35 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       selectedColors: ['W', 'U', 'B', 'R', 'G'],
       silverBorder: false,
       maxCards: 99,
-      edhrecParams: [
+      restrictionParams: [
         {
           name: 'edhrecrank',
-          iconClass: 'ss ss-cmd',
+          iconClass: 'ss ss-cmd ss-2x',
           label: 'EDHREC Rank Percentile',
           help:
             'The "goodness" range of the cards to pick. This value is relative to the pool of possible cards.',
-          enabled: true,
           isRange: true,
           range: [1, 100],
           min: 1,
           max: 100,
+          showForFormats: ['Commander', 'Oathbreaker'],
+        },
+        {
+          name: 'cmc',
+          iconClass: 'ms ms-x ms-2x',
+          label: 'Converted Mana Cost Range',
+          help:
+            'The range of values within which all converted mana costs must sit.',
+          isRange: true,
+          range: [0, 16],
+          min: 0,
+          max: 16,
         },
       ],
       countParams: [
         {
           name: 'basicLands',
-          iconClass: 'ms ms-land',
+          iconClass: 'ms ms-land ms-2x',
           label: 'Basic Lands',
           help:
             'The EXACT number of basic lands to include in the generated deck.',
@@ -195,7 +206,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'nonbasicLands',
-          iconClass: 'ms ms-land',
+          iconClass: 'ms ms-land ms-2x',
           label: 'Nonbasic Lands',
           help:
             'The EXACT number of nonbasic lands to include in the generated deck.',
@@ -204,7 +215,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'creatures',
-          iconClass: 'ms ms-creature',
+          iconClass: 'ms ms-creature ms-2x',
           label: 'Creatures',
           help:
             'The MINIMUM number of creatures to include in the generated deck.',
@@ -213,7 +224,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'artifacts',
-          iconClass: 'ms ms-artifact',
+          iconClass: 'ms ms-artifact ms-2x',
           label: 'Artifacts',
           help:
             'The MINIMUM number of artifacts to include in the generated deck.',
@@ -222,7 +233,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           children: [
             {
               name: 'equipment',
-              iconClass: 'ms ms-artifact',
+              iconClass: 'ms ms-artifact ms-2x',
               label: 'Equipment',
               help:
                 'The MINIMUM number of artifacts that will be equipment. If this bar is maxed, all artifacts will be equipment.',
@@ -231,7 +242,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             },
             {
               name: 'vehicles',
-              iconClass: 'ms ms-artifact',
+              iconClass: 'ms ms-artifact ms-2x',
               label: 'Vehicles',
               help:
                 'The MINIMUM number of artifacts that will be vehicles. If this bar is maxed, all artifacts will be vehicles, or at least as many as possible.',
@@ -242,7 +253,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'enchantments',
-          iconClass: 'ms ms-enchantment',
+          iconClass: 'ms ms-enchantment ms-2x',
           label: 'Enchantments',
           help:
             'The MINIMUM number of enchantments to include in the generated deck.',
@@ -251,7 +262,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           children: [
             {
               name: 'auras',
-              iconClass: 'ms ms-enchantment',
+              iconClass: 'ms ms-enchantment ms-2x',
               label: 'Auras',
               help:
                 'The MINIMUM number of enchantments that will be auras (or creatures with bestow). If this bar is maxed, all enchantments will be auras.',
@@ -262,7 +273,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'planeswalkers',
-          iconClass: 'ms ms-planeswalker',
+          iconClass: 'ms ms-planeswalker ms-2x',
           label: 'Planeswalkers',
           help:
             'The MINIMUM number of planeswalkers to include in the generated deck.',
@@ -271,7 +282,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'spells',
-          iconClass: 'ms ms-instant',
+          iconClass: 'ms ms-instant ms-2x',
           label: 'Instants and Sorceries',
           help:
             'The MINIMUM number of non-permanent cards to include in the generated deck.',
@@ -279,10 +290,10 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           count: 10,
         },
       ],
-      miscParams: [
+      nonbasicParams: [
         {
           name: 'manaProducing',
-          iconClass: 'ms ms-c',
+          iconClass: 'ms ms-c ms-2x',
           label: 'Produces Mana',
           help:
             'The MINIMUM number of permanents (other than basic lands) to include that have a mana ability. If this bar is maxed, the generator will attempt to make all permanents have mana abilities.',
@@ -291,35 +302,24 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         },
         {
           name: 'legendary',
-          iconClass: 'ss ss-s99',
+          iconClass: 'ss ss-s99 ss-2x',
           label: 'Legendary',
           help:
             'The MINIMUM number of permanents (other than basic lands) to include that are legendary. If this bar is maxed, the generator will attempt to make all permanents legendary.',
           enabled: true,
           count: 0,
         },
-        {
-          name: 'cmc',
-          iconClass: 'ms ms-x',
-          label: 'Converted Mana Cost Range',
-          help:
-            'The range of values within which all converted mana costs must sit.',
-          enabled: true,
-          isRange: true,
-          range: [0, 16],
-          min: 0,
-          max: 16,
-        },
       ],
-      edhOnlyParams: [
+      creatureTypeParams: [
         {
           name: 'sharesTypes',
-          iconClass: 'ms ms-infinity',
+          iconClass: 'ms ms-infinity ms-2x',
           label: 'Shares a Creature Type with Commander(s)',
           help:
             'The MINIMUM number of cards to include that share at least one creature type with your commander. If this bar is maxed, the generator will attempt to make all applicable cards share at least one creature type.',
           enabled: true,
           count: 0,
+          showForFormats: ['Commander'],
         },
       ],
       rarities: [],
@@ -563,13 +563,17 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     }
   }
 
+  async generateDeck() {
+    alert('TODO')
+  }
+
   render() {
     return (
       <div className={styles.mtgContainerOuter}>
         <div className={`${styles.leftCol} gutter`}>
           <h2 className="beleren">Format</h2>
           <RandoRow label="Format" help="The format to generate a deck for.">
-            <div className="full-width">
+            <div className="widget-wrapper">
               <DropdownList
                 placeholder="Select a Format"
                 filter="contains"
@@ -596,7 +600,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             label="Color Identity"
             help="The color identity of cards allowed in the deck. Based on your Commander or Oathbreaker in those formats."
           >
-            <div className="full-width">
+            <div className="widget-wrapper">
               <ColorSelect
                 selectedColors={this.state.selectedColors}
                 onChange={(params) => {
@@ -613,7 +617,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               label={this.state.selectedFormat.group}
               help="Your deck's leader. Determines color identity. Leave blank ('Surprise me') to have a card of the selected colors picked for you."
             >
-              <div className="full-width">
+              <div className="widget-wrapper">
                 <DropdownList
                   placeholder="Surprise Me"
                   filter="contains"
@@ -653,7 +657,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           )}
           {this.state.partners.length > 0 && (
             <RandoRow label="Partner" help="Your second commander.">
-              <div className="full-width">
+              <div className="widget-wrapper">
                 <DropdownList
                   placeholder="Surprise Me"
                   filter="contains"
@@ -692,7 +696,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               label="Signature Spell"
               help="Your Oathbreaker's signature spell. You can cast the spell as long as your Oathbreaker is on the battlefield."
             >
-              <div className="full-width">
+              <div className="widget-wrapper">
                 <DropdownList
                   placeholder="Surprise Me"
                   filter="contains"
@@ -734,6 +738,9 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               </div>
             </RandoRow>
           )}
+          <button className={styles.btnPrimary} onClick={this.generateDeck}>
+            Generate Deck
+          </button>
           <Collapsible
             trigger={
               <div className={styles.collapsibleHeader}>
@@ -749,21 +756,19 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             easing="ease-in-out"
             overflowWhenOpen="visible"
           >
-            {(this.state.selectedFormat.group === 'Commander' ||
-              this.state.selectedFormat.group === 'Oathbreaker') && (
-              <MtGSliderList
-                max={this.state.maxCards}
-                params={this.state.edhrecParams}
-                nonexclusive={true}
-                onChange={(params) => this.setState({ countParams: params })}
-              />
-            )}
+            <MtGSliderList
+              max={this.state.maxCards}
+              params={this.state.restrictionParams}
+              nonexclusive={true}
+              onChange={(params) => this.setState({ countParams: params })}
+              format={this.state.selectedFormat.group}
+            />
             <RandoRow
-              iconClass="ss ss-pmtg1"
+              iconClass="ss ss-pmtg1 ss-2x"
               help="The sets that cards should be drawn from."
               label="Sets"
             >
-              <div className="full-width">
+              <div className="widget-wrapper">
                 <Multiselect
                   placeholder="Any Set"
                   filter="contains"
@@ -777,7 +782,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   itemComponent={({ item }) => (
                     <div>
                       <i
-                        className={'ss ss-' + item.keyruneCode.toLowerCase()}
+                        className={'ss ss-2x ss-' + item.keyruneCode.toLowerCase()}
                       ></i>{' '}
                       {item.name}
                     </div>
@@ -785,7 +790,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   tagComponent={({ item }) => (
                     <div>
                       <i
-                        className={'ss ss-' + item.keyruneCode.toLowerCase()}
+                        className={'ss ss-2x ss-' + item.keyruneCode.toLowerCase()}
                       ></i>{' '}
                       {item.code}
                     </div>
@@ -795,13 +800,13 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             </RandoRow>
             <RandoRow
               iconClass={
-                'ss ss-' + this.state.sets[0]?.keyruneCode.toLowerCase() ||
+                'ss ss-2x ss-' + this.state.sets[0]?.keyruneCode.toLowerCase() ||
                 'htr'
               }
               help="The rarities of cards to use."
               label="Rarities"
             >
-              <div className="full-width">
+              <div className="widget-wrapper">
                 <Multiselect
                   placeholder="Any Rarity"
                   filter="contains"
@@ -815,7 +820,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                     <div>
                       <i
                         className={
-                          'ss ss-' +
+                          'ss ss-2x ss-' +
                           (this.state.sets[0]?.keyruneCode.toLowerCase() ||
                             'htr') +
                           ' ss-grad ss-' +
@@ -828,10 +833,13 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   tagComponent={({ item }) => (
                     <div>
                       <i
-                        className={'ss ss-' +
-                        (this.state.sets[0]?.keyruneCode.toLowerCase() ||
-                          'htr') +
-                        ' ss-grad ss-' + item.name.toLowerCase()}
+                        className={
+                          'ss ss-2x ss-' +
+                          (this.state.sets[0]?.keyruneCode.toLowerCase() ||
+                            'htr') +
+                          ' ss-grad ss-' +
+                          item.name.toLowerCase()
+                        }
                       ></i>{' '}
                       {item.name}
                     </div>
@@ -839,8 +847,8 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 ></Multiselect>
               </div>
             </RandoRow>
-            <RandoRow iconClass="ss ss-pbook" help="" label="Artists">
-              <div className="full-width">
+            <RandoRow iconClass="ss ss-pbook ss-2x" help="" label="Artists">
+              <div className="widget-wrapper">
                 <Multiselect
                   placeholder="Any Artist"
                   filter="contains"
@@ -853,8 +861,8 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 ></Multiselect>
               </div>
             </RandoRow>
-            <RandoRow iconClass="ss ss-bcore" help="" label="Frames">
-              <div className="full-width">
+            <RandoRow iconClass="ss ss-bcore ss-2x" help="" label="Frames">
+              <div className="widget-wrapper">
                 <Multiselect
                   placeholder="Any Frame Style"
                   filter="contains"
@@ -883,23 +891,23 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             easing="ease-in-out"
             overflowWhenOpen="visible"
           >
-            <div>
-              {`Cards: ${this.state.countParams.reduce(
-                (total, param) => total + (param.count || 0),
-                0
-              )} / ${this.state.maxCards}`}
-            </div>
             <MtGSliderList
               max={this.state.maxCards}
               params={this.state.countParams}
               onChange={(params) => this.setState({ countParams: params })}
+              format={this.state.selectedFormat.group}
             />
             {this.state.selectedFormat.group === 'Commander' && (
               <MtGSliderList
-                max={this.state.maxCards}
-                params={this.state.edhOnlyParams}
+                max={
+                  this.state.maxCards -
+                  (this.state.countParams.find((p) => p.name === 'creatures')
+                    ?.count || 0)
+                }
+                params={this.state.creatureTypeParams}
                 nonexclusive={true}
                 onChange={(params) => this.setState({ countParams: params })}
+                format={this.state.selectedFormat.group}
               />
             )}
             <MtGSliderList
@@ -908,14 +916,18 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 (this.state.countParams.find((p) => p.name === 'basicLands')
                   ?.count || 0)
               }
-              params={this.state.miscParams}
+              params={this.state.nonbasicParams}
               nonexclusive={true}
-              onChange={(params) => this.setState({ miscParams: params })}
+              onChange={(params) => this.setState({ nonbasicParams: params })}
+              format={this.state.selectedFormat.group}
             />
           </Collapsible>
-          <RandoRow iconClass="ss ss-ugl" help="" label="Share Settings Link">
-            <input type="text" readOnly />
-          </RandoRow>
+          <button className={styles.btnPrimary}>
+            <i className="ss ss-ugl"></i> Copy Link to these Settings
+          </button>
+          <button className={styles.btnPrimary} onClick={this.generateDeck}>
+            Generate Deck
+          </button>
         </div>
         <div className={`${styles.rightCol} gutter`}>
           {this.state.selectedFormat.group === 'Commander' ? (

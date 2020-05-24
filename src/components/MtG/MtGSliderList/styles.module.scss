@@ -17,3 +17,21 @@
   flex: 1 1;
   font-family: $mono-font-fam;
 }
+
+.disable-icon {
+  cursor: pointer;
+  color: #999;
+  transition: color $anim-delay ease-in-out;
+
+  &:hover {
+    color: #bbb;
+  }
+}
+
+.disabled {
+  color: red;
+
+  &:hover {
+    color: lighten(red, 10%);
+  }
+}

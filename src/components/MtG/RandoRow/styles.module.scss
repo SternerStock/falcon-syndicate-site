@@ -16,11 +16,14 @@
 
   .icon {
     padding: 0 5px;
-    flex: 0 0 1em;
-    font-size: 2em;
+    flex: 0 0 2em;
     text-align: center;
     display: flex;
     align-items: center;
+  }
+
+  .help-icon {
+    cursor: pointer;
   }
 
   .control-container {
