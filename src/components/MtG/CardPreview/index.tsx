@@ -27,7 +27,7 @@ class CardPreview extends Component<CardPreviewProps> {
     return reactStringReplace(
       text,
       this.symbolRegex,
-      (segment: string, index: number) => {
+      (segment, index, offset) => {
         let className
         if (segment === 'T') {
           className = 'ms-tap'
@@ -44,7 +44,7 @@ class CardPreview extends Component<CardPreviewProps> {
         if (className) {
           return (
             <i
-              key={this.props.selectedCard?.id + '-mana-' + index}
+              key={this.props.selectedCard?.id + '-mana-' + index + offset}
               className={`ms ms-cost ${className}`}
             ></i>
           )
@@ -59,9 +59,13 @@ class CardPreview extends Component<CardPreviewProps> {
     return reactStringReplace(
       text,
       this.reminderRegex,
-      (segment: string, index: number) => {
+      (segment, index, offset) => {
         const replaced = this.replaceLoyalty(this.replaceManaSymbols([segment]))
-        return <em key={this.props.selectedCard?.id + '-reminder-' + index}>{replaced}</em>
+        return (
+          <em key={this.props.selectedCard?.id + '-reminder-' + index + offset}>
+            {replaced}
+          </em>
+        )
       }
     )
   }
@@ -70,7 +74,7 @@ class CardPreview extends Component<CardPreviewProps> {
     return reactStringReplace(
       text,
       this.loyaltyRegex,
-      (segment: string, index: number) => {
+      (segment, index, offset) => {
         let className
         if (segment.startsWith('+') || segment === '0') {
           className = 'ms-loyalty-up'
@@ -83,7 +87,7 @@ class CardPreview extends Component<CardPreviewProps> {
         className += ' ms-loyalty-' + segment.replace(/[+−]/, '').toLowerCase()
         return (
           <i
-            key={this.props.selectedCard?.id + '-loyalty-' + index}
+            key={this.props.selectedCard?.id + '-loyalty-' + index + offset}
             className={`ms ${className}`}
           ></i>
         )
@@ -114,19 +118,32 @@ class CardPreview extends Component<CardPreviewProps> {
             <div className={styles.typeline}>
               {this.props.selectedCard.typeLine}
             </div>
-            <div>
-              {this.replaceLoyalty(this.replaceManaSymbols(this.replaceReminderText(this.props.selectedCard.oracleText)))}
-            </div>
-            <div className={styles.flavorText}>
-              {this.props.selectedCard.flavorText}
-            </div>
-            <div className={styles.power}>
-              {this.props.selectedCard.loyalty
-                ? this.props.selectedCard.loyalty
-                : this.props.selectedCard.power
-                ? `${this.props.selectedCard.power}/${this.props.selectedCard.toughness}`
-                : ''}
-            </div>
+            {this.props.selectedCard.oracleText && (
+              <div>
+                {this.replaceLoyalty(
+                  this.replaceManaSymbols(
+                    this.replaceReminderText(this.props.selectedCard.oracleText)
+                  )
+                )}
+              </div>
+            )}
+            {this.props.selectedCard.flavorText && (
+              <div className={styles.flavorText}>
+                {this.props.selectedCard.flavorText}
+              </div>
+            )}
+            {(this.props.selectedCard.power ||
+              this.props.selectedCard.loyalty) && (
+              <div className={styles.power}>
+                <span>
+                  {this.props.selectedCard.loyalty
+                    ? this.props.selectedCard.loyalty
+                    : this.props.selectedCard.power
+                    ? `${this.props.selectedCard.power}/${this.props.selectedCard.toughness}`
+                    : ''}
+                </span>
+              </div>
+            )}
           </div>
         )}
       </div>

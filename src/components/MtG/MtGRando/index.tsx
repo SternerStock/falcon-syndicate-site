@@ -16,6 +16,7 @@ import {
   faMinus,
   faTimes,
   faRandom,
+  faDice,
 } from '@fortawesome/free-solid-svg-icons'
 
 interface RandoRequest {
@@ -648,7 +649,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                       )
                     }
                   >
-                    <FontAwesomeIcon icon={faRandom}></FontAwesomeIcon> Random{' '}
+                    <FontAwesomeIcon icon={faDice}></FontAwesomeIcon> Random{' '}
                     {this.state.selectedFormat.group}
                   </button>
                 </div>
@@ -684,7 +685,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                       )
                     }}
                   >
-                    <FontAwesomeIcon icon={faRandom}></FontAwesomeIcon> Random
+                    <FontAwesomeIcon icon={faDice}></FontAwesomeIcon> Random
                     Partner
                   </button>
                 </div>
@@ -731,16 +732,18 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                       })
                     }
                   >
-                    <FontAwesomeIcon icon={faRandom}></FontAwesomeIcon> Random
+                    <FontAwesomeIcon icon={faDice}></FontAwesomeIcon> Random
                     Signature Spell
                   </button>
                 </div>
               </div>
             </RandoRow>
           )}
-          <button className={styles.btnPrimary} onClick={this.generateDeck}>
-            Generate Deck
-          </button>
+          <div className="button-row align-right">
+            <button className={styles.btnPrimary} onClick={this.generateDeck}>
+              <FontAwesomeIcon icon={faRandom}></FontAwesomeIcon> Generate Deck
+            </button>
+          </div>
           <Collapsible
             trigger={
               <div className={styles.collapsibleHeader}>
@@ -782,7 +785,9 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   itemComponent={({ item }) => (
                     <div>
                       <i
-                        className={'ss ss-2x ss-' + item.keyruneCode.toLowerCase()}
+                        className={
+                          'ss ss-2x ss-' + item.keyruneCode.toLowerCase()
+                        }
                       ></i>{' '}
                       {item.name}
                     </div>
@@ -790,7 +795,9 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   tagComponent={({ item }) => (
                     <div>
                       <i
-                        className={'ss ss-2x ss-' + item.keyruneCode.toLowerCase()}
+                        className={
+                          'ss ss-2x ss-' + item.keyruneCode.toLowerCase()
+                        }
                       ></i>{' '}
                       {item.code}
                     </div>
@@ -800,8 +807,8 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             </RandoRow>
             <RandoRow
               iconClass={
-                'ss ss-2x ss-' + this.state.sets[0]?.keyruneCode.toLowerCase() ||
-                'htr'
+                'ss ss-2x ss-' +
+                  this.state.sets[0]?.keyruneCode.toLowerCase() || 'htr'
               }
               help="The rarities of cards to use."
               label="Rarities"
@@ -847,7 +854,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 ></Multiselect>
               </div>
             </RandoRow>
-            <RandoRow iconClass="ss ss-pbook ss-2x" help="" label="Artists">
+            <RandoRow iconClass="ss ss-pbook ss-2x" label="Artists">
               <div className="widget-wrapper">
                 <Multiselect
                   placeholder="Any Artist"
@@ -861,7 +868,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 ></Multiselect>
               </div>
             </RandoRow>
-            <RandoRow iconClass="ss ss-bcore ss-2x" help="" label="Frames">
+            <RandoRow iconClass="ss ss-bcore ss-2x" label="Frames">
               <div className="widget-wrapper">
                 <Multiselect
                   placeholder="Any Frame Style"
@@ -922,12 +929,14 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               format={this.state.selectedFormat.group}
             />
           </Collapsible>
-          <button className={styles.btnPrimary}>
-            <i className="ss ss-ugl"></i> Copy Link to these Settings
-          </button>
-          <button className={styles.btnPrimary} onClick={this.generateDeck}>
-            Generate Deck
-          </button>
+          <div className="button-row align-right">
+            <button className={styles.btnPrimary}>
+              <i className="ss ss-ugl"></i> Copy Link to these Settings
+            </button>
+            <button className={styles.btnPrimary} onClick={this.generateDeck}>
+              <FontAwesomeIcon icon={faRandom}></FontAwesomeIcon> Generate Deck
+            </button>
+          </div>
         </div>
         <div className={`${styles.rightCol} gutter`}>
           {this.state.selectedFormat.group === 'Commander' ? (

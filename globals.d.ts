@@ -39,7 +39,7 @@ interface CountParam {
   isRange?: boolean
   min?: number
   max?: number
-  help: string
+  help?: string
   enabled?: boolean
   showForFormats?: string[]
   children?: CountParam[]

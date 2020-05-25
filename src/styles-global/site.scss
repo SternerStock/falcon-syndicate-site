@@ -220,6 +220,14 @@ iframe {
     position: relative;
 }
 
+.button-row {
+  margin: $gutter 0;
+}
+
+.align-right {
+  text-align: right;
+}
+
 .beleren {
   font-family: 'Beleren Bold', Arial, sans-serif;
 }

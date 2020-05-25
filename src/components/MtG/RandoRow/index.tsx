@@ -9,7 +9,7 @@ interface RandoRowProps {
   children: React.ReactNode
   label: string
   iconClass?: string
-  help: string
+  help?: string
   for?: string
 }
 
@@ -26,11 +26,13 @@ class RandoRow extends Component<RandoRowProps, {}> {
           {this.props.label}
         </label>
         <div className={styles.icon}>
-          <FontAwesomeIcon
-            icon={faQuestionCircle}
-            data-tip={this.props.help}
-            className={styles.helpIcon}
-          ></FontAwesomeIcon>
+          {this.props.help && (
+            <FontAwesomeIcon
+              icon={faQuestionCircle}
+              data-tip={this.props.help}
+              className={styles.helpIcon}
+            ></FontAwesomeIcon>
+          )}
           <ReactTooltip type="info" clickable={true}></ReactTooltip>
         </div>
         <div className={styles.controlContainer}>{this.props.children}</div>

@@ -38,6 +38,10 @@
   @include control-primary;
   margin: 5px 0;
   padding: 5px 10px;
+
+  &:not(:last-child) {
+    margin-right: 1em;
+  }
 }
 
 .btn-clear-overlay {
