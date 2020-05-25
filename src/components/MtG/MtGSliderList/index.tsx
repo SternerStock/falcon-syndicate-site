@@ -117,7 +117,9 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
                   help={param.help}
                   label={param.label}
                 >
-                  <div className={styles.count}>0</div>
+                  <div className={styles.count}>
+                    {param.count?.toString().padStart(2, '0')}
+                  </div>
                   {param.isRange ? (
                     <RangeWithTooltip
                       className={styles.slider}
@@ -148,7 +150,9 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
                   {param.enabled !== undefined && (
                     <FontAwesomeIcon
                       icon={faBan}
-                      className={`${styles.disableIcon} ${!param.enabled ? styles.disabled : ''}`}
+                      className={`${styles.disableIcon} ${
+                        !param.enabled ? styles.disabled : ''
+                      }`}
                       onClick={this.toggleEnabled(index)}
                     ></FontAwesomeIcon>
                   )}

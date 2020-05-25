@@ -6,6 +6,7 @@ import RandoRow from '../RandoRow'
 import DropdownList from 'react-widgets/lib/DropdownList'
 import Multiselect from 'react-widgets/lib/Multiselect'
 import Collapsible from 'react-collapsible'
+import update from 'immutability-helper'
 
 import '../../../styles-global/react-widgets-theme.scss'
 import styles from './styles.module.scss'
@@ -55,7 +56,6 @@ interface MtGRandoState {
   spellsLoading: boolean
   selectedColors: string[]
   silverBorder: boolean
-  maxCards: number
   countParams: CountParam[]
   nonbasicParams: CountParam[]
   restrictionParams: CountParam[]
@@ -84,6 +84,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     this.selectCommander = this.selectCommander.bind(this)
     this.selectPartner = this.selectPartner.bind(this)
     this.selectFormat = this.selectFormat.bind(this)
+    this.generateDeck = this.generateDeck.bind(this)
     this.formats = [
       {
         group: 'Commander',
@@ -169,7 +170,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       spellsLoading: false,
       selectedColors: ['W', 'U', 'B', 'R', 'G'],
       silverBorder: false,
-      maxCards: 99,
       restrictionParams: [
         {
           name: 'edhrecrank',
@@ -476,6 +476,17 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   selectFormat(newValue?: Format) {
     const format = newValue || this.formats[0]
 
+    const factor = format.deckSize / this.state.selectedFormat.deckSize
+    let newCountParams = this.state.countParams
+    for (let i = 0; i < this.state.countParams.length; i++) {
+      const param = this.state.countParams[i];
+      if (param.count) {
+        newCountParams = update(newCountParams, {
+          [i]: { $merge: { count: Math.floor(param.count * factor) } },
+        })
+      }
+    }
+
     this.setState({
       selectedFormat: format,
       selectedCommander: undefined,
@@ -484,6 +495,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       signatureSpells: [],
       selectedSpell: undefined,
       silverBorder: this.state.silverBorder && format.allowSilver,
+      countParams: newCountParams,
     })
 
     if (format.group === 'Commander' || format.group === 'Oathbreaker') {
@@ -760,7 +772,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             overflowWhenOpen="visible"
           >
             <MtGSliderList
-              max={this.state.maxCards}
+              max={this.state.selectedFormat.deckSize}
               params={this.state.restrictionParams}
               nonexclusive={true}
               onChange={(params) => this.setState({ countParams: params })}
@@ -899,7 +911,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             overflowWhenOpen="visible"
           >
             <MtGSliderList
-              max={this.state.maxCards}
+              max={this.state.selectedFormat.deckSize}
               params={this.state.countParams}
               onChange={(params) => this.setState({ countParams: params })}
               format={this.state.selectedFormat.group}
@@ -907,7 +919,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             {this.state.selectedFormat.group === 'Commander' && (
               <MtGSliderList
                 max={
-                  this.state.maxCards -
+                  this.state.selectedFormat.deckSize -
                   (this.state.countParams.find((p) => p.name === 'creatures')
                     ?.count || 0)
                 }
@@ -919,7 +931,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             )}
             <MtGSliderList
               max={
-                this.state.maxCards -
+                this.state.selectedFormat.deckSize -
                 (this.state.countParams.find((p) => p.name === 'basicLands')
                   ?.count || 0)
               }
