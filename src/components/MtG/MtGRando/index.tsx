@@ -403,6 +403,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   async getSets(variant: string, silverBorder: boolean) {
     this.setState({
       setsLoading: true,
+      selectedSets: [],
     })
 
     const response = await fetch(
