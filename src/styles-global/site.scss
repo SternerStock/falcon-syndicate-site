@@ -84,7 +84,7 @@ iframe {
   flex: 1;
   margin-top: $nav-height;
   margin-bottom: -3px;
-  padding: 0 $gutter;
+  padding: 0 $gutter $gutter $gutter;
 }
 
 .splash {
@@ -226,6 +226,10 @@ iframe {
   margin: $gutter 0;
 }
 
+.align-center {
+  text-align: center;
+}
+
 .align-right {
   text-align: right;
 }
@@ -236,6 +240,15 @@ iframe {
 
 .mPlantin {
   font-family: MPlantin, 'Times New Roman', serif;
+}
+
+.app-header {
+  font-family: 'Beleren Bold', Arial, sans-serif;
+  line-height: .8em;
+}
+
+.app-header__subtitle {
+  font-size: .5em;
 }
 
 @media all and (max-width: 800px) {

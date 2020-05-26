@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Layout from '../components/layout'
+import RandomAppName from '../components/MtG/RandomAppName'
 import RandomFlavor from '../components/MtG/RandomFlavor'
 import MtGRando from '../components/MtG/MtGRando'
 
@@ -10,13 +11,14 @@ class EdhRandoPage extends Component {
     return (
       <Layout>
         <div className="page-interior">
-          <h1 className="beleren">MtG Randomizer</h1>
-          <em className="beleren">Formerly EDH Ultimate Bravery</em>
-          <div>
-            <br />
+          <h1 className="app-header">
+            MtG Randomizer<br />
+            <RandomAppName></RandomAppName>
+          </h1>
+          <MtGRando></MtGRando>
+          <div className="align-center">
             <RandomFlavor></RandomFlavor>
           </div>
-          <MtGRando></MtGRando>
         </div>
       </Layout>
     )

@@ -585,7 +585,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     return (
       <div className={styles.mtgContainerOuter}>
         <div className={styles.leftCol}>
-          <h2 className="beleren">Format</h2>
           <RandoRow label="Format" help="The format to generate a deck for.">
             <div className="widget-wrapper">
               <DropdownList
