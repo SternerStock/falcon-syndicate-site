@@ -1,5 +1,10 @@
 declare module 'react-crossfade-image'
 
+interface NumberRange {
+  min: number
+  max: number
+}
+
 interface MtGSet {
   id: number
   name: string

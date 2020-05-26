@@ -11,11 +11,12 @@
 }
 
 .count {
-  padding: 5px 10px;
+  padding: 0 10px;
   font-weight: bold;
   text-align: right;
   flex: 1 1;
   font-family: $mono-font-fam;
+  max-width: 20px;
 }
 
 .disable-icon {

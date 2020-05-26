@@ -21,18 +21,31 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 interface RandoRequest {
-  deckType: string
   format: string
-  commanderId: number
-  partnerId: number
-  signatureSpellId: number
-  colorIdentity: string[]
   silverBorder: boolean
+  commanderId?: number
+  partnerId?: number
+  signatureSpellId?: number
+  colorIdentity: string[]
+  edhrecRange?: NumberRange
+  cmcRange: NumberRange
   setIds: number[]
   rarityIds: number[]
-  watermarkIds: number[]
   artistIds: number[]
-  edhrecRanks: number[]
+  frameIds: number[]
+  basicLands: number
+  nonbasicLands: number
+  creatures: number
+  artifacts: number
+  equipment: number
+  vehicles: number
+  enchantments: number
+  auras: number
+  planeswalkers: number
+  spells: number
+  sharesType?: number
+  manaProducing: number
+  legendary: number
 }
 
 interface Format {
@@ -578,7 +591,51 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   }
 
   async generateDeck() {
-    alert('TODO')
+    const body: RandoRequest = {
+      format: this.state.selectedFormat.name,
+      silverBorder: this.state.selectedFormat.allowSilver && this.state.silverBorder,
+      commanderId: this.state.selectedCommander?.id,
+      partnerId: this.state.selectedPartner?.id,
+      signatureSpellId: this.state.selectedSpell?.id,
+      colorIdentity: this.state.selectedColors,
+      edhrecRange: {
+        min: this.state.restrictionParams.find(param => param.name === 'edhrecrank')?.min || 0,
+        max: this.state.restrictionParams.find(param => param.name === 'edhrecrank')?.max || 100,
+      },
+      cmcRange: {
+        min: this.state.restrictionParams.find(param => param.name === 'cmc')?.min || 0,
+        max: this.state.restrictionParams.find(param => param.name === 'cmc')?.max || 16,
+      },
+      setIds: this.state.selectedSets.map(o => o.id),
+      rarityIds: this.state.selectedRarities.map(o => o.id),
+      artistIds: this.state.selectedArtists.map(o => o.id),
+      frameIds: this.state.selectedArtists.map(o => o.id),
+      basicLands: this.state.countParams.find(param => param.name === 'basicLands')?.count || 0,
+      nonbasicLands: this.state.countParams.find(param => param.name === 'nonbasicLands')?.count || 0,
+      creatures: this.state.countParams.find(param => param.name === 'creatures')?.count || 0,
+      artifacts: this.state.countParams.find(param => param.name === 'artifacts')?.count || 0,
+      equipment: this.state.countParams.find(param => param.name === 'equipment')?.count || 0,
+      vehicles: this.state.countParams.find(param => param.name === 'vehicles')?.count || 0,
+      enchantments: this.state.countParams.find(param => param.name === 'enchantments')?.count || 0,
+      auras: this.state.countParams.find(param => param.name === 'auras')?.count || 0,
+      planeswalkers: this.state.countParams.find(param => param.name === 'planeswalkers')?.count || 0,
+      spells: this.state.countParams.find(param => param.name === 'spells')?.count || 0,
+      sharesType: this.state.countParams.find(param => param.name === 'sharesType')?.count,
+      manaProducing: this.state.countParams.find(param => param.name === 'manaProducing')?.count || 0,
+      legendary: this.state.countParams.find(param => param.name === 'legendary')?.count || 0,
+    }
+
+    const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/GenerateDeck`, {
+      method: 'POST',
+      body: JSON.stringify(body)
+    })
+
+    if (response.ok) {
+      const results = await response.json();
+      this.setState({
+
+      })
+    }
   }
 
   render() {
