@@ -36,7 +36,7 @@ iframe {
   width: calc(100% - #{$gutter * 2});
   max-width: #{$max-page-width - $gutter * 2};
   margin: 0 -50vw;
-  padding: 0 calc(50vw + #{$gutter});
+  padding: 0 calc(50vw + #{$gutter / 2});
 }
 
 .top-nav {
@@ -56,8 +56,8 @@ iframe {
 .top-nav__link {
   color: $text-nav;
   display: inline-block;
-  padding: 0 $gutter / 2;
   text-decoration: none;
+  padding: 0 ($gutter / 2);
   white-space: nowrap;
   vertical-align: top;
   transition: color $anim-delay;
@@ -84,6 +84,7 @@ iframe {
   flex: 1;
   margin-top: $nav-height;
   margin-bottom: -3px;
+  padding: 0 $gutter;
 }
 
 .splash {
@@ -208,6 +209,7 @@ iframe {
 .page-interior--stretch {
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
+  padding: 0;
 }
 
 .gutter {

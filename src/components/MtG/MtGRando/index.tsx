@@ -584,7 +584,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   render() {
     return (
       <div className={styles.mtgContainerOuter}>
-        <div className={`${styles.leftCol} gutter`}>
+        <div className={styles.leftCol}>
           <h2 className="beleren">Format</h2>
           <RandoRow label="Format" help="The format to generate a deck for.">
             <div className="widget-wrapper">
@@ -951,7 +951,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             </button>
           </div>
         </div>
-        <div className={`${styles.rightCol} gutter`}>
+        <div className={styles.rightCol}>
           {this.state.selectedFormat.group === 'Commander' ? (
             <div className={styles.cmdrPreview}>
               <div>

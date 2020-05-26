@@ -9,10 +9,12 @@
 
   .left-col {
     flex: 3;
+    margin-right: $gutter;
   }
 
   .right-col {
     flex: 1;
+    margin-left: $gutter;
   }
 }
 

@@ -5,9 +5,7 @@ import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor'
 import TwitchHost from '../components/TwitchHost'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faChevronDown,
-} from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 import { ReactComponent as SplashImg } from '../img/knee.svg'
 import { ReactComponent as TwitchLogo } from '../img/twitchLogo.svg'

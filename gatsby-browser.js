@@ -5,3 +5,15 @@
  */
 
  // You can delete this file if you're not using it
+
+ exports.shouldUpdateScroll = ({
+    routerProps: { location },
+    getSavedScrollPosition
+  }) => {
+  
+    if (location.hash) {
+      return false;
+    }
+  
+    return true;
+  };
