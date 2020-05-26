@@ -6,16 +6,16 @@
   display: flex;
   flex-wrap: wrap;
   padding-bottom: $gutter;
+}
 
-  .left-col {
-    flex: 3;
-    margin-right: $gutter;
-  }
+.left-col {
+  flex: 3;
+  margin-right: $gutter;
+}
 
-  .right-col {
-    flex: 1;
-    margin-left: $gutter;
-  }
+.right-col {
+  flex: 1;
+  margin-left: $gutter;
 }
 
 .cmdr-preview {
@@ -61,5 +61,15 @@
 
   &:hover {
     color: lighten($off-white, 10%);
+  }
+}
+
+@media all and (max-width: 800px) {
+  .left-col {
+    margin-right: 0;
+  }
+
+  .right-col {
+    margin-left: 0;
   }
 }

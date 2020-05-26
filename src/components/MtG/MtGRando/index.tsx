@@ -776,7 +776,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               max={this.state.selectedFormat.deckSize}
               params={this.state.restrictionParams}
               nonexclusive={true}
-              onChange={(params) => this.setState({ countParams: params })}
+              onChange={(params) => this.setState({ restrictionParams: params })}
               format={this.state.selectedFormat.group}
             />
             <RandoRow
@@ -926,7 +926,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 }
                 params={this.state.creatureTypeParams}
                 nonexclusive={true}
-                onChange={(params) => this.setState({ countParams: params })}
+                onChange={(params) => this.setState({ creatureTypeParams: params })}
                 format={this.state.selectedFormat.group}
               />
             )}
