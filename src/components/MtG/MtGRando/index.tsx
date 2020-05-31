@@ -21,13 +21,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 interface RandoRequest {
+  deckType: string
   format: string
+  deckSize: number
   silverBorder: boolean
   commanderId?: number
   partnerId?: number
   signatureSpellId?: number
   colorIdentity: string[]
-  edhrecRange?: NumberRange
+  edhRecRange?: NumberRange
   cmcRange: NumberRange
   setIds: number[]
   rarityIds: number[]
@@ -36,6 +38,7 @@ interface RandoRequest {
   basicLands: number
   nonbasicLands: number
   creatures: number
+  sharesType?: number
   artifacts: number
   equipment: number
   vehicles: number
@@ -43,13 +46,12 @@ interface RandoRequest {
   auras: number
   planeswalkers: number
   spells: number
-  sharesType?: number
   manaProducing: number
   legendary: number
 }
 
 interface Format {
-  group: string
+  deckType: string
   name: string
   deckSize: number
   allowSilver: boolean
@@ -72,7 +74,6 @@ interface MtGRandoState {
   countParams: CountParam[]
   nonbasicParams: CountParam[]
   restrictionParams: CountParam[]
-  creatureTypeParams: CountParam[]
   rarities: Lookup[]
   selectedRarities: Lookup[]
   raritiesLoading: boolean
@@ -100,73 +101,73 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     this.generateDeck = this.generateDeck.bind(this)
     this.formats = [
       {
-        group: 'Commander',
+        deckType: 'Commander',
         name: 'Commander',
         deckSize: 99,
         allowSilver: true,
       },
       {
-        group: 'Commander',
+        deckType: 'Commander',
         name: 'Brawl',
         deckSize: 59,
         allowSilver: false,
       },
       {
-        group: 'Commander',
+        deckType: 'Commander',
         name: 'Pauper',
         deckSize: 99,
         allowSilver: true,
       },
       {
-        group: 'Commander',
+        deckType: 'Commander',
         name: 'Tiny Leaders',
         deckSize: 49,
         allowSilver: true,
       },
       {
-        group: 'Oathbreaker',
+        deckType: 'Oathbreaker',
         name: 'Oathbreaker',
         deckSize: 58,
         allowSilver: true,
       },
       {
-        group: 'Normal MtG',
+        deckType: 'Normal MtG',
         name: 'Standard',
         deckSize: 60,
         allowSilver: false,
       },
       {
-        group: 'Normal MtG',
+        deckType: 'Normal MtG',
         name: 'Modern',
         deckSize: 60,
         allowSilver: false,
       },
       {
-        group: 'Normal MtG',
+        deckType: 'Normal MtG',
         name: 'Pioneer',
         deckSize: 60,
         allowSilver: false,
       },
       {
-        group: 'Normal MtG',
+        deckType: 'Normal MtG',
         name: 'Legacy',
         deckSize: 60,
         allowSilver: false,
       },
       {
-        group: 'Normal MtG',
+        deckType: 'Normal MtG',
         name: 'Vintage',
         deckSize: 60,
         allowSilver: true,
       },
       {
-        group: 'Normal MtG',
+        deckType: 'Normal MtG',
         name: 'Pauper',
         deckSize: 60,
         allowSilver: true,
       },
       {
-        group: 'Normal MtG',
+        deckType: 'Normal MtG',
         name: 'Penny Dreadful',
         deckSize: 60,
         allowSilver: true,
@@ -189,10 +190,10 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           iconClass: 'ss ss-cmd ss-2x',
           label: 'EDHREC Rank Percentile',
           help:
-            'The "goodness" range of the cards to pick. This value is relative to the pool of possible cards.',
+            'The "goodness" range of the cards to pick. This value is relative to the pool of possible cards. Note that silver-bordered cards are not ranked, so changing this value may exclude them.',
           isRange: true,
-          range: [1, 100],
-          min: 1,
+          range: [0, 100],
+          min: 0,
           max: 100,
           showForFormats: ['Commander', 'Oathbreaker'],
         },
@@ -201,7 +202,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           iconClass: 'ms ms-x ms-2x',
           label: 'Converted Mana Cost Range',
           help:
-            'The range of values within which all converted mana costs must sit.',
+            'The range of values within which all converted mana costs must lie.',
           isRange: true,
           range: [0, 16],
           min: 0,
@@ -235,6 +236,18 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             'The MINIMUM number of creatures to include in the generated deck.',
           enabled: true,
           count: 20,
+          children: [
+            {
+              name: 'sharesTypes',
+              iconClass: 'ms ms-creature ms-2x',
+              label: 'Shares a Creature Type with Commander(s)',
+              help:
+                'The MINIMUM number of cards to include that share at least one creature type with your commander. If this bar is maxed, the generator will attempt to make all applicable cards share at least one creature type.',
+              enabled: true,
+              count: 0,
+              showForFormats: ['Commander'],
+            },
+          ],
         },
         {
           name: 'artifacts',
@@ -324,18 +337,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           count: 0,
         },
       ],
-      creatureTypeParams: [
-        {
-          name: 'sharesTypes',
-          iconClass: 'ms ms-infinity ms-2x',
-          label: 'Shares a Creature Type with Commander(s)',
-          help:
-            'The MINIMUM number of cards to include that share at least one creature type with your commander. If this bar is maxed, the generator will attempt to make all applicable cards share at least one creature type.',
-          enabled: true,
-          count: 0,
-          showForFormats: ['Commander'],
-        },
-      ],
       rarities: [],
       selectedRarities: [],
       raritiesLoading: false,
@@ -390,6 +391,8 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         partners: data,
         partnersLoading: false,
       })
+
+      return data;
     }
   }
 
@@ -410,6 +413,8 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         signatureSpells: data,
         spellsLoading: false,
       })
+
+      return data;
     }
   }
 
@@ -493,7 +498,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     const factor = format.deckSize / this.state.selectedFormat.deckSize
     let newCountParams = this.state.countParams
     for (let i = 0; i < this.state.countParams.length; i++) {
-      const param = this.state.countParams[i];
+      const param = this.state.countParams[i]
       if (param.count) {
         newCountParams = update(newCountParams, {
           [i]: { $merge: { count: Math.floor(param.count * factor) } },
@@ -512,7 +517,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       countParams: newCountParams,
     })
 
-    if (format.group === 'Commander' || format.group === 'Oathbreaker') {
+    if (format.deckType === 'Commander' || format.deckType === 'Oathbreaker') {
       this.getCommanders(
         format.name,
         this.state.silverBorder && format.allowSilver
@@ -533,24 +538,30 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
 
     this.getSets(this.state.selectedFormat.name, newValue)
     if (
-      this.state.selectedFormat.group === 'Commander' ||
-      this.state.selectedFormat.group === 'Oathbreaker'
+      this.state.selectedFormat.deckType === 'Commander' ||
+      this.state.selectedFormat.deckType === 'Oathbreaker'
     ) {
       this.getCommanders(this.state.selectedFormat.name, newValue)
     }
   }
 
-  selectCommander(newValue?: Card) {
+  getMaxCards() {
+    return (
+      this.state.selectedFormat.deckSize - (this.state.selectedPartner ? 1 : 0)
+    )
+  }
+
+  async selectCommander(newValue?: Card) {
     if (newValue) {
       this.setState({
         selectedCommander: newValue,
         selectedColors: newValue.colorIdentity,
       })
 
-      if (this.state.selectedFormat.group === 'Commander') {
-        this.getPartners(newValue.id)
-      } else if (this.state.selectedFormat.group === 'Oathbreaker') {
-        this.getSignatureSpells(newValue.id)
+      if (this.state.selectedFormat.deckType === 'Commander') {
+        return await this.getPartners(newValue.id)
+      } else if (this.state.selectedFormat.deckType === 'Oathbreaker') {
+        return await this.getSignatureSpells(newValue.id)
       }
     } else {
       this.setState({
@@ -564,8 +575,9 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   }
 
   selectPartner(newValue?: Card) {
+    let colors;
     if (newValue) {
-      const colors = [
+      colors = [
         ...new Set([
           ...(this.state.selectedCommander?.colorIdentity || []),
           ...newValue.colorIdentity,
@@ -577,64 +589,154 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         selectedColors: colors,
       })
     } else {
+      colors = this.state.selectedCommander?.colorIdentity || [
+        'W',
+        'U',
+        'B',
+        'R',
+        'G',
+      ];
+
       this.setState({
         selectedPartner: undefined,
-        selectedColors: this.state.selectedCommander?.colorIdentity || [
-          'W',
-          'U',
-          'B',
-          'R',
-          'G',
-        ],
+        selectedColors: colors,
       })
+    }
+
+    return colors
+  }
+
+  findRecursive(
+    collection: CountParam[],
+    name: string
+  ): CountParam | undefined {
+    for (let i = 0; i < collection.length; i++) {
+      if (collection[i].name === name) {
+        return collection[i]
+      }
+
+      const children = collection[i]?.children
+      if (children) {
+        const result = this.findRecursive(children, name)
+        if (result) {
+          return result
+        }
+      }
+    }
+
+    return
+  }
+
+  getCountOrDisabled(name: string) {
+    const allParams = [
+      ...this.state.countParams,
+      ...this.state.restrictionParams,
+      ...this.state.nonbasicParams,
+    ]
+
+    const param = this.findRecursive(allParams, name)
+    if (!param || !param.enabled || param.count === undefined) {
+      return -1
+    } else {
+      return param.count
     }
   }
 
   async generateDeck() {
-    const body: RandoRequest = {
-      format: this.state.selectedFormat.name,
-      silverBorder: this.state.selectedFormat.allowSilver && this.state.silverBorder,
-      commanderId: this.state.selectedCommander?.id,
-      partnerId: this.state.selectedPartner?.id,
-      signatureSpellId: this.state.selectedSpell?.id,
-      colorIdentity: this.state.selectedColors,
-      edhrecRange: {
-        min: this.state.restrictionParams.find(param => param.name === 'edhrecrank')?.min || 0,
-        max: this.state.restrictionParams.find(param => param.name === 'edhrecrank')?.max || 100,
-      },
-      cmcRange: {
-        min: this.state.restrictionParams.find(param => param.name === 'cmc')?.min || 0,
-        max: this.state.restrictionParams.find(param => param.name === 'cmc')?.max || 16,
-      },
-      setIds: this.state.selectedSets.map(o => o.id),
-      rarityIds: this.state.selectedRarities.map(o => o.id),
-      artistIds: this.state.selectedArtists.map(o => o.id),
-      frameIds: this.state.selectedArtists.map(o => o.id),
-      basicLands: this.state.countParams.find(param => param.name === 'basicLands')?.count || 0,
-      nonbasicLands: this.state.countParams.find(param => param.name === 'nonbasicLands')?.count || 0,
-      creatures: this.state.countParams.find(param => param.name === 'creatures')?.count || 0,
-      artifacts: this.state.countParams.find(param => param.name === 'artifacts')?.count || 0,
-      equipment: this.state.countParams.find(param => param.name === 'equipment')?.count || 0,
-      vehicles: this.state.countParams.find(param => param.name === 'vehicles')?.count || 0,
-      enchantments: this.state.countParams.find(param => param.name === 'enchantments')?.count || 0,
-      auras: this.state.countParams.find(param => param.name === 'auras')?.count || 0,
-      planeswalkers: this.state.countParams.find(param => param.name === 'planeswalkers')?.count || 0,
-      spells: this.state.countParams.find(param => param.name === 'spells')?.count || 0,
-      sharesType: this.state.countParams.find(param => param.name === 'sharesType')?.count,
-      manaProducing: this.state.countParams.find(param => param.name === 'manaProducing')?.count || 0,
-      legendary: this.state.countParams.find(param => param.name === 'legendary')?.count || 0,
+    let cmdr = this.state.selectedCommander
+    let partner = this.state.selectedPartner
+    let signatureSpell = this.state.selectedSpell
+    let colorIdentity = this.state.selectedColors
+
+    let dependentColl = this.state.selectedFormat.deckType === 'Commander' ? this.state.partners : this.state.signatureSpells;
+    if (
+      !cmdr &&
+      (this.state.selectedFormat.deckType === 'Commander' ||
+        this.state.selectedFormat.deckType === 'Oathbreaker')
+    ) {
+      cmdr = this.state.commanders[
+        Math.floor(Math.random() * this.state.commanders.length)
+      ]
+
+      dependentColl = await this.selectCommander(cmdr)
+      colorIdentity = cmdr.colorIdentity
     }
 
-    const response = await fetch(`${process.env.GATSBY_API_URL}/MtG/GenerateDeck`, {
-      method: 'POST',
-      body: JSON.stringify(body)
-    })
+    if (!partner &&  this.state.selectedFormat.deckType === 'Commander' && dependentColl.length > 0) {
+      partner = dependentColl[
+        Math.floor(Math.random() * dependentColl.length)
+      ]
+
+      colorIdentity = this.selectPartner(partner)
+    }
+
+    if (
+      !signatureSpell &&
+      this.state.selectedFormat.deckType === 'Oathbreaker'
+    ) {
+      signatureSpell = dependentColl[
+        Math.floor(Math.random() * dependentColl.length)
+      ]
+
+      this.setState({
+        selectedSpell: signatureSpell,
+      })
+    }
+
+    const edhrecRange = this.state.restrictionParams.find(param => param.name === 'edhrecrank')?.range || [0, 100]
+    const cmcRange = this.state.restrictionParams.find(param => param.name === 'cmc')?.range || [0, 16]
+    
+    const body: RandoRequest = {
+      deckType: this.state.selectedFormat.deckType,
+      format: this.state.selectedFormat.name,
+      deckSize: this.getMaxCards(),
+      silverBorder:
+        this.state.selectedFormat.allowSilver && this.state.silverBorder,
+      commanderId: cmdr?.id,
+      partnerId: partner?.id,
+      signatureSpellId: signatureSpell?.id,
+      colorIdentity: colorIdentity,
+      edhRecRange: {
+        min: edhrecRange[0],
+        max: edhrecRange[1],
+      },
+      cmcRange: {
+        min: cmcRange[0],
+        max: cmcRange[1],
+      },
+      setIds: this.state.selectedSets.map((o) => o.id),
+      rarityIds: this.state.selectedRarities.map((o) => o.id),
+      artistIds: this.state.selectedArtists.map((o) => o.id),
+      frameIds: this.state.selectedArtists.map((o) => o.id),
+      basicLands: this.getCountOrDisabled('basicLands'),
+      nonbasicLands: this.getCountOrDisabled('nonbasicLands'),
+      creatures: this.getCountOrDisabled('creatures'),
+      sharesType: this.getCountOrDisabled('sharesTypes'),
+      artifacts: this.getCountOrDisabled('artifacts'),
+      equipment: this.getCountOrDisabled('equipment'),
+      vehicles: this.getCountOrDisabled('vehicles'),
+      enchantments: this.getCountOrDisabled('enchantments'),
+      auras: this.getCountOrDisabled('auras'),
+      planeswalkers: this.getCountOrDisabled('planeswalkers'),
+      spells: this.getCountOrDisabled('spells'),
+      manaProducing: this.getCountOrDisabled('manaProducing'),
+      legendary: this.getCountOrDisabled('legendary'),
+    }
+
+    const response = await fetch(
+      `${process.env.GATSBY_API_URL}/MtG/GenerateDeck`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      }
+    )
 
     if (response.ok) {
-      const results = await response.json();
-      this.setState({
-
-      })
+      const results = await response.json()
+      this.setState({})
     }
   }
 
@@ -649,7 +751,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 filter="contains"
                 data={this.formats}
                 textField="name"
-                groupBy="group"
+                groupBy="deckType"
                 value={this.state.selectedFormat}
                 onChange={this.selectFormat}
               ></DropdownList>
@@ -681,10 +783,10 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               />
             </div>
           </RandoRow>
-          {(this.state.selectedFormat.group === 'Commander' ||
-            this.state.selectedFormat.group === 'Oathbreaker') && (
+          {(this.state.selectedFormat.deckType === 'Commander' ||
+            this.state.selectedFormat.deckType === 'Oathbreaker') && (
             <RandoRow
-              label={this.state.selectedFormat.group}
+              label={this.state.selectedFormat.deckType}
               help="Your deck's leader. Determines color identity. Leave blank ('Surprise me') to have a card of the selected colors picked for you."
             >
               <div className="widget-wrapper">
@@ -719,7 +821,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                     }
                   >
                     <FontAwesomeIcon icon={faDice}></FontAwesomeIcon> Random{' '}
-                    {this.state.selectedFormat.group}
+                    {this.state.selectedFormat.deckType}
                   </button>
                 </div>
               </div>
@@ -761,7 +863,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               </div>
             </RandoRow>
           )}
-          {this.state.selectedFormat.group === 'Oathbreaker' && (
+          {this.state.selectedFormat.deckType === 'Oathbreaker' && (
             <RandoRow
               label="Signature Spell"
               help="Your Oathbreaker's signature spell. You can cast the spell as long as your Oathbreaker is on the battlefield."
@@ -829,11 +931,13 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             overflowWhenOpen="visible"
           >
             <MtGSliderList
-              max={this.state.selectedFormat.deckSize}
+              max={this.getMaxCards()}
               params={this.state.restrictionParams}
               nonexclusive={true}
-              onChange={(params) => this.setState({ restrictionParams: params })}
-              format={this.state.selectedFormat.group}
+              onChange={(params) =>
+                this.setState({ restrictionParams: params })
+              }
+              format={this.state.selectedFormat.deckType}
             />
             <RandoRow
               iconClass="ss ss-pmtg1 ss-2x"
@@ -968,34 +1072,21 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             overflowWhenOpen="visible"
           >
             <MtGSliderList
-              max={this.state.selectedFormat.deckSize}
+              max={this.getMaxCards()}
               params={this.state.countParams}
               onChange={(params) => this.setState({ countParams: params })}
-              format={this.state.selectedFormat.group}
+              format={this.state.selectedFormat.deckType}
             />
-            {this.state.selectedFormat.group === 'Commander' && (
-              <MtGSliderList
-                max={
-                  this.state.selectedFormat.deckSize -
-                  (this.state.countParams.find((p) => p.name === 'creatures')
-                    ?.count || 0)
-                }
-                params={this.state.creatureTypeParams}
-                nonexclusive={true}
-                onChange={(params) => this.setState({ creatureTypeParams: params })}
-                format={this.state.selectedFormat.group}
-              />
-            )}
             <MtGSliderList
               max={
-                this.state.selectedFormat.deckSize -
+                this.getMaxCards() -
                 (this.state.countParams.find((p) => p.name === 'basicLands')
                   ?.count || 0)
               }
               params={this.state.nonbasicParams}
               nonexclusive={true}
               onChange={(params) => this.setState({ nonbasicParams: params })}
-              format={this.state.selectedFormat.group}
+              format={this.state.selectedFormat.deckType}
             />
           </Collapsible>
           <div className="button-row align-right">
@@ -1008,7 +1099,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           </div>
         </div>
         <div className={styles.rightCol}>
-          {this.state.selectedFormat.group === 'Commander' ? (
+          {this.state.selectedFormat.deckType === 'Commander' ? (
             <div className={styles.cmdrPreview}>
               <div>
                 <h3 className="beleren">Commander</h3>
@@ -1025,7 +1116,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 </div>
               )}
             </div>
-          ) : this.state.selectedFormat.group === 'Oathbreaker' ? (
+          ) : this.state.selectedFormat.deckType === 'Oathbreaker' ? (
             <div className={styles.cmdrPreview}>
               <div>
                 <h3 className="beleren">Oathbreaker</h3>

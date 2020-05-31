@@ -118,7 +118,7 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
                   label={param.label}
                 >
                   <div className={styles.count}>
-                    {param.count?.toString().padStart(2, '0')}
+                    {param.count?.toString().padStart(2, '0') || param.min?.toString().padStart(2, '0') || '00'}
                   </div>
                   {param.isRange ? (
                     <RangeWithTooltip
@@ -159,7 +159,7 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
                 </RandoRow>
                 {param.children && (
                   <MtGSliderList
-                    max={param.count || this.props.max}
+                    max={param.count === undefined ? this.props.max : param.count}
                     params={param.children}
                     onChange={this.updateChildParams(index)}
                     format={this.props.format}
