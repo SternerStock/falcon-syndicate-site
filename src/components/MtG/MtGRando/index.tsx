@@ -545,7 +545,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
 
     await this.selectFormat(format)
 
-    if (!format) {
+    if (!window.location.search) {
       return
     }
 
@@ -565,9 +565,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     this.state.frames.filter(
       (f) => selectedFrames.indexOf(f.id.toString()) > -1
     )
-    console.log(newRarities)
-    console.log(newArtists)
-    console.log(newFrames)
 
     let newCountParams = this.state.countParams
 
