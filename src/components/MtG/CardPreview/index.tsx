@@ -97,7 +97,7 @@ class CardPreview extends Component<CardPreviewProps> {
 
   render() {
     return (
-      <div>
+      <div className={styles.cardPreviewContainer}>
         <div className={styles.cardImg}>
           <CrossfadeImage
             src={

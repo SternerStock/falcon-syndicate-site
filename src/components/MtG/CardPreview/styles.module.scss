@@ -1,11 +1,16 @@
 @import '../../../styles-global/variables';
 
+.cardPreview-container {
+  max-width: 330px;
+  margin: auto;
+}
+
 .cardImg {
-  width: 223px;
-  height: 310px;
+  width: $card-width;
+  height: $card-height;
   margin: 1em auto;
   position: relative;
-  border-radius: 14px;
+  border-radius: $card-border-radius;
   overflow: hidden;
 }
 

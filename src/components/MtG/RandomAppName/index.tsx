@@ -23,7 +23,7 @@ class RandomAppName extends Component<{}, {text: string}> {
   render() {
     return (
       <em className="app-header__subtitle">
-        A.K.A. "{this.state.text}"
+        aka "{this.state.text}"
       </em>
     )
   }

@@ -1,16 +1,21 @@
 @import '../../../styles-global/variables';
 @import '../../../styles-global/mixins';
 
-
 .mtg-container-outer {
   display: flex;
+  position: relative;
   flex-wrap: wrap;
   padding-bottom: $gutter;
+}
+
+.left-col, .right-col {
+  transition: all $anim-delay ease-in-out;
 }
 
 .left-col {
   flex: 3;
   margin-right: $gutter;
+  max-height: 2000px;
 }
 
 .right-col {
@@ -22,6 +27,16 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+
+  & > div {
+    flex: 1;
+    max-width: 330px;
+  }
+
+  .results-container {
+    flex: .001;
+    overflow: hidden;
+  }
 }
 
 .collapsible-header {
@@ -59,6 +74,69 @@
 
   &:hover {
     color: lighten($off-white, 10%);
+  }
+}
+
+.results {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.resultBox {
+  width: 100%;
+  flex: 1;
+  background-color: darken($dark-gray, 5%);;
+  border: 1px solid lighten($dark-gray, 50%);
+  color: $off-white;
+}
+
+.loader, .results {
+  opacity: 0;
+  transition: opacity $anim-delay ease-in-out;
+}
+
+.loader {
+  max-height: $card-height;
+}
+
+.generating {
+  .left-col {
+    overflow: hidden;
+    flex: .0001;
+    max-height: 500px;
+  }
+
+  .right-col {
+    margin-left: 0;
+    margin-bottom: $gutter;
+  }
+
+  .cmdr-preview .results-container {
+    flex: 1;
+    overflow: visible;
+    min-height: 400px;
+    padding: 0 $gutter;
+  }
+
+  .results {
+    opacity: 0;
+  }
+
+  .loader {
+    opacity: 1;
+  }
+}
+
+.generated {
+  .loader {
+    opacity: 0;
+    overflow: hidden;
+    max-height: 0;
+  }
+
+  .results {
+    opacity: 1;
   }
 }
 

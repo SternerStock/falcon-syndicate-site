@@ -1,3 +1,4 @@
+export const cardPreviewContainer: string;
 export const cardImg: string;
 export const oracle: string;
 export const nameRow: string;

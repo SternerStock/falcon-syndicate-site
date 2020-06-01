@@ -82,6 +82,7 @@ iframe {
 
 .page-interior {
   flex: 1;
+  position: relative;
   margin-top: $nav-height;
   margin-bottom: -3px;
   padding: 0 $gutter $gutter $gutter;

@@ -34,6 +34,7 @@
     "react-refresh": "^0.8.2",
     "react-scrollable-anchor": "^0.6.1",
     "react-string-replace": "^0.4.4",
+    "react-toastify": "^6.0.5",
     "react-tooltip": "^4.2.6",
     "react-widgets": "^4.5.0"
   },
