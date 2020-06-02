@@ -21,4 +21,7 @@ $state-border-focus: lighten($bg-control-primary, 20%);
 $multiselect-tag-bg: $off-white;
 $multiselect-tag-color: $dark-gray;
 
+$font-path: '~react-widgets/lib/fonts';
+$img-path: '~react-widgets/lib/img';
+
 @import '~react-widgets/lib/scss/react-widgets';

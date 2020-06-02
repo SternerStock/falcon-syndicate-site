@@ -75,9 +75,11 @@ class TwitchHost extends Component<TwitchHostProps, TwitchHostState> {
     )
   }
 
-  render() {
+  componentDidMount() {
     this.getLiveUsers()
+  }
 
+  render() {
     return (
       <div>
         {this.state.currentChannels.map((channel) => (
