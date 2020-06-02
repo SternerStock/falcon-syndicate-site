@@ -33,7 +33,7 @@ class RandoRow extends Component<RandoRowProps, {}> {
               className={styles.helpIcon}
             ></FontAwesomeIcon>
           )}
-          <ReactTooltip type="info" clickable={true}></ReactTooltip>
+          <ReactTooltip type="info" clickable={true} multiline={true} className={styles.tooltip}></ReactTooltip>
         </div>
         <div className={styles.controlContainer}>{this.props.children}</div>
       </div>

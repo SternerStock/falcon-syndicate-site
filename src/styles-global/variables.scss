@@ -1,24 +1,27 @@
 $falcon-purple: #1F2249;
 $falcon-red: #B0494A;
 $falcon-gold: #EBCE38;
+$steel-blue: rgb(40, 65, 91);
 $dark-gray: #222;
 $light-gray: #444;
-$off-white: #eee;
+$off-white: #e0e0e0;
 
 $bg-page: $dark-gray;
 $bg-content-primary: $off-white;
 $bg-content-secondary: $falcon-purple;
 
-$bg-control-primary: rgb(40, 65, 91);
+$bg-control-primary: $steel-blue;
 $text-control-primary: #fff;
 $border-control-primary: darken($bg-control-primary, 10%);
 
-$text-page: #fff;
+$text-page: $off-white;
 $text-content-primary: $dark-gray;
 $text-content-primary-header: #000;
 $text-content-secondary: #fff;
 
-$text-nav: #eee;
+$link-color: #fff;
+
+$text-nav: $off-white;
 $text-nav-active: #fff;
 
 $base-font-size: 13px;

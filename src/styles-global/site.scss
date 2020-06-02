@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'mixins';
 @import 'hamburger';
 
 body {
@@ -12,6 +13,15 @@ img,
 iframe {
   border: none;
   max-width: 100%;
+}
+
+a, a:visited {
+  transition: color $action-anim-delay ease;
+  color: $link-color;
+
+  &:hover, &:active {
+    color: darken($link-color, 10%);
+  }
 }
 
 .flex-container {
@@ -246,10 +256,33 @@ iframe {
 .app-header {
   font-family: 'Beleren Bold', Arial, sans-serif;
   line-height: .8em;
+  font-size: 2.5rem;
 }
 
 .app-header__subtitle {
-  font-size: .5em;
+  font-size: .4em;
+}
+
+.collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @include control-primary;
+  border: none;
+  padding: 0 $gutter;
+  margin-top: $gutter;
+}
+
+.collapsible-body {
+  border: 1px double $off-white;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  padding: 5px $gutter;
+  line-height: 1.5em;
+}
+
+.copyright {
+  font-size: .7em;
 }
 
 @media all and (max-width: 800px) {

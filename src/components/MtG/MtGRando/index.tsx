@@ -85,6 +85,7 @@ interface Format {
   name: string
   deckSize: number
   allowSilver: boolean
+  rulesUrl: string
 }
 
 interface MtGRandoState {
@@ -147,72 +148,92 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         name: 'Commander',
         deckSize: 99,
         allowSilver: true,
+        rulesUrl: 'https://mtgcommander.net/index.php/rules/',
       },
       {
         deckType: 'Commander',
         name: 'Brawl',
         deckSize: 59,
         allowSilver: false,
+        rulesUrl:
+          'https://magic.wizards.com/en/game-info/gameplay/formats/brawl',
       },
       {
         deckType: 'Commander',
         name: 'Pauper',
         deckSize: 99,
         allowSilver: true,
+        rulesUrl: 'https://www.pdhhomebase.ca/rules',
       },
       {
         deckType: 'Commander',
         name: 'Tiny Leaders',
         deckSize: 49,
         allowSilver: true,
+        rulesUrl:
+          'https://tinyleaders.blogspot.com/p/tiny-leaders-magic-gathering-format.html',
       },
       {
         deckType: 'Oathbreaker',
         name: 'Oathbreaker',
         deckSize: 58,
         allowSilver: true,
+        rulesUrl: 'https://oathbreakermtg.org/quick-rules/',
       },
       {
         deckType: 'Normal MtG',
         name: 'Standard',
         deckSize: 60,
         allowSilver: false,
+        rulesUrl:
+          'https://magic.wizards.com/en/content/standard-formats-magic-gathering',
       },
       {
         deckType: 'Normal MtG',
         name: 'Modern',
         deckSize: 60,
         allowSilver: false,
+        rulesUrl:
+          'https://magic.wizards.com/en/game-info/gameplay/formats/modern',
       },
       {
         deckType: 'Normal MtG',
         name: 'Pioneer',
         deckSize: 60,
         allowSilver: false,
+        rulesUrl:
+          'https://magic.wizards.com/en/game-info/gameplay/formats/pioneer',
       },
       {
         deckType: 'Normal MtG',
         name: 'Legacy',
         deckSize: 60,
         allowSilver: false,
+        rulesUrl:
+          'http://magic.wizards.com/en/game-info/gameplay/formats/legacy',
       },
       {
         deckType: 'Normal MtG',
         name: 'Vintage',
         deckSize: 60,
         allowSilver: true,
+        rulesUrl:
+          'http://magic.wizards.com/en/game-info/gameplay/formats/vintage',
       },
       {
         deckType: 'Normal MtG',
         name: 'Pauper',
         deckSize: 60,
         allowSilver: true,
+        rulesUrl:
+          'http://magic.wizards.com/en/game-info/gameplay/formats/pauper',
       },
       {
         deckType: 'Normal MtG',
         name: 'Penny Dreadful',
         deckSize: 60,
         allowSilver: true,
+        rulesUrl: 'https://pennydreadfulmagic.com/',
       },
     ]
     this.defaultRestrictions = [
@@ -232,8 +253,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         name: 'cmc',
         iconClass: 'ms ms-x ms-2x',
         label: 'Converted Mana Cost Range',
-        help:
-          'The range of values within which all converted mana costs must lie.',
         isRange: true,
         range: [0, 16],
         min: 0,
@@ -557,12 +576,10 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     const newRarities = this.state.rarities.filter(
       (r) => selectedRarities.indexOf(r.id.toString()) > -1
     )
-    const newArtists = 
-    this.state.artists.filter(
+    const newArtists = this.state.artists.filter(
       (a) => selectedArtists.indexOf(a.id.toString()) > -1
     )
-    const newFrames = 
-    this.state.frames.filter(
+    const newFrames = this.state.frames.filter(
       (f) => selectedFrames.indexOf(f.id.toString()) > -1
     )
 
@@ -687,7 +704,11 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
 
       const children = collection[i]?.children
       if (children) {
-        collection = update(collection, { [i]: { $merge: { children: this.setCountRecursive(children, name, count) } } })
+        collection = update(collection, {
+          [i]: {
+            $merge: { children: this.setCountRecursive(children, name, count) },
+          },
+        })
       }
     }
 
@@ -1141,7 +1162,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         }
       >
         <div className={styles.leftCol}>
-          <RandoRow label="Format" help="The format to generate a deck for.">
+          <RandoRow label="Format">
             <div className="widget-wrapper">
               <DropdownList
                 placeholder="Select a Format"
@@ -1152,17 +1173,24 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 value={this.state.selectedFormat}
                 onChange={this.selectFormat}
               ></DropdownList>
-              {this.state.selectedFormat.allowSilver && (
-                <div style={{ margin: '5px 0' }}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      onChange={(e) => this.toggleSilver(e.target.checked)}
-                    ></input>{' '}
-                    Allow silver-bordered cards
-                  </label>
-                </div>
-              )}
+              <div className={styles.formatExtraRow}>
+                {this.state.selectedFormat.allowSilver && (
+                  <div className={styles.formatExtra}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        onChange={(e) => this.toggleSilver(e.target.checked)}
+                      ></input>{' '}
+                      Allow silver-bordered cards
+                    </label>
+                  </div>
+                )}
+                <em className={styles.formatExtra}>
+                  <a href={this.state.selectedFormat.rulesUrl} target="_blank">
+                    View Rules for Format
+                  </a>
+                </em>
+              </div>
             </div>
           </RandoRow>
           <RandoRow
@@ -1314,7 +1342,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           </div>
           <Collapsible
             trigger={
-              <div className={styles.collapsibleHeader}>
+              <div className="collapsible-header">
                 <h2 className="beleren">Restrictions</h2>
                 <FontAwesomeIcon
                   icon={this.state.restrictionsOpen ? faMinus : faPlus}
@@ -1336,11 +1364,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               }
               format={this.state.selectedFormat.deckType}
             />
-            <RandoRow
-              iconClass="ss ss-pmtg1 ss-2x"
-              help="The sets that cards should be drawn from."
-              label="Sets"
-            >
+            <RandoRow iconClass="ss ss-pmtg1 ss-2x" label="Sets">
               <div className="widget-wrapper">
                 <Multiselect
                   placeholder="Any Set"
@@ -1380,7 +1404,6 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 'ss ss-2x ss-' +
                   this.state.sets[0]?.keyruneCode.toLowerCase() || 'htr'
               }
-              help="The rarities of cards to use."
               label="Rarities"
             >
               <div className="widget-wrapper">
@@ -1458,7 +1481,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           </Collapsible>
           <Collapsible
             trigger={
-              <div className={styles.collapsibleHeader}>
+              <div className="collapsible-header">
                 <h2 className="beleren">Card Types</h2>
                 <FontAwesomeIcon
                   icon={this.state.cardTypesOpen ? faMinus : faPlus}

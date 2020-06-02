@@ -19,7 +19,7 @@ const TemplateWrapper = ({ children } : {children: React.ReactNode}) => (
         {
           name: 'keywords',
           content:
-            'gaming, captain falcon, mtg, magic the gathering, magic, gathering, edh, commander, bravery, randomizer, ska',
+            'gaming, captain falcon, ska',
         },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: 'The Falcon Syndicate' },

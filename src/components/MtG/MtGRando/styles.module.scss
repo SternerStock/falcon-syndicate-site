@@ -39,14 +39,19 @@
   }
 }
 
-.collapsible-header {
+.format-extra__row {
+  padding: ($gutter / 2) 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  @include control-primary;
-  border: none;
-  padding: 0 $gutter;
-  margin-top: $gutter;
+}
+
+.format-extra {
+  flex: 1;
+
+  &:last-child {
+    text-align: right;
+  }
 }
 
 .btn-primary {
