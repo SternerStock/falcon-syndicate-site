@@ -27,29 +27,30 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
   render() {
     return (
       <Layout>
-        <Helmet
-          title="MtG Randomizer | Falcon Syndicate"
-          meta={[
-            {
-              name: 'description',
-              content:
-                'Generate randomized Magic decks for EDH, Oathbreaker, or most other formats!',
-            },
-            {
-              name: 'keywords',
-              content:
-                'mtg, magic the gathering, magic, gathering, edh, commander, oathbreaker, bravery, randomizer',
-            },
-            { name: 'twitter:card', content: 'summary' },
-            { name: 'twitter:title', content: 'MtG Randomizer' },
-            {
-              name: 'twitter:description',
-              content: 'Generate randomized Magic decks for EDH, Oathbreaker, or most other formats!',
-            },
-            { name: 'twitter:image', content: '/mtgrandologo.png' },
-          ]}
-        ></Helmet>
         <div className="page-interior">
+          <Helmet
+            title="MtG Randomizer | Falcon Syndicate"
+            meta={[
+              {
+                name: 'description',
+                content:
+                  'Generate randomized Magic decks for EDH, Oathbreaker, or most other formats!',
+              },
+              {
+                name: 'keywords',
+                content:
+                  'mtg, magic the gathering, magic, gathering, edh, commander, oathbreaker, bravery, randomizer',
+              },
+              { name: 'twitter:card', content: 'summary' },
+              { name: 'twitter:title', content: 'MtG Randomizer' },
+              {
+                name: 'twitter:description',
+                content:
+                  'Generate randomized Magic decks for EDH, Oathbreaker, or most other formats!',
+              },
+              { name: 'twitter:image', content: '/mtgrandologo.png' },
+            ]}
+          ></Helmet>
           <h1 className="app-header">
             MtG Randomizer
             <br />
@@ -164,7 +165,14 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                   SternerStock#8739.
                 </li>
               </ul>
-              <p><em className="copyright">The MtG Randomizer is unofficial Fan Content permitted under the Fan Content Policy. Not approved/endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.</em></p>
+              <p>
+                <em className="copyright">
+                  The MtG Randomizer is unofficial Fan Content permitted under
+                  the Fan Content Policy. Not approved/endorsed by Wizards.
+                  Portions of the materials used are property of Wizards of the
+                  Coast. ©Wizards of the Coast LLC.
+                </em>
+              </p>
             </div>
           </Collapsible>
           <Collapsible
