@@ -5,7 +5,11 @@ import { Helmet } from 'react-helmet'
 import Header from './Header'
 import Footer from './Footer'
 import 'normalize.css'
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
 import '../styles-global/site.scss'
+
+config.autoAddCss = false;
 
 const TemplateWrapper = ({ children } : {children: React.ReactNode}) => (
   <div className="flex-container flex-container--fullpage">
