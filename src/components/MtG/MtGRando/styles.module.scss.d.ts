@@ -12,3 +12,4 @@ export const resultBox: string;
 export const loader: string;
 export const generating: string;
 export const generated: string;
+export const commanderExtraRow: string;

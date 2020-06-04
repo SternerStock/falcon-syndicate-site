@@ -8,7 +8,8 @@
   padding-bottom: $gutter;
 }
 
-.left-col, .right-col {
+.left-col,
+.right-col {
   transition: all $anim-delay ease-in-out;
 }
 
@@ -34,7 +35,7 @@
   }
 
   .results-container {
-    flex: .001;
+    flex: 0.001;
     overflow: hidden;
   }
 }
@@ -91,12 +92,13 @@
 .resultBox {
   width: 100%;
   flex: 1;
-  background-color: darken($dark-gray, 5%);;
+  background-color: darken($dark-gray, 5%);
   border: 1px solid lighten($dark-gray, 50%);
   color: $off-white;
 }
 
-.loader, .results {
+.loader,
+.results {
   opacity: 0;
   transition: opacity $anim-delay ease-in-out;
 }
@@ -108,7 +110,7 @@
 .generating {
   .left-col {
     overflow: hidden;
-    flex: .0001;
+    flex: 0.0001;
     max-height: 500px;
   }
 
@@ -146,11 +148,43 @@
 }
 
 @media all and (max-width: 800px) {
+  .mtg-container-outer {
+    flex-direction: column;
+  }
+
   .left-col {
+    max-height: none;
     margin-right: 0;
   }
 
   .right-col {
     margin-left: 0;
+  }
+
+  .generating {
+    .left-col {
+      max-height: 0.1px;
+    }
+  }
+
+  .format-extra__row {
+    flex-direction: column;
+  }
+
+  .format-extra {
+    padding-bottom: 1em;
+
+    &:last-child {
+      text-align: inherit;
+      padding-bottom: 0;
+    }
+  }
+
+  .commander-extra__row {
+    text-align: center;
+  }
+
+  .btn-primary:not(:last-child) {
+    margin-right: 0;
   }
 }

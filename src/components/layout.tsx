@@ -35,7 +35,7 @@ const TemplateWrapper = ({ children } : {children: React.ReactNode}) => (
         { name: 'twitter:image', content: '/falconPunch.png' },
         { name: 'msapplication-TileColor', content: '#1F2249' },
         { name: 'msapplication-TileImage', content: '/ms-icon-144x144.png' },
-        { name: 'theme-color', content: '#1F2249' },
+        { name: 'theme-color', content: '#1F2249' }
       ]}
       link={[
         {

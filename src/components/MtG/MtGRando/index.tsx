@@ -1232,7 +1232,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 >
                   <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
                 </button>
-                <div>
+                <div className={styles.commanderExtraRow}>
                   <button
                     className={styles.btnPrimary}
                     onClick={() =>

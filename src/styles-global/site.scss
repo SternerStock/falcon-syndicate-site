@@ -103,7 +103,6 @@ a, a:visited {
   background-color: $falcon-purple;
   color: $text-page;
   height: calc(100vh - #{$nav-height});
-  flex: 1 100%;
 }
 
 .splash__title {
@@ -285,6 +284,33 @@ a, a:visited {
   font-size: .7em;
 }
 
+@media all and (max-width: $max-page-width) {
+  .top-nav,
+  .site-footer,
+  .splash {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .top-nav {
+    padding: 0 $gutter;
+  }
+
+  .splash {
+    margin: 0 -$gutter;
+    padding: 0 $gutter;
+  }
+
+  .splash__bg-img {
+    right: initial;
+  }
+
+  .site-footer__text {
+    padding: 0 $gutter;
+  }
+}
+
 @media all and (max-width: 800px) {
   .flex-container--rows {
     flex-flow: column nowrap;
@@ -325,9 +351,14 @@ a, a:visited {
     float: right;
     background-color: $falcon-red;
     color: $text-content-primary;
+    padding-right: $gutter * 2;
   }
 
   .top-nav__menu {
     display: inline-block;
+  }
+
+  .button-row {
+    text-align: center;
   }
 }

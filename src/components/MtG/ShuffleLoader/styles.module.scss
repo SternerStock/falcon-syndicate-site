@@ -98,3 +98,9 @@
     @include StackFlipping();
   }
 }
+
+@media all and (max-width: 800px) {
+  .stack {
+    transform: none;
+  }
+}
