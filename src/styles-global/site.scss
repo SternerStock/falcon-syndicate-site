@@ -2,6 +2,10 @@
 @import 'mixins';
 @import 'hamburger';
 
+#gatsby-focus-wrapper {
+  overflow: hidden;
+}
+
 body {
   font-family: $base-font-fam;
   background-color: $bg-page;
