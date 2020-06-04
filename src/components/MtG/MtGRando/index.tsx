@@ -1011,6 +1011,17 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       generating: true,
     })
 
+    const rightCol = document.querySelector(`.${styles.rightCol}`)
+    if (rightCol) {
+      const rect = rightCol.getBoundingClientRect()
+      if (rect.bottom > window.innerHeight) {
+        rightCol.scrollIntoView(false)
+      }
+      if (rect.top < 0) {
+        rightCol.scrollIntoView()
+      }
+    }
+
     let cmdr = this.state.selectedCommander
     let partner = this.state.selectedPartner
     let signatureSpell = this.state.selectedSpell
