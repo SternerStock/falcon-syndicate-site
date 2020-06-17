@@ -198,11 +198,14 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
           >
             <div className="collapsible-body">
               <p>
-                2020-06-01: Long time no see! Everything in the world sucks, so
-                why not make some decks that suck, too?
+                2020-06-16: Fixed some issues with playtest and banned cards appearing in commander options.
               </p>
               <p>
                 2020-06-09: Created a <a href="https://discord.gg/m2X59jn">Discord server</a> for bug reports and feature requests. Maybe you want to hang out as well?
+              </p>
+              <p>
+                2020-06-01: Long time no see! Everything in the world sucks, so
+                why not make some decks that suck, too?
               </p>
             </div>
           </Collapsible>
