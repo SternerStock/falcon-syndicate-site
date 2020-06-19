@@ -10,6 +10,7 @@ interface TwitchHostProps {
 }
 
 interface TwitchHostState {
+  parent: string,
   currentChannels: TwitchChannel[]
 }
 
@@ -17,6 +18,7 @@ class TwitchHost extends Component<TwitchHostProps, TwitchHostState> {
   constructor(props: TwitchHostProps) {
     super(props)
     this.state = {
+      parent: 'www.falconsyndicate.net',
       currentChannels: [
         {
           id: 53016301,
@@ -77,6 +79,9 @@ class TwitchHost extends Component<TwitchHostProps, TwitchHostState> {
 
   componentDidMount() {
     this.getLiveUsers()
+    this.setState({
+      parent: window.location.hostname
+    })
   }
 
   render() {
@@ -86,7 +91,7 @@ class TwitchHost extends Component<TwitchHostProps, TwitchHostState> {
           <div key={channel.id} className="video-container video-container--hd">
             <iframe
               className="video-container__video"
-              src={'https://player.twitch.tv/?channel=' + channel.login}
+              src={`https://player.twitch.tv/?channel=${channel.login}&parent=${this.state.parent}`}
               frameBorder="0"
               allowFullScreen={true}
               scrolling="no"
