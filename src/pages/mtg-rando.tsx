@@ -6,7 +6,7 @@ import RandomFlavor from '../components/MtG/RandomFlavor'
 import MtGRando from '../components/MtG/MtGRando'
 import Collapsible from 'react-collapsible'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faMinus, faBan } from '@fortawesome/free-solid-svg-icons'
 
 interface RandoPageState {
   newsOpen: boolean
@@ -92,7 +92,7 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                   </li>
                   <li>
                     To customize the parameters, expand the sections below and
-                    play with the bars!
+                    play with the bars! Remove a card type form the pool by clicking the <FontAwesomeIcon icon={faBan}></FontAwesomeIcon> symbol to the right.
                     <ul>
                       <li>
                         EDHREC Rank Percentile in particular will greatly affect
@@ -114,7 +114,7 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                   <li>
                     You can click the "Copy Shareable Settings Link" button at
                     the bottom of the page, or after generation, to get a link
-                    to share wiht others so you can generate decks with the same
+                    to share with others so you can generate decks with the same
                     rules.
                   </li>
                 </ul>
@@ -162,15 +162,8 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                   </li>
                 </ul>
                 <h3>Contact</h3>
-                <ul>
-                  <li>
-                    <a href="https://discord.gg/m2X59jn">Join the Discord</a> to report
-                    bugs or whatever.
-                  </li>
-                  <li>
-                    Or you can <a href="mailto:me@coreylaird.com">Email me</a>.
-                  </li>
-                </ul>
+                You can <a href="mailto:me@coreylaird.com">Email me</a> or <a href="https://discord.gg/m2X59jn">Join the Discord</a>:<br/>
+                <iframe src="https://discordapp.com/widget?id=719594048565936238&theme=dark" width="350" height="300" allowTransparency={true} frameBorder={0}></iframe>
                 <p>
                   <em className="copyright">
                     The MtG Randomizer is unofficial Fan Content permitted under
@@ -180,33 +173,6 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                   </em>
                 </p>
               </div>
-            </div>
-          </Collapsible>
-          <Collapsible
-            trigger={
-              <div className="collapsible-header">
-                <h2>News</h2>
-                <FontAwesomeIcon
-                  icon={this.state.newsOpen ? faMinus : faPlus}
-                  size="2x"
-                ></FontAwesomeIcon>
-              </div>
-            }
-            onOpen={() => this.setState({ newsOpen: true })}
-            onClose={() => this.setState({ newsOpen: false })}
-            easing="ease-in-out"
-          >
-            <div className="collapsible-body">
-              <p>
-                2020-06-16: Fixed some issues with playtest and banned cards appearing in commander options.
-              </p>
-              <p>
-                2020-06-09: Created a <a href="https://discord.gg/m2X59jn">Discord server</a> for bug reports and feature requests. Maybe you want to hang out as well?
-              </p>
-              <p>
-                2020-06-01: Long time no see! Everything in the world sucks, so
-                why not make some decks that suck, too?
-              </p>
             </div>
           </Collapsible>
           <br />
