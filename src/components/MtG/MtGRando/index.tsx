@@ -274,7 +274,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         iconClass: 'ms ms-land ms-2x',
         label: 'Nonbasic Lands',
         help:
-          'The EXACT number of nonbasic lands to include in the generated deck.',
+          'The MINIMUM number of nonbasic lands to include in the generated deck.',
         enabled: true,
         count: 15,
       },
