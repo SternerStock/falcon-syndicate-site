@@ -127,8 +127,8 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.frogtown.me/" target="_blank">
-                      Tabletop Simulator (via Frogtown)
+                    <a href="https://www.tabletopsimulator.com/" target="_blank">
+                      Tabletop Simulator
                     </a>
                   </li>
                   <li>
