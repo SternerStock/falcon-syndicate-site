@@ -1033,8 +1033,9 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       (this.state.selectedFormat.deckType === 'Commander' ||
         this.state.selectedFormat.deckType === 'Oathbreaker')
     ) {
-      cmdr = this.state.commanders[
-        Math.floor(Math.random() * this.state.commanders.length)
+      const cmdrs = this.state.commanders.filter(c => c.colorIdentity.sort().join("") === this.state.selectedColors.sort().join(""))
+      cmdr = cmdrs[
+        Math.floor(Math.random() * cmdrs.length)
       ]
 
       dependentColl = await this.selectCommander(cmdr)
@@ -1046,6 +1047,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       this.state.selectedFormat.deckType === 'Commander' &&
       dependentColl.length > 0
     ) {
+      dependentColl = dependentColl.filter(c => c.colorIdentity.sort().join("") === this.state.selectedColors.sort().join(""))
       partner = dependentColl[Math.floor(Math.random() * dependentColl.length)]
 
       colorIdentity = this.selectPartner(partner)
