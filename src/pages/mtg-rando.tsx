@@ -7,6 +7,7 @@ import MtGRando from '../components/MtG/MtGRando'
 import Collapsible from 'react-collapsible'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus, faBan } from '@fortawesome/free-solid-svg-icons'
+import { ReactComponent as MtgJsonLogo } from '../img/logo-mtgjson-light-blue.svg'
 
 interface RandoPageState {
   newsOpen: boolean
@@ -160,6 +161,12 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                       Generator/Database Source Code
                     </a>
                   </li>
+                </ul>
+                <h3>Resources Used</h3>
+                <ul>
+                  <li>Card Data: <a href="https://mtgjson.com"><MtgJsonLogo width="32" height="auto"></MtgJsonLogo> MTGJSON</a></li>
+                  <li>Mana Symbols: <a href="https://mana.andrewgioia.com/">Mana font by Andrew Gioia</a></li>
+                  <li>Set Symbols: <a href="https://keyrune.andrewgioia.com/">Keyrune font by Andrew Gioia</a></li>
                 </ul>
                 <h3>Contact</h3>
                 You can <a href="mailto:me@coreylaird.com">Email me</a> or <a href="https://discord.gg/m2X59jn">Join the Discord</a>:<br/>
