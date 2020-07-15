@@ -93,7 +93,10 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                   </li>
                   <li>
                     To customize the parameters, expand the sections below and
-                    play with the bars! Remove a card type form the pool by clicking the <FontAwesomeIcon icon={faBan}></FontAwesomeIcon> symbol to the right.
+                    play with the bars! Remove a card type form the pool by
+                    clicking the{' '}
+                    <FontAwesomeIcon icon={faBan}></FontAwesomeIcon> symbol to
+                    the right.
                     <ul>
                       <li>
                         EDHREC Rank Percentile in particular will greatly affect
@@ -127,8 +130,8 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.tabletopsimulator.com/" target="_blank">
-                      Tabletop Simulator
+                    <a href="https://www.frogtown.me/" target="_blank">
+                      Tabletop Simulator (via Frogtown)
                     </a>
                   </li>
                   <li>
@@ -164,13 +167,36 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                 </ul>
                 <h3>Resources Used</h3>
                 <ul>
-                  <li>Card Data: <a href="https://mtgjson.com"><MtgJsonLogo width="32" height="auto"></MtgJsonLogo> MTGJSON</a></li>
-                  <li>Mana Symbols: <a href="https://mana.andrewgioia.com/">Mana font by Andrew Gioia</a></li>
-                  <li>Set Symbols: <a href="https://keyrune.andrewgioia.com/">Keyrune font by Andrew Gioia</a></li>
+                  <li>
+                    Card Data:{' '}
+                    <a href="https://mtgjson.com">
+                      <MtgJsonLogo width="32" height="auto"></MtgJsonLogo>{' '}
+                      MTGJSON
+                    </a>
+                  </li>
+                  <li>
+                    Mana Symbols:{' '}
+                    <a href="https://mana.andrewgioia.com/">
+                      Mana font by Andrew Gioia
+                    </a>
+                  </li>
+                  <li>
+                    Set Symbols:{' '}
+                    <a href="https://keyrune.andrewgioia.com/">
+                      Keyrune font by Andrew Gioia
+                    </a>
+                  </li>
                 </ul>
                 <h3>Contact</h3>
-                You can <a href="mailto:me@coreylaird.com">Email me</a> or <a href="https://discord.gg/m2X59jn">Join the Discord</a>:<br/>
-                <iframe src="https://discordapp.com/widget?id=719594048565936238&theme=dark" width="350" height="300" allowTransparency={true} frameBorder={0}></iframe>
+                You can <a href="mailto:me@coreylaird.com">Email me</a> or{' '}
+                <a href="https://discord.gg/m2X59jn">Join the Discord</a>:<br />
+                <iframe
+                  src="https://discordapp.com/widget?id=719594048565936238&theme=dark"
+                  width="350"
+                  height="300"
+                  allowTransparency={true}
+                  frameBorder={0}
+                ></iframe>
                 <p>
                   <em className="copyright">
                     The MtG Randomizer is unofficial Fan Content permitted under
