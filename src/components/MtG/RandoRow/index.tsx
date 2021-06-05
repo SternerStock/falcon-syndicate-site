@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ReactTooltip from 'react-tooltip'
-import styles from './styles.module.scss'
+import * as styles from './styles.module.scss'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'

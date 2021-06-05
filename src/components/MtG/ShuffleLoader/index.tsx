@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import styles from './styles.module.scss'
+import * as styles from './styles.module.scss'
 import mtgCardBackUrl from '../../../img/mtgcardback.jpg'
 
 class ShuffleLoader extends Component {

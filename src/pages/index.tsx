@@ -1,7 +1,6 @@
 import React from 'react'
 import Layout from '../components/layout'
 import { Link } from 'gatsby'
-import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor'
 import TwitchHost from '../components/TwitchHost'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,8 +9,6 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { ReactComponent as SplashImg } from '../img/knee.svg'
 import { ReactComponent as TwitchLogo } from '../img/twitchLogo.svg'
 import minecraftLogoUrl from '../img/minecraftIcon.png'
-
-configureAnchors({ offset: -50 })
 
 const IndexPage = () => (
   <Layout>
@@ -23,7 +20,7 @@ const IndexPage = () => (
           <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
         </a>
       </div>
-      <ScrollableAnchor id="body">
+      <div id="body">
         <main className="flex-container flex-container--rows">
           <section className="content">
             <h2 className="content__header">What even is this?</h2>
@@ -64,7 +61,7 @@ const IndexPage = () => (
             ></iframe>
           </aside>
         </main>
-      </ScrollableAnchor>
+      </div>
     </div>
   </Layout>
 )

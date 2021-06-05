@@ -12,16 +12,6 @@ module.exports = {
         dir: './src/pages/img',
         viewBox: false
       }
-    },
-    {
-      resolve: 'gatsby-plugin-web-font-loader',
-      options: {
-        google: {
-            families: [
-              'Press Start 2P'
-            ]
-        }
-      }
     }
   ],
 };

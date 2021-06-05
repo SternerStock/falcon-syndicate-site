@@ -4,14 +4,14 @@ import MtGSliderList from '../MtGSliderList'
 import ColorSelect from '../ColorSelect'
 import RandoRow from '../RandoRow'
 import ShuffleLoader from '../ShuffleLoader'
-import DropdownList from 'react-widgets/lib/DropdownList'
-import Multiselect from 'react-widgets/lib/Multiselect'
+import DropdownList from 'react-widgets/DropdownList'
+import Multiselect from 'react-widgets/Multiselect'
 import Collapsible from 'react-collapsible'
 import update from 'immutability-helper'
 import { ToastContainer, toast } from 'react-toastify'
 
-import '../../../styles-global/react-widgets-theme.scss'
-import styles from './styles.module.scss'
+import "react-widgets/styles.css"
+import * as styles from './styles.module.scss'
 import 'react-toastify/dist/ReactToastify.css'
 import 'keyrune'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -1183,7 +1183,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 value={this.state.selectedFormat}
                 onChange={this.selectFormat}
               ></DropdownList>
-              <div className={styles.formatExtraRow}>
+              <div className={styles.formatExtra__row}>
                 {this.state.selectedFormat.allowSilver && (
                   <div className={styles.formatExtra}>
                     <label>
@@ -1242,7 +1242,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                 >
                   <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
                 </button>
-                <div className={styles.commanderExtraRow}>
+                <div className={styles.commanderExtra__row}>
                   <button
                     className={styles.btnPrimary}
                     onClick={() =>
@@ -1380,13 +1380,13 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   placeholder="Any Set"
                   filter="contains"
                   data={this.state.sets}
-                  textField={(s) => s.name}
+                  textField={(s) => (s as MtGSet).name}
                   value={this.state.selectedSets}
                   busy={this.state.setsLoading}
                   onChange={(newValue: MtGSet[]) =>
                     this.setState({ selectedSets: newValue })
                   }
-                  itemComponent={({ item }) => (
+                  renderListItem={({ item }) => (
                     <div>
                       <i
                         className={
@@ -1396,7 +1396,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                       {item.name}
                     </div>
                   )}
-                  tagComponent={({ item }) => (
+                  renderTagValue={({ item }) => (
                     <div>
                       <i
                         className={
@@ -1421,13 +1421,13 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   placeholder="Any Rarity"
                   filter="contains"
                   data={this.state.rarities}
-                  textField={(r) => r.name}
+                  textField={(r) => (r as Lookup).name}
                   value={this.state.selectedRarities}
                   busy={this.state.raritiesLoading}
                   onChange={(newValue: Lookup[]) =>
                     this.setState({ selectedRarities: newValue })
                   }
-                  itemComponent={({ item }) => (
+                  renderListItem={({ item }) => (
                     <div>
                       <i
                         className={
@@ -1441,7 +1441,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                       {item.name}
                     </div>
                   )}
-                  tagComponent={({ item }) => (
+                  renderTagValue={({ item }) => (
                     <div>
                       <i
                         className={
@@ -1464,7 +1464,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   placeholder="Any Artist"
                   filter="contains"
                   data={this.state.artists}
-                  textField={(r) => r.name}
+                  textField={(r) => (r as Lookup).name}
                   value={this.state.selectedArtists}
                   busy={this.state.artistsLoading}
                   onChange={(newValue: Lookup[]) =>
@@ -1479,7 +1479,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   placeholder="Any Frame Style"
                   filter="contains"
                   data={this.state.frames}
-                  textField={(r) => r.name}
+                  textField={(r) => (r as Lookup).name}
                   value={this.state.selectedFrames}
                   busy={this.state.framesLoading}
                   onChange={(newValue: Lookup[]) =>

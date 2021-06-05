@@ -1,8 +1,9 @@
+@use 'sass:math';
 @import '../../../styles-global/variables';
 
 .row {
   display: flex;
-  padding: $gutter/2;
+  padding: math.div($gutter, 2);
   border-bottom: 1px solid $text-page;
 }
 
@@ -12,7 +13,7 @@
   display: flex;
   align-items: center;
   font-weight: bold;
-  padding: 0 $gutter/2;
+  padding: 0 math.div($gutter, 2);
 }
 
 .icon {
@@ -49,7 +50,7 @@
   }
 
   .control-container {
-    margin-top: $gutter / 2;
+    margin-top: math.div($gutter, 2);
     flex: 1 1 100%;
     width: 100%;
   }

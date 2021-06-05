@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import '../../../styles-global/variables';
 
 @mixin StackTop {
@@ -22,7 +23,7 @@
 }
 
 @mixin StackFlipping {
-  transform: translateX(-$card-width / 2);
+  transform: translateX(math.div(-$card-width, 2));
   z-index: .5;
   left: $gutter;
   top: $gutter;
@@ -31,7 +32,7 @@
 /* Based on ParkHJ11's Playing Card Shuffle codepen: https://codepen.io/parkhj11/pen/KKwWRza */
 .stack {
   position: relative;
-  transform: translateX($card-width / 4 - $gutter);
+  transform: translateX(math.div($card-width, 4) - $gutter);
 }
 
 .card {

@@ -3,7 +3,7 @@ import CrossfadeImage from 'react-crossfade-image'
 import reactStringReplace from 'react-string-replace'
 
 import mtgCardBackUrl from '../../../img/mtgcardback.jpg'
-import styles from './styles.module.scss'
+import * as styles from './styles.module.scss'
 import 'mana-font'
 import '@saeris/typeface-beleren-bold'
 
@@ -27,7 +27,7 @@ class CardPreview extends Component<CardPreviewProps> {
     return reactStringReplace(
       text,
       this.symbolRegex,
-      (segment, index, offset) => {
+      (segment: string, index: number, offset: number) => {
         let className
         if (segment === 'T') {
           className = 'ms-tap'
@@ -59,7 +59,7 @@ class CardPreview extends Component<CardPreviewProps> {
     return reactStringReplace(
       text,
       this.reminderRegex,
-      (segment, index, offset) => {
+      (segment: string, index: number, offset: number) => {
         const replaced = this.replaceLoyalty(this.replaceManaSymbols([segment]))
         return (
           <em key={this.props.selectedCard?.id + '-reminder-' + index + offset}>
@@ -74,7 +74,7 @@ class CardPreview extends Component<CardPreviewProps> {
     return reactStringReplace(
       text,
       this.loyaltyRegex,
-      (segment, index, offset) => {
+      (segment: string, index: number, offset: number) => {
         let className
         if (segment.startsWith('+') || segment === '0') {
           className = 'ms-loyalty-up'

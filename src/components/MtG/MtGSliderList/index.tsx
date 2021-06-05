@@ -4,7 +4,7 @@ import Slider, { Range, createSliderWithTooltip } from 'rc-slider'
 import RandoRow from '../RandoRow'
 
 import 'rc-slider/assets/index.css'
-import styles from './styles.module.scss'
+import * as styles from './styles.module.scss'
 import '../../../styles-global/rc-slider-theme.scss'
 import 'keyrune'
 

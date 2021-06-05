@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import 'variables';
 @import 'mixins';
 @import 'hamburger';
@@ -50,7 +51,7 @@ a, a:visited {
   width: calc(100% - #{$gutter * 2});
   max-width: #{$max-page-width - $gutter * 2};
   margin: 0 -50vw;
-  padding: 0 calc(50vw + #{$gutter / 2});
+  padding: 0 calc(50vw + #{math.div($gutter, 2)});
 }
 
 .top-nav {
@@ -71,7 +72,7 @@ a, a:visited {
   color: $text-nav;
   display: inline-block;
   text-decoration: none;
-  padding: 0 ($gutter / 2);
+  padding: 0 math.div($gutter, 2);
   white-space: nowrap;
   vertical-align: top;
   transition: color $anim-delay;
@@ -116,7 +117,7 @@ a, a:visited {
   position: absolute;
   top: 10vh;
   width: 50vw;
-  max-width: $max-page-width / 2;
+  max-width: math.div($max-page-width, 2);
   z-index: 20;
   text-shadow: 0px 5px 5px #000;
 }
@@ -191,11 +192,11 @@ a, a:visited {
 }
 
 .video-container--sd {
-  padding-bottom: calc(100% * 3 / 4);
+  padding-bottom: calc(100% * math.div(3, 4));
 }
 
 .video-container--hd {
-  padding-bottom: calc(100% * 9 / 16);
+  padding-bottom: calc(100% * math.div(9, 16));
 }
 
 .site-footer {
@@ -213,7 +214,7 @@ a, a:visited {
 }
 
 .site-footer__text {
-  margin: #{$gutter / 2} 0;
+  margin: #{math.div($gutter, 2)} 0;
 }
 
 .full-embed {

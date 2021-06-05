@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ManaCheckbox from '../ManaCheckbox'
 import update from 'immutability-helper'
 
-import styles from './styles.module.scss'
+import * as styles from './styles.module.scss'
 import 'mana-font'
 
 interface ColorSelectProps {

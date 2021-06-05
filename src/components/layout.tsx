@@ -5,8 +5,9 @@ import { Helmet } from 'react-helmet'
 import Header from './Header'
 import Footer from './Footer'
 import 'normalize.css'
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { config } from "@fortawesome/fontawesome-svg-core";
+import '@fontsource/press-start-2p'
+import '@fortawesome/fontawesome-svg-core/styles.css'
+import { config } from '@fortawesome/fontawesome-svg-core'
 import '../styles-global/site.scss'
 
 config.autoAddCss = false;
