@@ -8,15 +8,15 @@
   },
   "author": "Corey Laird <lairdcc@gmail.com>",
   "dependencies": {
-    "@fontsource/press-start-2p": "^4.4.2",
+    "@fontsource/press-start-2p": "^4.4.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@saeris/typeface-beleren-bold": "^1.0.1",
     "@svgr/webpack": "^5.5.0",
-    "acorn": "^8.3.0",
-    "gatsby": "^3.6.2",
-    "gatsby-plugin-react-helmet": "^4.6.0",
+    "acorn": "^8.4.0",
+    "gatsby": "^3.7.2",
+    "gatsby-plugin-react-helmet": "^4.7.1",
     "gatsby-plugin-svgr": "^3.0.0-beta.0",
     "iframe-resizer": "^4.3.2",
     "immutability-helper": "^3.1.1",
@@ -34,7 +34,7 @@
     "react-toastify": "^7.0.4",
     "react-tooltip": "^4.2.21",
     "react-widgets": "^5.1.1",
-    "sass": "^1.34.1"
+    "sass": "^1.35.1"
   },
   "keywords": [
     "gatsby",
@@ -54,14 +54,14 @@
   "devDependencies": {
     "@types/react-helmet": "^6.1.1",
     "@types/react-widgets": "^4.4.4",
-    "babel-preset-gatsby": "^1.6.0",
+    "babel-preset-gatsby": "^1.7.1",
     "css-loader": "^5.2.6",
-    "eslint": "^7.27.0",
+    "eslint": "^7.29.0",
     "eslint-plugin-flowtype": "^5.7.2",
-    "gatsby-cli": "^3.6.0",
-    "gatsby-plugin-scss-typescript": "^5.1.1-alpha-335.0",
-    "gatsby-plugin-typescript": "^3.6.0",
-    "prettier": "^2.3.0",
-    "typescript": "^4.3.2"
+    "gatsby-cli": "^3.7.1",
+    "gatsby-plugin-scss-typescript": "^5.1.1-alpha-345.0",
+    "gatsby-plugin-typescript": "^3.7.1",
+    "prettier": "^2.3.1",
+    "typescript": "^4.3.4"
   }
 }
