@@ -194,7 +194,6 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                   src="https://discordapp.com/widget?id=719594048565936238&theme=dark"
                   width="350"
                   height="300"
-                  allowTransparency={true}
                   frameBorder={0}
                 ></iframe>
                 <p>
