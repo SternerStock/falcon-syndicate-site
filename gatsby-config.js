@@ -4,7 +4,8 @@ module.exports = {
   },
   plugins: [
     'gatsby-plugin-react-helmet',
-    'gatsby-plugin-scss-typescript',
+    'gatsby-plugin-sass',
+    'gatsby-plugin-dts-css-modules',
     'gatsby-plugin-typescript',
     {
       resolve: 'gatsby-plugin-svgr',

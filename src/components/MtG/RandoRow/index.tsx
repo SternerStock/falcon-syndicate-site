@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import ReactTooltip from 'react-tooltip'
 import * as styles from './styles.module.scss'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { FaQuestionCircle } from 'react-icons/fa'
 
 interface RandoRowProps {
   children: React.ReactNode
@@ -27,11 +26,10 @@ class RandoRow extends Component<RandoRowProps, {}> {
         </label>
         <div className={styles.icon}>
           {this.props.help && (
-            <FontAwesomeIcon
-              icon={faQuestionCircle}
+            <FaQuestionCircle
               data-tip={this.props.help}
               className={styles.helpIcon}
-            ></FontAwesomeIcon>
+            />
           )}
           <ReactTooltip type="info" clickable={true} multiline={true} className={styles.tooltip}></ReactTooltip>
         </div>

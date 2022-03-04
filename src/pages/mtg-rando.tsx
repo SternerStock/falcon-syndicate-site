@@ -5,8 +5,7 @@ import RandomAppName from '../components/MtG/RandomAppName'
 import RandomFlavor from '../components/MtG/RandomFlavor'
 import MtGRando from '../components/MtG/MtGRando'
 import Collapsible from 'react-collapsible'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus, faBan } from '@fortawesome/free-solid-svg-icons'
+import { FaPlus, FaMinus, FaBan } from 'react-icons/fa'
 import { ReactComponent as MtgJsonLogo } from '../img/logo-mtgjson-light-blue.svg'
 
 interface RandoPageState {
@@ -61,10 +60,11 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
             trigger={
               <div className="collapsible-header">
                 <h2>What is this?</h2>
-                <FontAwesomeIcon
-                  icon={this.state.howToOpen ? faMinus : faPlus}
-                  size="2x"
-                ></FontAwesomeIcon>
+                {this.state.howToOpen ? (
+                  <FaMinus size="2em" />
+                ) : (
+                  <FaPlus size="2em" />
+                )}
               </div>
             }
             onOpen={() => this.setState({ howToOpen: true })}
@@ -94,9 +94,7 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                   <li>
                     To customize the parameters, expand the sections below and
                     play with the bars! Remove a card type form the pool by
-                    clicking the{' '}
-                    <FontAwesomeIcon icon={faBan}></FontAwesomeIcon> symbol to
-                    the right.
+                    clicking the <FaBan /> symbol to the right.
                     <ul>
                       <li>
                         EDHREC Rank Percentile in particular will greatly affect

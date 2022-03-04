@@ -10,20 +10,19 @@ import Collapsible from 'react-collapsible'
 import update from 'immutability-helper'
 import { ToastContainer, toast } from 'react-toastify'
 
-import "react-widgets/styles.css"
+import 'react-widgets/styles.css'
 import * as styles from './styles.module.scss'
 import 'react-toastify/dist/ReactToastify.css'
 import 'keyrune'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faPlus,
-  faMinus,
-  faTimes,
-  faRandom,
-  faDice,
-  faCopy,
-  faArrowLeft,
-} from '@fortawesome/free-solid-svg-icons'
+  FaPlus,
+  FaMinus,
+  FaTimes,
+  FaRandom,
+  FaDice,
+  FaCopy,
+  FaArrowLeft,
+} from 'react-icons/fa'
 
 interface SharedProps extends Record<string, string> {
   deckType: string
@@ -132,9 +131,8 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
   constructor(props: {}) {
     super(props)
     this.getSettingsLink = this.getSettingsLink.bind(this)
-    this.loadSettingsFromQueryString = this.loadSettingsFromQueryString.bind(
-      this
-    )
+    this.loadSettingsFromQueryString =
+      this.loadSettingsFromQueryString.bind(this)
     this.selectCommander = this.selectCommander.bind(this)
     this.selectPartner = this.selectPartner.bind(this)
     this.selectFormat = this.selectFormat.bind(this)
@@ -241,8 +239,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         name: 'edhrecrank',
         iconClass: 'ss ss-cmd ss-2x',
         label: 'EDHREC Rank Percentile',
-        help:
-          'The "goodness" range of the cards to pick. This value is relative to the pool of possible cards. Note that silver-bordered cards are not ranked, so changing this value may exclude them.',
+        help: 'The "goodness" range of the cards to pick. This value is relative to the pool of possible cards. Note that silver-bordered cards are not ranked, so changing this value may exclude them.',
         isRange: true,
         range: [0, 100],
         min: 0,
@@ -264,8 +261,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         name: 'basicLands',
         iconClass: 'ms ms-land ms-2x',
         label: 'Basic Lands',
-        help:
-          'The EXACT number of basic lands to include in the generated deck.',
+        help: 'The EXACT number of basic lands to include in the generated deck.',
         enabled: true,
         count: 24,
       },
@@ -273,8 +269,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         name: 'nonbasicLands',
         iconClass: 'ms ms-land ms-2x',
         label: 'Nonbasic Lands',
-        help:
-          'The MINIMUM number of nonbasic lands to include in the generated deck.',
+        help: 'The MINIMUM number of nonbasic lands to include in the generated deck.',
         enabled: true,
         count: 15,
       },
@@ -282,8 +277,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         name: 'creatures',
         iconClass: 'ms ms-creature ms-2x',
         label: 'Creatures',
-        help:
-          'The MINIMUM number of creatures to include in the generated deck.',
+        help: 'The MINIMUM number of creatures to include in the generated deck.',
         enabled: true,
         count: 20,
         children: [
@@ -291,8 +285,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             name: 'sharesTypes',
             iconClass: 'ms ms-creature ms-2x',
             label: 'Shares a Creature Type with Commander(s)',
-            help:
-              'The MINIMUM number of cards to include that share at least one creature type with your commander. If this bar is maxed, the generator will attempt to make all applicable cards share at least one creature type.',
+            help: 'The MINIMUM number of cards to include that share at least one creature type with your commander. If this bar is maxed, the generator will attempt to make all applicable cards share at least one creature type.',
             enabled: true,
             count: 0,
             showForFormats: ['Commander'],
@@ -303,8 +296,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         name: 'artifacts',
         iconClass: 'ms ms-artifact ms-2x',
         label: 'Artifacts',
-        help:
-          'The MINIMUM number of artifacts to include in the generated deck.',
+        help: 'The MINIMUM number of artifacts to include in the generated deck.',
         enabled: true,
         count: 5,
         children: [
@@ -312,8 +304,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             name: 'equipment',
             iconClass: 'ms ms-artifact ms-2x',
             label: 'Equipment',
-            help:
-              'The MINIMUM number of artifacts that will be equipment. If this bar is maxed, all artifacts will be equipment.',
+            help: 'The MINIMUM number of artifacts that will be equipment. If this bar is maxed, all artifacts will be equipment.',
             enabled: true,
             count: 0,
           },
@@ -321,8 +312,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             name: 'vehicles',
             iconClass: 'ms ms-artifact ms-2x',
             label: 'Vehicles',
-            help:
-              'The MINIMUM number of artifacts that will be vehicles. If this bar is maxed, all artifacts will be vehicles, or at least as many as possible.',
+            help: 'The MINIMUM number of artifacts that will be vehicles. If this bar is maxed, all artifacts will be vehicles, or at least as many as possible.',
             enabled: true,
             count: 0,
           },
@@ -332,8 +322,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         name: 'enchantments',
         iconClass: 'ms ms-enchantment ms-2x',
         label: 'Enchantments',
-        help:
-          'The MINIMUM number of enchantments to include in the generated deck.',
+        help: 'The MINIMUM number of enchantments to include in the generated deck.',
         enabled: true,
         count: 5,
         children: [
@@ -341,8 +330,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             name: 'auras',
             iconClass: 'ms ms-enchantment ms-2x',
             label: 'Auras',
-            help:
-              'The MINIMUM number of enchantments that will be auras (or creatures with bestow). If this bar is maxed, all enchantments will be auras.',
+            help: 'The MINIMUM number of enchantments that will be auras (or creatures with bestow). If this bar is maxed, all enchantments will be auras.',
             enabled: true,
             count: 0,
           },
@@ -352,8 +340,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         name: 'planeswalkers',
         iconClass: 'ms ms-planeswalker ms-2x',
         label: 'Planeswalkers',
-        help:
-          'The MINIMUM number of planeswalkers to include in the generated deck.',
+        help: 'The MINIMUM number of planeswalkers to include in the generated deck.',
         enabled: true,
         count: 1,
       },
@@ -361,8 +348,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         name: 'spells',
         iconClass: 'ms ms-instant ms-2x',
         label: 'Instants and Sorceries',
-        help:
-          'The MINIMUM number of non-permanent cards to include in the generated deck.',
+        help: 'The MINIMUM number of non-permanent cards to include in the generated deck.',
         enabled: true,
         count: 10,
       },
@@ -372,8 +358,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         name: 'manaProducing',
         iconClass: 'ms ms-c ms-2x',
         label: 'Produces Mana',
-        help:
-          'The MINIMUM number of permanents (other than basic lands) to include that have a mana ability. If this bar is maxed, the generator will attempt to make all permanents have mana abilities.',
+        help: 'The MINIMUM number of permanents (other than basic lands) to include that have a mana ability. If this bar is maxed, the generator will attempt to make all permanents have mana abilities.',
         enabled: true,
         count: 10,
       },
@@ -381,8 +366,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         name: 'legendary',
         iconClass: 'ss ss-s99 ss-2x',
         label: 'Legendary',
-        help:
-          'The MINIMUM number of permanents (other than basic lands) to include that are legendary. If this bar is maxed, the generator will attempt to make all permanents legendary.',
+        help: 'The MINIMUM number of permanents (other than basic lands) to include that are legendary. If this bar is maxed, the generator will attempt to make all permanents legendary.',
         enabled: true,
         count: 0,
       },
@@ -668,13 +652,12 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     this.setState({
       silverBorder: params.silverBorder === 'true',
       restrictionParams: update(this.state.restrictionParams, {
-        [this.state.restrictionParams.findIndex(
-          (p) => p.name == 'edhrecrank'
-        )]: {
-          $merge: {
-            range: params.edhRecRange.split(',').map((o) => parseInt(o, 10)),
+        [this.state.restrictionParams.findIndex((p) => p.name == 'edhrecrank')]:
+          {
+            $merge: {
+              range: params.edhRecRange.split(',').map((o) => parseInt(o, 10)),
+            },
           },
-        },
         [this.state.restrictionParams.findIndex((p) => p.name == 'cmc')]: {
           $merge: {
             range: params.cmcRange.split(',').map((o) => parseInt(o, 10)),
@@ -1033,10 +1016,12 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       (this.state.selectedFormat.deckType === 'Commander' ||
         this.state.selectedFormat.deckType === 'Oathbreaker')
     ) {
-      const cmdrs = this.state.commanders.filter(c => c.colorIdentity.sort().join("") === this.state.selectedColors.sort().join(""))
-      cmdr = cmdrs[
-        Math.floor(Math.random() * cmdrs.length)
-      ]
+      const cmdrs = this.state.commanders.filter(
+        (c) =>
+          c.colorIdentity.sort().join('') ===
+          this.state.selectedColors.sort().join('')
+      )
+      cmdr = cmdrs[Math.floor(Math.random() * cmdrs.length)]
 
       dependentColl = await this.selectCommander(cmdr)
       colorIdentity = cmdr.colorIdentity
@@ -1047,7 +1032,11 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       this.state.selectedFormat.deckType === 'Commander' &&
       dependentColl.length > 0
     ) {
-      dependentColl = dependentColl.filter(c => c.colorIdentity.sort().join("") === this.state.selectedColors.sort().join(""))
+      dependentColl = dependentColl.filter(
+        (c) =>
+          c.colorIdentity.sort().join('') ===
+          this.state.selectedColors.sort().join('')
+      )
       partner = dependentColl[Math.floor(Math.random() * dependentColl.length)]
 
       colorIdentity = this.selectPartner(partner)
@@ -1240,7 +1229,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   className={styles.btnClearOverlay}
                   onClick={() => this.selectCommander()}
                 >
-                  <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
+                  <FaTimes />
                 </button>
                 <div className={styles.commanderExtra__row}>
                   <button
@@ -1255,8 +1244,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                       )
                     }
                   >
-                    <FontAwesomeIcon icon={faDice}></FontAwesomeIcon> Random{' '}
-                    {this.state.selectedFormat.deckType}
+                    <FaDice /> Random {this.state.selectedFormat.deckType}
                   </button>
                 </div>
               </div>
@@ -1278,7 +1266,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                   className={styles.btnClearOverlay}
                   onClick={() => this.selectPartner()}
                 >
-                  <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
+                  <FaTimes />
                 </button>
                 <div>
                   <button
@@ -1291,8 +1279,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                       )
                     }}
                   >
-                    <FontAwesomeIcon icon={faDice}></FontAwesomeIcon> Random
-                    Partner
+                    <FaDice /> Random Partner
                   </button>
                 </div>
               </div>
@@ -1323,23 +1310,23 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                     })
                   }
                 >
-                  <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
+                  <FaTimes />
                 </button>
                 <div>
                   <button
                     className={styles.btnPrimary}
                     onClick={() =>
                       this.setState({
-                        selectedSpell: this.state.signatureSpells[
-                          Math.floor(
-                            Math.random() * this.state.signatureSpells.length
-                          )
-                        ],
+                        selectedSpell:
+                          this.state.signatureSpells[
+                            Math.floor(
+                              Math.random() * this.state.signatureSpells.length
+                            )
+                          ],
                       })
                     }
                   >
-                    <FontAwesomeIcon icon={faDice}></FontAwesomeIcon> Random
-                    Signature Spell
+                    <FaDice /> Random Signature Spell
                   </button>
                 </div>
               </div>
@@ -1347,17 +1334,18 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           )}
           <div className="button-row align-right">
             <button className={styles.btnPrimary} onClick={this.generateDeck}>
-              <FontAwesomeIcon icon={faRandom}></FontAwesomeIcon> Generate Deck
+              <FaRandom /> Generate Deck
             </button>
           </div>
           <Collapsible
             trigger={
               <div className="collapsible-header">
                 <h2 className="beleren">Restrictions</h2>
-                <FontAwesomeIcon
-                  icon={this.state.restrictionsOpen ? faMinus : faPlus}
-                  size="2x"
-                ></FontAwesomeIcon>
+                {this.state.restrictionsOpen ? (
+                  <FaMinus size="2em" />
+                ) : (
+                  <FaPlus size="2em" />
+                )}
               </div>
             }
             onOpen={() => this.setState({ restrictionsOpen: true })}
@@ -1493,10 +1481,11 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
             trigger={
               <div className="collapsible-header">
                 <h2 className="beleren">Card Types</h2>
-                <FontAwesomeIcon
-                  icon={this.state.cardTypesOpen ? faMinus : faPlus}
-                  size="2x"
-                ></FontAwesomeIcon>
+                {this.state.cardTypesOpen ? (
+                  <FaMinus size="2em" />
+                ) : (
+                  <FaPlus size="2em" />
+                )}
               </div>
             }
             onOpen={() => this.setState({ cardTypesOpen: true })}
@@ -1534,7 +1523,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               style={{ position: 'absolute', left: -9999 }}
             ></textarea>
             <button className={styles.btnPrimary} onClick={this.generateDeck}>
-              <FontAwesomeIcon icon={faRandom}></FontAwesomeIcon> Generate Deck
+              <FaRandom /> Generate Deck
             </button>
           </div>
         </div>
@@ -1567,14 +1556,13 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                     onClick={this.reset}
                     disabled={!this.state.generated}
                   >
-                    <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon> Back
+                    <FaArrowLeft /> Back
                   </button>
                   <button
                     className={styles.btnPrimary}
                     onClick={this.copyDeckToClipboard}
                   >
-                    <FontAwesomeIcon icon={faCopy}></FontAwesomeIcon> Copy to
-                    Clipboard
+                    <FaCopy /> Copy to Clipboard
                   </button>
                   <button
                     className={styles.btnPrimary}

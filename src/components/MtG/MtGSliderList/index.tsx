@@ -8,8 +8,7 @@ import * as styles from './styles.module.scss'
 import '../../../styles-global/rc-slider-theme.scss'
 import 'keyrune'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBan } from '@fortawesome/free-solid-svg-icons'
+import { FaBan } from 'react-icons/fa'
 
 const SliderWithTooltip = createSliderWithTooltip(Slider)
 const RangeWithTooltip = createSliderWithTooltip(Range)
@@ -148,13 +147,12 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
                       .padStart(2, '0')}
                   </div>
                   {param.enabled !== undefined && (
-                    <FontAwesomeIcon
-                      icon={faBan}
+                    <FaBan
                       className={`${styles.disableIcon} ${
                         !param.enabled ? styles.disabled : ''
                       }`}
                       onClick={this.toggleEnabled(index)}
-                    ></FontAwesomeIcon>
+                    />
                   )}
                 </RandoRow>
                 {param.children && (

@@ -3,8 +3,7 @@ import Layout from '../components/layout'
 import { Link } from 'gatsby'
 import TwitchHost from '../components/TwitchHost'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { FaChevronDown } from 'react-icons/fa'
 
 import { ReactComponent as SplashImg } from '../img/knee.svg'
 import { ReactComponent as TwitchLogo } from '../img/twitchLogo.svg'
@@ -17,7 +16,7 @@ const IndexPage = () => (
         <h1 className="splash__title">You better be playing Falcon!</h1>
         <SplashImg className="splash__bg-img" />
         <a href="#body" className="splash__down">
-          <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+          <FaChevronDown />
         </a>
       </div>
       <div id="body">
@@ -55,9 +54,10 @@ const IndexPage = () => (
           <aside className="sidebar">
             <iframe
               className="sidebar__embed"
-              src="https://discordapp.com/widget?id=296424304948805632&theme=dark"
+              src="https://discord.com/widget?id=296424304948805632&theme=dark"
               height="500"
               frameBorder="0"
+              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
             ></iframe>
           </aside>
         </main>
