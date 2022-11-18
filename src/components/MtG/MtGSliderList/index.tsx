@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import update from 'immutability-helper'
-import Slider, { Range, createSliderWithTooltip } from 'rc-slider'
+import Slider from 'rc-slider'
 import RandoRow from '../RandoRow'
 
 import 'rc-slider/assets/index.css'
@@ -9,9 +9,6 @@ import '../../../styles-global/rc-slider-theme.scss'
 import 'keyrune'
 
 import { FaBan } from 'react-icons/fa'
-
-const SliderWithTooltip = createSliderWithTooltip(Slider)
-const RangeWithTooltip = createSliderWithTooltip(Range)
 
 interface MtGSliderListProps {
   onChange: (value: CountParam[]) => void
@@ -46,8 +43,8 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
   }
 
   updateCount(index: number) {
-    return (newValue: number) => {
-      newValue = Math.max(0, newValue)
+    return (newValue: number | number[]) => {
+      newValue = Math.max(0, newValue as number)
       this.props.onChange(
         update(this.props.params, {
           [index]: { $merge: { count: newValue } },
@@ -57,10 +54,10 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
   }
 
   updateRange(index: number) {
-    return (newValue: number[]) => {
+    return (newValue: number | number[]) => {
       this.props.onChange(
         update(this.props.params, {
-          [index]: { $merge: { range: newValue } },
+          [index]: { $merge: { range: newValue as number[] } },
         })
       )
     }
@@ -120,7 +117,8 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
                     {param.count?.toString().padStart(2, '0') || param.min?.toString().padStart(2, '0') || '00'}
                   </div>
                   {param.isRange ? (
-                    <RangeWithTooltip
+                    <Slider
+                      range={true}
                       className={styles.slider}
                       min={param.min || 0}
                       max={param.max || this.props.max}
@@ -129,7 +127,7 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
                       onChange={this.updateRange(index)}
                     />
                   ) : (
-                    <SliderWithTooltip
+                    <Slider
                       className={styles.slider}
                       min={this.props.min || 0}
                       max={this.maxCardsForChildren(param.count)}

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Layout from '../components/layout'
-import { Helmet } from 'react-helmet'
 import RandomAppName from '../components/MtG/RandomAppName'
 import RandomFlavor from '../components/MtG/RandomFlavor'
 import MtGRando from '../components/MtG/MtGRando'
@@ -15,6 +14,29 @@ interface RandoPageState {
 
 import '@saeris/typeface-beleren-bold'
 
+export function Head() {
+  return (
+    <>
+      <title>MtG Randomizer | Falcon Syndicate</title>
+      <meta
+        name="description"
+        content="Generate randomized Magic decks for EDH, Oathbreaker, or most other formats!"
+      />
+      <meta
+        name="keywords"
+        content="mtg, magic the gathering, magic, gathering, edh, commander, oathbreaker, bravery, randomizer"
+      />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:title" content="MtG Randomizer" />
+      <meta
+        name="twitter:description"
+        content="Generate randomized Magic decks for EDH, Oathbreaker, or most other formats!"
+      />
+      <meta name="twitter:image" content="/mtgrandologo.png" />
+    </>
+  )
+}
+
 class EdhRandoPage extends Component<{}, RandoPageState> {
   constructor(props: {}) {
     super(props)
@@ -28,29 +50,6 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
     return (
       <Layout>
         <div className="page-interior">
-          <Helmet
-            title="MtG Randomizer | Falcon Syndicate"
-            meta={[
-              {
-                name: 'description',
-                content:
-                  'Generate randomized Magic decks for EDH, Oathbreaker, or most other formats!',
-              },
-              {
-                name: 'keywords',
-                content:
-                  'mtg, magic the gathering, magic, gathering, edh, commander, oathbreaker, bravery, randomizer',
-              },
-              { name: 'twitter:card', content: 'summary' },
-              { name: 'twitter:title', content: 'MtG Randomizer' },
-              {
-                name: 'twitter:description',
-                content:
-                  'Generate randomized Magic decks for EDH, Oathbreaker, or most other formats!',
-              },
-              { name: 'twitter:image', content: '/mtgrandologo.png' },
-            ]}
-          ></Helmet>
           <h1 className="app-header">
             MtG Randomizer
             <br />
