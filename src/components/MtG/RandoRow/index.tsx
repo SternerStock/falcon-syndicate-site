@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactTooltip from 'react-tooltip'
+import { Tooltip } from 'react-tooltip'
 import * as styles from './styles.module.scss'
 
 import { FaQuestionCircle } from 'react-icons/fa'
@@ -27,11 +27,12 @@ class RandoRow extends Component<RandoRowProps, {}> {
         <div className={styles.icon}>
           {this.props.help && (
             <FaQuestionCircle
-              data-tip={this.props.help}
+              data-tooltip-id={`tt_${this.props.label}`}
+              data-tooltip-content={this.props.help}
               className={styles.helpIcon}
             />
           )}
-          <ReactTooltip type="info" clickable={true} multiline={true} className={styles.tooltip}></ReactTooltip>
+          <Tooltip id={`tt_${this.props.label}`} clickable={true} className={styles.tooltip}></Tooltip>
         </div>
         <div className={styles.controlContainer}>{this.props.children}</div>
       </div>
