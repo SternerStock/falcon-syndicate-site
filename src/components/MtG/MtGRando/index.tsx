@@ -29,7 +29,7 @@ interface SharedProps extends Record<string, string> {
   format: string
   silverBorder: string
   edhRecRange: string
-  cmcRange: string
+  manaValueRange: string
   setIds: string
   rarityIds: string
   artistIds: string
@@ -59,7 +59,7 @@ interface RandoRequest {
   signatureSpellId?: number
   colorIdentity: string[]
   edhRecRange?: NumberRange
-  cmcRange: NumberRange
+  manaValueRange: NumberRange
   setIds: number[]
   rarityIds: number[]
   artistIds: number[]
@@ -247,9 +247,9 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         showForFormats: ['Commander', 'Oathbreaker'],
       },
       {
-        name: 'cmc',
+        name: 'manaValue',
         iconClass: 'ms ms-x ms-2x',
-        label: 'Converted Mana Cost Range',
+        label: 'Mana Value Range',
         isRange: true,
         range: [0, 16],
         min: 0,
@@ -416,8 +416,8 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           (param) => param.name === 'edhrecrank'
         )?.range || [0, 100]
       ).toString(),
-      cmcRange: (
-        this.state.restrictionParams.find((param) => param.name === 'cmc')
+      manaValueRange: (
+        this.state.restrictionParams.find((param) => param.name === 'manaValue')
           ?.range || [0, 16]
       ).toString(),
       setIds: this.state.selectedSets.map((o) => o.id).toString(),
@@ -453,7 +453,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       format: urlParams.get('format') || this.formats[0].name,
       silverBorder: urlParams.get('silverBorder') || 'false',
       edhRecRange: urlParams.get('edhRecRange') || '0,100',
-      cmcRange: urlParams.get('cmcRange') || '0,16',
+      manaValueRange: urlParams.get('manaValueRange') || urlParams.get('cmcRange') || '0,16',
       setIds: urlParams.get('setIds') || '',
       rarityIds: urlParams.get('rarityIds') || '',
       artistIds: urlParams.get('artistIds') || '',
@@ -658,9 +658,9 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               range: params.edhRecRange.split(',').map((o) => parseInt(o, 10)),
             },
           },
-        [this.state.restrictionParams.findIndex((p) => p.name == 'cmc')]: {
+        [this.state.restrictionParams.findIndex((p) => p.name == 'manaValue')]: {
           $merge: {
-            range: params.cmcRange.split(',').map((o) => parseInt(o, 10)),
+            range: params.manaValueRange.split(',').map((o) => parseInt(o, 10)),
           },
         },
       }),
@@ -1057,8 +1057,8 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     const edhrecRange = this.state.restrictionParams.find(
       (param) => param.name === 'edhrecrank'
     )?.range || [0, 100]
-    const cmcRange = this.state.restrictionParams.find(
-      (param) => param.name === 'cmc'
+    const manaValueRange = this.state.restrictionParams.find(
+      (param) => param.name === 'manaValue'
     )?.range || [0, 16]
 
     const body: RandoRequest = {
@@ -1075,9 +1075,9 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         min: edhrecRange[0],
         max: edhrecRange[1],
       },
-      cmcRange: {
-        min: cmcRange[0],
-        max: cmcRange[1],
+      manaValueRange: {
+        min: manaValueRange[0],
+        max: manaValueRange[1],
       },
       setIds: this.state.selectedSets.map((o) => o.id),
       rarityIds: this.state.selectedRarities.map((o) => o.id),
