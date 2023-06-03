@@ -132,7 +132,7 @@ class EdhRandoPage extends Component<{}, RandoPageState> {
                     </a>
                   </li>
                   <li>
-                    <a href="http://xmage.de/" target="_blank">
+                    <a href="http://xmage.today/" target="_blank">
                       XMage
                     </a>
                   </li>
