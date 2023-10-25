@@ -652,17 +652,16 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     this.setState({
       silverBorder: params.silverBorder === 'true',
       restrictionParams: update(this.state.restrictionParams, {
-        [this.state.restrictionParams.findIndex((p) => p.name == 'edhrecrank')]:
-          {
+        [this.state.restrictionParams.findIndex((p) => p.name == 'edhrecrank')]: {
             $merge: {
               range: params.edhRecRange.split(',').map((o) => parseInt(o, 10)),
             },
           },
         [this.state.restrictionParams.findIndex((p) => p.name == 'manaValue')]: {
-          $merge: {
-            range: params.manaValueRange.split(',').map((o) => parseInt(o, 10)),
+            $merge: {
+              range: params.manaValueRange.split(',').map((o) => parseInt(o, 10)),
+            },
           },
-        },
       }),
       selectedSets: this.state.sets.filter(
         (s) => selectedSets.indexOf(s.id.toString()) > -1

@@ -114,11 +114,14 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
                   label={param.label}
                 >
                   <div className={styles.count}>
-                    {param.count?.toString().padStart(2, '0') || param.min?.toString().padStart(2, '0') || '00'}
+                    {(param.isRange
+                      ? (param.range && param.range.length === 2 && param.range[0]) || param.min || this.props.min || 0
+                      : param.count || param.min || 0
+                    ).toString().padStart(2, '0')}
                   </div>
                   {param.isRange ? (
                     <Slider
-                      range={true}
+                      range
                       className={styles.slider}
                       min={param.min || 0}
                       max={param.max || this.props.max}
@@ -138,11 +141,9 @@ class MtGSliderList extends Component<MtGSliderListProps, {}> {
                   )}
                   <div className={styles.count}>
                     {(param.isRange
-                      ? param.max || this.props.max
+                      ? (param.range && param.range.length === 2 && param.range[1]) || param.max || this.props.max
                       : this.maxCardsForChildren(param.count)
-                    )
-                      .toString()
-                      .padStart(2, '0')}
+                    ).toString().padStart(2, '0')}
                   </div>
                   {param.enabled !== undefined && (
                     <FaBan
