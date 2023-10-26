@@ -29,6 +29,7 @@ interface SharedProps extends Record<string, string> {
   format: string
   silverBorder: string
   edhRecRange: string
+  edhRecSaltRange: string
   manaValueRange: string
   setIds: string
   rarityIds: string
@@ -59,6 +60,7 @@ interface RandoRequest {
   signatureSpellId?: number
   colorIdentity: string[]
   edhRecRange?: NumberRange
+  edhRecSaltRange?: NumberRange
   manaValueRange: NumberRange
   setIds: number[]
   rarityIds: number[]
@@ -247,6 +249,17 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         showForFormats: ['Commander', 'Oathbreaker'],
       },
       {
+        name: 'edhrecsaltrank',
+        iconClass: 'ss ss-tsp ss-2x',
+        label: 'EDHREC Saltiness Percentile',
+        help: 'The "saltiness" range of the cards to pick. This value is crowdsourced by EDHREC and indicates how much other players dislike seeing the card. Higher values are more disliked.',
+        isRange: true,
+        range: [0, 100],
+        min: 0,
+        max: 100,
+        showForFormats: ['Commander', 'Oathbreaker'],
+      },
+      {
         name: 'manaValue',
         iconClass: 'ms ms-x ms-2x',
         label: 'Mana Value Range',
@@ -416,6 +429,11 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
           (param) => param.name === 'edhrecrank'
         )?.range || [0, 100]
       ).toString(),
+      edhRecSaltRange: (
+        this.state.restrictionParams.find(
+          (param) => param.name === 'edhrecsaltrank'
+        )?.range || [0, 100]
+      ).toString(),
       manaValueRange: (
         this.state.restrictionParams.find((param) => param.name === 'manaValue')
           ?.range || [0, 16]
@@ -453,6 +471,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       format: urlParams.get('format') || this.formats[0].name,
       silverBorder: urlParams.get('silverBorder') || 'false',
       edhRecRange: urlParams.get('edhRecRange') || '0,100',
+      edhRecSaltRange: urlParams.get('edhRecSaltRange') || '0,100',
       manaValueRange: urlParams.get('manaValueRange') || urlParams.get('cmcRange') || '0,16',
       setIds: urlParams.get('setIds') || '',
       rarityIds: urlParams.get('rarityIds') || '',
@@ -655,6 +674,11 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
         [this.state.restrictionParams.findIndex((p) => p.name == 'edhrecrank')]: {
             $merge: {
               range: params.edhRecRange.split(',').map((o) => parseInt(o, 10)),
+            },
+          },
+        [this.state.restrictionParams.findIndex((p) => p.name == 'edhrecsaltrank')]: {
+            $merge: {
+              range: params.edhRecSaltRange.split(',').map((o) => parseInt(o, 10)),
             },
           },
         [this.state.restrictionParams.findIndex((p) => p.name == 'manaValue')]: {
@@ -1056,6 +1080,9 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
     const edhrecRange = this.state.restrictionParams.find(
       (param) => param.name === 'edhrecrank'
     )?.range || [0, 100]
+    const edhrecSaltRange = this.state.restrictionParams.find(
+      (param) => param.name === 'edhrecsaltrank'
+    )?.range || [0, 100]
     const manaValueRange = this.state.restrictionParams.find(
       (param) => param.name === 'manaValue'
     )?.range || [0, 16]
@@ -1073,6 +1100,10 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
       edhRecRange: {
         min: edhrecRange[0],
         max: edhrecRange[1],
+      },
+      edhRecSaltRange: {
+        min: edhrecSaltRange[0],
+        max: edhrecSaltRange[1],
       },
       manaValueRange: {
         min: manaValueRange[0],
@@ -1397,10 +1428,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
               </div>
             </RandoRow>
             <RandoRow
-              iconClass={
-                'ss ss-2x ss-' +
-                  this.state.sets[0]?.keyruneCode.toLowerCase() || 'htr'
-              }
+              iconClass={ 'ss ss-2x ss-htr' }
               label="Rarities"
             >
               <div className="widget-wrapper">
@@ -1418,10 +1446,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                     <div>
                       <i
                         className={
-                          'ss ss-2x ss-' +
-                          (this.state.sets[0]?.keyruneCode.toLowerCase() ||
-                            'htr') +
-                          ' ss-grad ss-' +
+                          'ss ss-2x ss-htr ss-grad ss-' +
                           item.name.toLowerCase()
                         }
                       ></i>{' '}
@@ -1432,10 +1457,7 @@ class MtGRando extends React.Component<{}, MtGRandoState> {
                     <div>
                       <i
                         className={
-                          'ss ss-2x ss-' +
-                          (this.state.sets[0]?.keyruneCode.toLowerCase() ||
-                            'htr') +
-                          ' ss-grad ss-' +
+                          'ss ss-2x ss-htr ss-grad ss-' +
                           item.name.toLowerCase()
                         }
                       ></i>{' '}
