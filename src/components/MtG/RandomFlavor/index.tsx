@@ -16,8 +16,14 @@ class RandomFlavor extends Component<{}, FlavorTextState> {
 
   async componentDidMount() {
     const response = await fetch(
-      process.env.GATSBY_API_URL + '/MtG/RandomFlavor'
+      process.env.GATSBY_API_URL + '/MtG/RandomFlavor',
+      {
+        headers: {
+          'falcon-nocache': '1',
+        },
+      }
     )
+
     if (response.ok) {
       const data = await response.json()
       this.setState({

@@ -10,8 +10,14 @@ class RandomAppName extends Component<{}, {text: string}> {
 
   async componentDidMount() {
     const response = await fetch(
-      process.env.GATSBY_API_URL + '/MtG/RandomAppName'
+      process.env.GATSBY_API_URL + '/MtG/RandomAppName',
+      {
+        headers: {
+          'falcon-nocache': '1',
+        },
+      }
     )
+
     if (response.ok) {
       const data = await response.text()
       this.setState({
