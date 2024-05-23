@@ -6,7 +6,7 @@ const MinecraftEmbed = () => (
     <div className="page-interior page-interior--stretch">
       <iframe
         className="full-embed full-embed--stretch"
-        src="/dynmap"
+        src="/dynmap/"
       ></iframe>
     </div>
   </Layout>
