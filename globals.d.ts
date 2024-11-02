@@ -28,7 +28,7 @@ interface Card {
   loyalty: number
   color: string[]
   colorIdentity: string[]
-  multiverseId: number
+  multiverseId: number[]
   flavorText: string
   artist: string
   watermark: string

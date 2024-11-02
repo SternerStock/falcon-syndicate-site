@@ -101,8 +101,8 @@ class CardPreview extends Component<CardPreviewProps> {
         <div className={styles.cardImg}>
           <CrossfadeImage
             src={
-              this.props.selectedCard
-                ? `https://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=${this.props.selectedCard.multiverseId}`
+              this.props.selectedCard && this.props.selectedCard.multiverseId.length > 0
+                ? `https://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=${this.props.selectedCard.multiverseId[0]}`
                 : mtgCardBackUrl
             }
           />
