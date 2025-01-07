@@ -1,0 +1,100 @@
+@use 'sass:color';
+@use 'sass:math';
+@use '../../style/variables.scss';
+
+.mtgSlider {
+  .mtgSlider {
+    padding-left: variables.$gutter;
+  }
+}
+
+.slider {
+  flex: 10 0;
+}
+
+.count {
+  padding: 0 10px;
+  font-weight: bold;
+  text-align: right;
+  flex: 1 1;
+  font-family: variables.$mono-font-fam;
+  max-width: 20px;
+}
+
+.disableIcon {
+  cursor: pointer;
+  color: #999;
+  transition: color variables.$anim-delay ease-in-out;
+
+  &:hover {
+    color: #bbb;
+  }
+}
+
+.disabled {
+  color: red;
+
+  &:hover {
+    color: color.scale(red, $lightness: 10%);
+  }
+}
+
+.row {
+  display: flex;
+  padding: math.div(variables.$gutter, 2);
+  border-bottom: 1px solid variables.$text-page;
+}
+
+:global(.collapsible-body) > .mtgSlider:last-child .row:last-child,
+:global(.collapsible-body) > .row:last-child {
+  border-bottom: none;
+}
+
+.controlLabel {
+  flex: 0 0 auto;
+  width: 30%;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  padding: 0 math.div(variables.$gutter, 2);
+}
+
+.icon {
+  padding: 0 5px;
+  flex: 0 0 2em;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.helpIcon {
+  cursor: pointer;
+}
+
+.controlContainer {
+  flex: 1;
+  width: 70%;
+  display: flex;
+  align-items: center;
+}
+
+.tooltip {
+  max-width: 330px;
+}
+
+@media all and (max-width: 800px) {
+  .row {
+    flex-wrap: wrap;
+  }
+
+  .controlLabel {
+    flex: 1;
+    width: auto;
+  }
+
+  .controlContainer {
+    margin-top: math.div(variables.$gutter, 2);
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}

@@ -1,0 +1,37 @@
+@use 'sass:color';
+@use 'variables';
+
+@mixin control-primary {
+    background-color: variables.$bg-control-primary;
+    color: variables.$text-control-primary;
+    border: 1px solid variables.$border-control-primary;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color variables.$action-anim-delay ease-in-out,
+        color variables.$action-anim-delay ease-in-out;
+    
+    &:hover {
+        background-color: color.scale(variables.$bg-control-primary, $lightness: 10%);
+    }
+    
+    &:active {
+        background-color: color.scale(variables.$bg-control-primary, $lightness: -10%);
+        color: color.scale(variables.$text-control-primary, $lightness: -10%);
+    }
+}
+
+// Stepped pixelated border: https://codepen.io/albpara/pen/JjRarO
+@mixin step2v2( $width, $color, $bgcolor ) {
+    box-shadow:
+      $width 0 $bgcolor,
+      -$width 0 $bgcolor,
+      0 (-$width) $bgcolor,
+      0 $width $bgcolor,
+      2*$width 0 $color,
+      -2*$width 0 $color,
+      0 (-2*$width) $color,
+      0 2*$width $color, 
+      0 0 0 $width $color;
+    margin: 2*$width auto;
+  }

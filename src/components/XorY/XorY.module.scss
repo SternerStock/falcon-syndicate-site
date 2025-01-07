@@ -1,0 +1,286 @@
+@use 'sass:math';
+@use '../../style/variables.scss';
+@use '../../style/mixins.scss';
+
+$bg-width: 400px;
+$bg-height: 400px;
+
+@keyframes bg-scrolling-reverse {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: $bg-width $bg-height;
+  }
+}
+@keyframes bg-scrolling {
+  0% {
+    background-position: $bg-width 0;
+  }
+  100% {
+    background-position: 0 $bg-height;
+  }
+}
+
+@keyframes bounce-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(2000px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  65% {
+    transform: translateX(100px);
+  }
+  80% {
+    transform: translateX(0);
+  }
+  90% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce-in-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-2000px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  65% {
+    transform: translateX(-100px);
+  }
+  80% {
+    transform: translateX(0);
+  }
+  90% {
+    transform: translateX(-20px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.wrapper {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  flex: 1;
+}
+
+.centerOverlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  padding: variables.$gutter;
+  background: variables.$falcon-purple;
+  color: variables.$text-control-primary;
+  max-width: 600px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  word-wrap: break-word;
+  max-width: 100%;
+
+  & > div {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  strong {
+    font-size: 1.1em;
+  }
+}
+
+.scoreboard {
+  top: 0;
+  display: flex;
+  align-content: space-between;
+  border: 3px groove variables.$text-control-primary;
+  border-top-style: none;
+  max-width: 600px;
+
+  .cancelBtn {
+    color: red;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+
+    position: absolute;
+    top: math.div(variables.$gutter, 2);
+    right: math.div(variables.$gutter, 2);
+  }
+}
+
+.question {
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5vh;
+  text-align: center;
+  font-family: 'Press Start 2P', Arial, 'sans-serif';
+  @include mixins.step2v2(
+    4px,
+    variables.$text-control-primary,
+    variables.$falcon-purple
+  );
+  margin: 0;
+}
+
+.result {
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.option {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  transition: flex-grow 300ms;
+  overflow: hidden;
+
+  &.correct {
+    flex-grow: 1;
+  }
+
+  &.incorrect {
+    flex-grow: 0.001;
+    flex-basis: 0;
+  }
+}
+
+.optionBg {
+  align-self: center;
+  display: flex;
+  width: 100%;
+  flex: 1;
+  background: rgba(variables.$dark-gray, 0.8);
+  transition: background-color 400ms;
+}
+
+.optionBg:hover,
+.selected .optionBg {
+  background: rgba(variables.$dark-gray, 0.3);
+}
+
+.correct .optionBg {
+  background: transparent;
+}
+
+.optionText {
+  flex: 1;
+  font-size: 5vh;
+  align-self: center;
+  text-align: center;
+  padding: 5vw;
+  user-select: none;
+  transition: opacity 300ms;
+  opacity: 1;
+}
+
+.correct .optionText,
+.incorrect .optionText {
+  opacity: 0;
+}
+
+.option:first-child {
+  animation-name: bg-scrolling-reverse, bounce-in-left;
+  animation-duration: 10s, 1.5s;
+  animation-timing-function: linear, ease;
+  animation-iteration-count: infinite, 1;
+  animation-play-state: paused, running;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  .optionText {
+    padding-right: 10vw;
+  }
+}
+
+.option:last-child {
+  animation-name: bg-scrolling, bounce-in-right;
+  animation-duration: 10s, 1.5s;
+  animation-timing-function: linear, ease;
+  animation-iteration-count: infinite, 1;
+  animation-play-state: paused, running;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  .optionText {
+    padding-left: 10vw;
+  }
+}
+
+.option:hover,
+.option.correct {
+  animation-play-state: running;
+}
+
+.modal {
+  min-width: 20vw;
+  max-width: 600px;
+  text-align: center;
+  user-select: none;
+  font-family: 'Press Start 2P', Arial, 'sans-serif';
+
+  &.loading {
+    display: none;
+  }
+
+  h2 {
+    font-style: italic;
+    margin-top: 0;
+  }
+
+  &.modal {
+    text-align: center;
+  }
+
+  &.correct {
+    background-color: rgba(variables.$correctBg, 0.8);
+    color: variables.$correctText;
+    @include mixins.step2v2(4px, variables.$off-white, variables.$correctBg);
+    margin: 0;
+  }
+
+  &.incorrect {
+    background-color: rgba(variables.$incorrectBg, 0.8);
+    color: variables.$incorrectText;
+    @include mixins.step2v2(4px, variables.$off-white, variables.$incorrectBg);
+    margin: 0;
+  }
+}
+
+@media all and (max-width: 800px) {
+  .centerOverlay {
+    position: initial;
+    transform: none;
+    max-width: none;
+    box-shadow: none;
+  }
+
+  .scoreboard {
+    margin: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .modal {
+    max-width: 80vw;
+  }
+}

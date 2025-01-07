@@ -1,0 +1,60 @@
+@use '../../style/variables.scss';
+
+.cardPreview-container {
+  max-width: 330px;
+  margin: auto;
+}
+
+.cardImg {
+  width: variables.$card-width;
+  height: variables.$card-height;
+  margin: 1em auto;
+  position: relative;
+  border-radius: variables.$card-border-radius;
+  overflow: hidden;
+}
+
+.oracle {
+  text-align: left;
+  font-family: MPlantin, 'Times New Roman', serif;
+  color: #eee;
+  white-space: pre-wrap;
+
+  .nameRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nameRow,
+  .typeline,
+  .power {
+    font-family: 'Beleren Bold', sans-serif;
+  }
+
+  .power {
+    position: relative;
+
+    & > span {
+      position: absolute;
+      top: -5px;
+      right: 0;
+      padding: 2px 10px;
+      background-color: variables.$dark-gray;
+      border: 1px solid variables.$off-white;
+      border-radius: 5px;
+    }
+  }
+
+  .flavorText {
+    font-style: italic;
+  }
+
+  & > div:not(:last-child) {
+    border-bottom: 1px solid variables.$off-white;
+  }
+
+  & > div {
+    padding: 5px 0;
+  }
+}

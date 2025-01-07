@@ -1,0 +1,28 @@
+@use 'sass:color';
+@import 'variables';
+
+$input-bg: color.scale($dark-gray, $lightness: -5%);
+$input-color: $off-white;
+$input-border: color.scale($dark-gray, $lightness: 50%);
+
+$input-bg-color-autofill: $dark-gray;
+$input-color-autofill: $off-white;
+
+$popup-bg: $dark-gray;
+$popup-border: color.scale($dark-gray, $lightness: 50%);
+
+$text-color: $off-white;
+$state-color-hover: $dark-gray;
+
+$input-color-placeholder: $off-white;
+
+$state-bg-select: $bg-control-primary;
+$state-border-focus: color.scale($bg-control-primary, $lightness: 20%);
+
+$multiselect-tag-bg: $off-white;
+$multiselect-tag-color: $dark-gray;
+
+$font-path: '~react-widgets/lib/fonts';
+$img-path: '~react-widgets/lib/img';
+
+@import '~react-widgets/lib/scss/react-widgets';

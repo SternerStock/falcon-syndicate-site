@@ -1,0 +1,203 @@
+@use 'sass:color';
+@use 'sass:math';
+@use '../../style/variables';
+@use '../../style/mixins';
+
+.mtgContainerOuter {
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
+  padding-top: variables.$gutter;
+  padding-bottom: variables.$gutter;
+}
+
+.leftCol,
+.rightCol {
+  transition: all variables.$anim-delay ease-in-out;
+}
+
+.leftCol {
+  flex: 3;
+  margin-right: variables.$gutter;
+  max-height: 2000px;
+}
+
+.rightCol {
+  flex: 1;
+  margin-left: variables.$gutter;
+}
+
+.cmdrPreview {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+  & > div {
+    flex: 1;
+    max-width: 330px;
+  }
+
+  .resultsContainer {
+    flex: 0.001;
+    overflow: hidden;
+  }
+}
+
+.formatExtra__row {
+  padding: math.div(variables.$gutter, 2) 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.formatExtra {
+  flex: 1;
+
+  &:last-child {
+    text-align: right;
+  }
+}
+
+.btnPrimary {
+  @include mixins.control-primary;
+}
+
+.btnPrimary {
+  margin: 5px 0;
+  padding: 5px 10px;
+
+  &:not(:last-child) {
+    margin-right: 1em;
+  }
+}
+
+.btnClearOverlay {
+  position: absolute;
+  top: 0.71em;
+  right: 2em;
+  background: transparent;
+  border: none;
+  color: variables.$off-white;
+  width: 1em;
+  height: 1em;
+  padding: 0;
+  cursor: pointer;
+  transition: color variables.$action-anim-delay ease-in-out;
+
+  &:hover {
+    color: color.scale(variables.$off-white, $lightness: 10%);
+  }
+}
+
+.results {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.resultBox {
+  width: 100%;
+  flex: 1;
+  background-color: color.scale(variables.$dark-gray, $lightness: -5%);
+  border: 1px solid color.scale(variables.$dark-gray, $lightness: 50%);
+  color: variables.$off-white;
+}
+
+.loader,
+.results {
+  opacity: 0;
+  transition: opacity variables.$anim-delay ease-in-out;
+}
+
+.loader {
+  max-height: variables.$card-height;
+}
+
+.generating {
+  .leftCol {
+    overflow: hidden;
+    flex: 0.0001;
+    max-height: 500px;
+    opacity: 0;
+  }
+
+  .rightCol {
+    margin-left: 0;
+    margin-bottom: variables.$gutter;
+  }
+
+  .cmdrPreview .resultsContainer {
+    flex: 1;
+    overflow: visible;
+    min-height: 400px;
+    padding: 0 variables.$gutter;
+  }
+
+  .results {
+    opacity: 0;
+  }
+
+  .loader {
+    opacity: 1;
+  }
+}
+
+.generated {
+  .loader {
+    opacity: 0;
+    overflow: hidden;
+    max-height: 0;
+  }
+
+  .results {
+    opacity: 1;
+  }
+}
+
+.issues {
+  font-size: 0.8em;
+  margin: 0.5em 0;
+  font-style: italic;
+}
+
+@media all and (max-width: 800px) {
+  .mtgContainerOuter {
+    flex-direction: column;
+  }
+
+  .leftCol {
+    max-height: none;
+    margin-right: 0;
+  }
+
+  .rightCol {
+    margin-left: 0;
+  }
+
+  .generating {
+    .leftCol {
+      max-height: 0.1px;
+    }
+  }
+
+  .formatExtra__row {
+    flex-direction: column;
+  }
+
+  .formatExtra {
+    padding-bottom: 1em;
+
+    &:last-child {
+      text-align: inherit;
+      padding-bottom: 0;
+    }
+  }
+
+  .commanderExtra__row {
+    text-align: center;
+  }
+
+  .btnPrimary:not(:last-child) {
+    margin-right: 0;
+  }
+}

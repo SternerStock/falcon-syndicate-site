@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'Impact Label';
+  src: local('Impact Label'), url('../../assets/ska/ImpactLabelReversed.ttf');
+}
+
+.skaText {
+  font-family: 'Impact Label';
+  background-color: #000;
+  padding: 0.25em 0.5em;
+  -webkit-text-stroke: none;
+}
+
+.kidshowText {
+  font-family: 'Gochi Hand', cursive;
+  -webkit-text-stroke: #000 3px;
+}

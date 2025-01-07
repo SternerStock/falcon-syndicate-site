@@ -1,0 +1,107 @@
+@use 'sass:math';
+@use '../../style/variables.scss';
+
+@mixin StackTop {
+  transform: translateX(0);
+  z-index: 2;
+  left: 0;
+  top: 0;
+}
+
+@mixin StackMid {
+  transform: translateX(0);
+  z-index: 1;
+  left: variables.$gutter;
+  top: variables.$gutter;
+}
+
+@mixin StackBot {
+  transform: translateX(0);
+  z-index: 0;
+  left: variables.$gutter * 2;
+  top: variables.$gutter * 2;
+}
+
+@mixin StackFlipping {
+  transform: translateX(math.div(-(variables.$card-width), 2));
+  z-index: .5;
+  left: variables.$gutter;
+  top: variables.$gutter;
+}
+
+/* Based on ParkHJ11's Playing Card Shuffle codepen: https://codepen.io/parkhj11/pen/KKwWRza */
+.stack {
+  position: relative;
+  transform: translateX(math.div(variables.$card-width, 4) - variables.$gutter);
+}
+
+.card {
+  width: variables.$card-width;
+  height: variables.$card-height;
+  border-radius: variables.$card-border-radius;
+  overflow: hidden;
+  position: absolute;
+  animation: startTop 1s variables.$anim-delay linear infinite;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.card:first-child {
+  @include StackTop();
+  animation-name: startTop;
+}
+
+.card:nth-child(2) {
+  @include StackMid();
+  animation-name: startMid;
+}
+
+.card:last-child {
+  @include StackBot();
+  animation-name: startBot;
+}
+
+@keyframes startTop {
+  16% {
+    @include StackFlipping();
+  }
+  33% {
+    @include StackBot();
+  }
+  66% {
+    @include StackMid();
+  }
+}
+
+@keyframes startMid {
+  33% {
+    @include StackTop();
+  }
+  50% {
+    @include StackFlipping();
+  }
+  83% {
+    @include StackBot();
+  }
+}
+
+@keyframes startBot {
+  33% {
+    @include StackMid();
+  }
+  66% {
+    @include StackTop();
+  }
+  83% {
+    @include StackFlipping();
+  }
+}
+
+@media all and (max-width: 800px) {
+  .stack {
+    transform: none;
+  }
+}

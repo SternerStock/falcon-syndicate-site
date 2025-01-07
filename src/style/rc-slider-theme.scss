@@ -1,0 +1,35 @@
+@use 'sass:color';
+@use 'variables';
+
+.rc-slider {
+  height: 1.5em;
+  padding: 0.6em 0;
+  margin: 10px;
+}
+
+.rc-slider-rail,
+.rc-slider-track {
+  height: 0.3em;
+}
+
+.rc-slider-track {
+  background-color: color.scale(variables.$bg-control-primary, $lightness: 20%);
+}
+
+.rc-slider-handle {
+  border-color: color.scale(variables.$bg-control-primary, $lightness: 20%);
+  border-width: 0.5em;
+  width: 1.5em;
+  height: 1.5em;
+  margin-top: -0.5em;
+}
+
+.rc-slider-disabled {
+  background-color: transparent;
+}
+
+.rc-slider-track,
+.rc-slider-handle {
+  transition: background-color variables.$anim-delay ease-in-out,
+    border-color variables.$anim-delay ease-in-out;
+}
