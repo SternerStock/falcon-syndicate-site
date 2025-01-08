@@ -118,7 +118,7 @@ const MtgRandoPage: React.FC = () => {
             </li>
             <li>
               <a
-                href="https://github.com/SternerStock/falcon-syndicate-site"
+                href="https://codeberg.org/SternerStock/falcon-syndicate-site"
                 target="_blank"
               >
                 Website Source Code
@@ -126,7 +126,7 @@ const MtgRandoPage: React.FC = () => {
             </li>
             <li>
               <a
-                href="https://github.com/SternerStock/falcon-backend"
+                href="https://codeberg.org/SternerStock/falcon-backend"
                 target="_blank"
               >
                 Generator/Database Source Code

@@ -4,10 +4,6 @@
 @use 'mixins';
 @use 'hamburger';
 
-#gatsby-focus-wrapper {
-  overflow: hidden;
-}
-
 body {
   font-family: variables.$base-font-fam;
   background-color: variables.$bg-page;
@@ -209,18 +205,38 @@ a:visited {
   background-color: variables.$falcon-gold;
   min-height: variables.$nav-height;
   font-size: 1rem;
-  vertical-align: middle;
-  text-align: center;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 
   &,
-  :link,
-  :visited {
+  a:link,
+  a:visited {
     color: variables.$text-content-primary;
+
+    &:hover,
+    &:active {
+      color: color.scale(variables.$text-content-primary, $lightness: 20%);
+    }
+  }
+
+  & > :not(:last-child) {
+    margin-right: variables.$gutter;
   }
 }
 
 .site-footer__text {
   margin: #{math.div(variables.$gutter, 2)} 0;
+}
+
+.site-footer__icons {
+  display: flex;
+  align-items: center;
+
+  & > :not(:last-child) {
+    margin-right: 5px;
+  }
 }
 
 .full-embed {
@@ -316,6 +332,15 @@ a:visited {
     padding: 0 variables.$gutter;
   }
 
+  .site-footer {
+    padding: math.div(variables.$gutter, 2) variables.$gutter;
+    box-sizing: border-box;
+  }
+
+  .site-footer__text {
+    margin: 0;
+  }
+
   .splash {
     margin: 0 (-(variables.$gutter));
     padding: 0 variables.$gutter;
@@ -323,10 +348,6 @@ a:visited {
 
   .splash__bg-img {
     right: initial;
-  }
-
-  .site-footer__text {
-    padding: 0 variables.$gutter;
   }
 }
 
