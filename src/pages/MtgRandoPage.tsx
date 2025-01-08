@@ -155,14 +155,14 @@ const MtgRandoPage: React.FC = () => {
             </li>
           </ul>
           <h3>Contact</h3>
-          You can <a href="mailto:me@coreylaird.com">Email me</a> or{' '}
+          You can <a href="mailto:sternerstock@falconsyndicate.net">Email me</a> or{' '}
           <a href="https://discord.gg/m2X59jn">Join the Discord</a>:<br />
           <iframe
             src="https://discordapp.com/widget?id=719594048565936238&theme=dark"
             width="350"
             height="300"
             frameBorder={0}
-           />
+          />
           <p>
             <em className="copyright">
               The MtG Randomizer is unofficial Fan Content permitted under the
