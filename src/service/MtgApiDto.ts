@@ -27,6 +27,8 @@ export interface Card {
   color: string[]
   colorIdentity: string[]
   multiverseId: number[]
+  scryfallId: string[]
+  scryfallIllustrationId: string[]
   flavorText: string
 }
 

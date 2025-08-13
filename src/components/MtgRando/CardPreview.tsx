@@ -86,16 +86,24 @@ const replaceLoyalty = (
 
 const CardPreview: React.FC<CardPreviewProps> = ({ selectedCard }) => {
   const [mvId, setMvId] = useState(0)
+  const [scryfallId, setScryfallId] = useState(0)
 
   useEffect(() => {
     setMvId(0)
+    setScryfallId(0)
   }, [selectedCard])
 
   const imgSrc = useMemo(() => {
-    return selectedCard && mvId < selectedCard.multiverseId.length ?
-        `https://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=${selectedCard.multiverseId[mvId]}`
-      : mtgCardBackUrl
-  }, [selectedCard, mvId])
+    if (selectedCard) {
+      if (scryfallId < selectedCard.scryfallId.length) {
+        return `https://cards.scryfall.io/normal/front/${selectedCard.scryfallId[scryfallId][0]}/${selectedCard.scryfallId[scryfallId][1]}/${selectedCard.scryfallId[scryfallId]}.jpg`
+      } else if (mvId < selectedCard.multiverseId.length) {
+        return `https://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=${selectedCard.multiverseId[mvId]}`
+      }
+    }
+
+    return mtgCardBackUrl
+  }, [selectedCard, mvId, scryfallId])
 
   return (
     <div className={styles.cardPreviewContainer}>
@@ -103,7 +111,14 @@ const CardPreview: React.FC<CardPreviewProps> = ({ selectedCard }) => {
         <CrossfadeImage
           src={imgSrc}
           alt={selectedCard?.name}
-          onError={() => setMvId((prev) => prev + 1)}
+          onError={() => {
+            if (selectedCard?.scryfallId?.length ?? 0 > scryfallId) {
+              setScryfallId((prev) => prev + 1)
+            } else {
+              setMvId((prev) => prev + 1)
+            }
+          }
+        }
         />
       </div>
       {selectedCard && (

@@ -18,8 +18,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       keyrune:
-        specifier: ^3.16.1
-        version: 3.16.1
+        specifier: ^3.17.0
+        version: 3.17.0
       mana-font:
         specifier: ^1.18.0
         version: 1.18.0
@@ -1647,8 +1647,8 @@ packages:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
 
-  keyrune@3.16.1:
-    resolution: {integrity: sha512-lVLVo3ea6DNHg+ZUJaft8mmLU3QW88EkBbMLmMigXsCTGrOT1HHNZEFMAomzT2Amo6zVbVi3W2lmE2k9ytrZMw==}
+  keyrune@3.17.0:
+    resolution: {integrity: sha512-war++WXDmFz4rO5Jr+SZTTGozqpaorAOPwppIiD8ipSpUTLX/5/Yad9TV0v7molhyRyV6qt0PKUh2mR0r52V2A==}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -3978,7 +3978,7 @@ snapshots:
       object.assign: 4.1.5
       object.values: 1.2.1
 
-  keyrune@3.16.1: {}
+  keyrune@3.17.0: {}
 
   keyv@4.5.4:
     dependencies:

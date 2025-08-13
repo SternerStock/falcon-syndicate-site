@@ -24,7 +24,7 @@
     "@fontsource/gochi-hand": "^5.1.1",
     "@fontsource/press-start-2p": "^5.1.1",
     "@saeris/typeface-beleren-bold": "^1.0.1",
-    "keyrune": "^3.16.1",
+    "keyrune": "^3.17.0",
     "mana-font": "^1.18.0",
     "rc-slider": "^11.1.8",
     "react": "^19.0.0",
@@ -60,5 +60,12 @@
     "typescript-eslint": "^8.19.1",
     "vite": "^6.0.7",
     "vite-plugin-svgr": "^4.3.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@swc/core",
+      "esbuild"
+    ]
   }
 }
